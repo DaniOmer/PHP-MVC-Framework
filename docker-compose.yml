@@ -10,6 +10,13 @@ services:
       - ./server/apache2.conf:/etc/apache2/apache2.conf
       - ./server/php.ini:/usr/local/etc/php/php.ini
 
+  composer:
+    image: composer
+    volumes:
+      - ./www:/var/www/html/
+    working_dir: /var/www/html/
+    command: composer install
+
   database:
     image: postgres
     restart: always
