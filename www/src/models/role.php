@@ -7,8 +7,8 @@ class Role{
     private int $id;
     private string $name;
     private string $description;
-    private string $created_id;
-    private string $updated;
+    private string $created_at;
+    private string $updated_at;
 
     /**
      * Get the value of id
