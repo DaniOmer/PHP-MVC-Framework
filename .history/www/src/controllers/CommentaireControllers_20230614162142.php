@@ -1,0 +1,1 @@
+$comment->setUserid($id);

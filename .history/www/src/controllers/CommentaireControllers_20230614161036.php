@@ -1,0 +1,28 @@
+<?php
+
+namespace App\controllers;
+use App\models\Comment;
+
+class Validation_tokenControllers{
+    public function create($data, $id){
+        $comment = new Comment(); 
+        $comment->setId($id); 
+        $comment->setUserid($id); 
+        $comment->setUserid($id);
+        $comment->setCreatedat($data->created_at);
+    }
+
+    public function read(string $id){
+        $comment = new Comment(); 
+        $comment->setId($id); 
+    }
+
+    public function update($id){
+        $comment = new Comment(); 
+        $comment->setId($id);
+
+    pu function delete(string $id){
+        $comment = new Comment(); 
+        $comment->setId($id); 
+    }
+}
