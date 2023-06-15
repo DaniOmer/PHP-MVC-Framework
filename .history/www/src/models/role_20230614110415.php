@@ -2,13 +2,13 @@
 
 namespace App\models;
 
-class Role extends {
+class Role{
 
     private int $id;
     private string $name;
     private string $description;
-    private string $created_id;
-    private string $updated;
+    private string $created_at;
+    private string $updated_at;
 
     /**
      * Get the value of id
@@ -67,17 +67,17 @@ class Role extends {
     /**
      * Get the value of created_id
      */
-    public function getCreatedId(): string
+    public function getCreatedat(): string
     {
-        return $this->created_id;
+        return $this->created_at;
     }
 
     /**
      * Set the value of created_id
      */
-    public function setCreatedId(string $created_id): self
+    public function setCreatedat(string $created_at): self
     {
-        $this->created_id = $created_id;
+        $this->created_at = $created_at;
 
         return $this;
     }
@@ -85,17 +85,17 @@ class Role extends {
     /**
      * Get the value of updated
      */
-    public function getUpdated(): string
+    public function getUpdatedat(): string
     {
-        return $this->updated;
+        return $this->updated_at;
     }
 
     /**
      * Set the value of updated
      */
-    public function setUpdated(string $updated): self
+    public function setUpdatedat(string $updated_at): self
     {
-        $this->updated = $updated;
+        $this->updated_at = $updated_at;
 
         return $this;
     }

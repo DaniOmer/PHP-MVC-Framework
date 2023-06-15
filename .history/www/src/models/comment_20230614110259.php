@@ -3,12 +3,14 @@
 namespace App\models;
 
 
-class Comment extends ORM {
+class Comment {
+    
     private int $id;
     private int $user_id; 
     private int $page_id;
     private string $comment;
     private string $is_moderated;
+    private string $is_flagged;
     private string $created_at;
     private string $updated_at;
 
@@ -135,6 +137,24 @@ class Comment extends ORM {
     public function setUpdatedAt(string $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of is_flagged
+     */
+    public function getIsFlagged(): string
+    {
+        return $this->is_flagged;
+    }
+
+    /**
+     * Set the value of is_flagged
+     */
+    public function setIsFlagged(string $is_flagged): self
+    {
+        $this->is_flagged = $is_flagged;
 
         return $this;
     }

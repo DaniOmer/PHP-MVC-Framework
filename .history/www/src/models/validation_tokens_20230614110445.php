@@ -2,7 +2,8 @@
 
 namespace App\models;
 
-class Validation_token extends ORM{
+class Validation_token extends ORM {
+>>>>>>> Stashed changes:www/src/models/validation_tokens.php
 
     private int $id;
     private int $user_id;

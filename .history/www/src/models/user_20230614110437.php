@@ -1,6 +1,7 @@
 <?php
 
 namespace App\models;
+use App\core\ORM;
 
 
 class User extends ORM{
@@ -159,8 +160,5 @@ class User extends ORM{
         return $this;
     }
 }
-
-
-
 
 

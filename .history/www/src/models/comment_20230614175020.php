@@ -4,6 +4,7 @@ namespace App\models;
 
 
 class Comment extends ORM {
+    
     private int $id;
     private int $user_id; 
     private int $page_id;
