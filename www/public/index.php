@@ -1,25 +1,42 @@
 <?php
 
+use App\controllers\AuthController;
+use App\controllers\FrontController;
+use App\core\Application;
+use Dotenv\Dotenv;
+
 require "../vendor/autoload.php";
 
-use App\core\Application;
 
-$app = new Application();
+$path = dirname(__DIR__);
 
-$app->router->get('/', function(){
-    return "Home !";
-});
+$dotenv = Dotenv::createImmutable($path);
+$dotenv->load();
 
-$app->router->get('/contact', function(){
-    return "Contactez-nous !";
-});
+$config = [
+    'db' => [
+        'db_name' =>  $_ENV['DB_NAME'],
+        'db_driver' =>  $_ENV['DB_DRIVER'],
+        'db_host' =>  $_ENV['DB_HOST'],
+        'db_port' =>  $_ENV['DB_PORT'],
+        'db_user' =>  $_ENV['DB_USER'],
+        'db_pwd' =>  $_ENV['DB_PWD']
+    ],
+    'userClass' => App\models\User::class
+];
 
-$app->router->get('/a-propos', function(){
-    return "À propos";
-});
 
-$app->router->get('/faq', function(){
-    return "Foire aux questions !";
-});
+$app = new Application(dirname(__DIR__), $config);
+
+$app->router->get('/', [FrontController::class, 'home']);
+$app->router->get('/about', [FrontController::class, 'about']);
+$app->router->get('/contact', [FrontController::class, 'contact']);
+$app->router->get('/faq', [FrontController::class, 'faq']);
+
+$app->router->get('/login', [AuthController::class, 'login']);
+$app->router->post('/login', [AuthController::class, 'login']);
+$app->router->get('/register', [AuthController::class, 'register']);
+$app->router->post('/register', [AuthController::class, 'register']);
+
 
 $app->run();
