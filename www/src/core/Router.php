@@ -32,11 +32,16 @@ class Router
         $this->routes['post'][$path] = $callback;
     }
 
-
+    
+    /**
+     * resolve
+     *
+     * @return void
+     */
     public function resolve()
     {
         $path = $this->request->getpath();
-        $method = $this->request->getMethod();
+        $method = $this->request->method();
 
         $callback = $this->routes[$method][$path] ?? false;
         if($callback === false){
@@ -48,27 +53,48 @@ class Router
             return $this->renderView($callback);
         }
 
-        return call_user_func($callback);
+        if(is_array($callback)){
+            Application::$app->controller = new $callback[0];
+            $callback[0] = Application::$app->controller;
+        }
 
+        return call_user_func($callback, $this->request, $this->response);
     }
-
-    public function renderView($view)
+    
+    /**
+     * renderView
+     *
+     * @param  mixed $view
+     * @param  mixed $params
+     */
+    public function renderView($view, $params = [])
     {
         $layoutContent = $this->layoutContent();
-        $viewContent = $this->renderOnlyView($view);
+        $viewContent = $this->renderOnlyView($view, $params);
         return str_replace('{{content}}', $viewContent, $layoutContent);
         include_once Application::$ROOT_DIR."/src/views/$view.php";
     }
-
+   
+    
     protected function layoutContent()
     {
+        $layout = Application::$app->layout;
+        if (Application::$app->controller){
+            $layout = Application::$app->controller->layout;
+        }
+    
         ob_start();
-        include_once Application::$ROOT_DIR."/src/views/layouts/back.php";
+        include_once Application::$ROOT_DIR."/src/views/layouts/$layout.php";
         return ob_get_clean();
     }
 
-    protected function renderOnlyView($view)
+    
+    protected function renderOnlyView($view, $params)
     {
+        foreach($params as $key => $value){
+            $$key = $value;
+        }
+        
         ob_start();
         include_once Application::$ROOT_DIR."/src/views/$view.php";
         return ob_get_clean();

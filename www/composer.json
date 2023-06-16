@@ -25,5 +25,8 @@
     "platform": {
       "php": "8.0"
     }
+  },
+  "require": {
+    "vlucas/phpdotenv": "^5.3"
   }
 }
