@@ -30,4 +30,73 @@ final class ConnectDB
     public function prepare($sql){
         return $this->pdo->prepare($sql);
     }
+
+    public function exec($sql){
+        return $this->pdo->exec($sql);
+    }
+
+    public function applyMigrations()
+    {
+        $this->createMigrationsTable();
+        $appliedMigrations = $this->getAppliedMigrations();
+
+        $newMigrations = [];
+        $files = scandir(Application::$ROOT_DIR.'/src/migrations');
+
+        $toApplyMigrations = array_diff($files, $appliedMigrations);
+        foreach($toApplyMigrations as $migration){
+            if($migration === '.' || $migration === '..'){
+                continue;
+            }
+
+            require_once Application::$ROOT_DIR.'/src/migrations/'.$migration;
+            $className = pathinfo($migration, PATHINFO_FILENAME);
+            $instance = new $className();
+            $this->log("Applying migration $className");
+            $instance->up();
+            $this->log("Applied migration $className");
+
+            $newMigrations[] = $migration;
+        }
+
+        if(!empty($newMigrations)){
+            $this->saveMigration($newMigrations);
+        }else{
+            $this->log("All migrations are applied !");
+        }
+        
+    }
+    
+
+    public function createMigrationsTable()
+    {
+        $this->exec("CREATE TABLE IF NOT EXISTS migrations (
+            id SERIAL PRIMARY KEY,
+            migration VARCHAR(255),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )");
+    }
+
+    public function getAppliedMigrations()
+    {
+        $statement = $this->prepare("SELECT migration FROM migrations");
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    public function saveMigration(array $migrations)
+    {
+        $string = implode(",", array_map(fn($m) => "('$m')", $migrations));
+        $statment = $this->prepare("INSERT INTO migrations (migration) VALUES 
+            $string
+        ");
+
+        $statment->execute();
+    }
+
+    protected function log($message)
+    {
+        echo '['.date('Y-m-d H:i:s').'] - '.$message.PHP_EOL;
+    }
 }
