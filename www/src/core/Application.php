@@ -23,7 +23,7 @@ class Application
     public Session $session;
 
     public ConnectDB $db;
-    public ?ORM $user;
+    public ?ORM $user = null;
 
 
     public function __construct($rootPath, array $config)
@@ -83,7 +83,5 @@ class Application
     }
 
 }
-
-
 
 ?>
