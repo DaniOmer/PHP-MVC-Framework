@@ -5,6 +5,7 @@ abstract class ORM extends Model{
 
     private $table;
     private $pdo;
+    protected $isNewRecord = true;
     
     
     public function __construct(){
@@ -24,7 +25,6 @@ abstract class ORM extends Model{
         
     }
 
-  
 
     public static function populate(int $id)
     {
@@ -35,7 +35,7 @@ abstract class ORM extends Model{
     public static function getOneBy($column, $value)
     {
         $connectDb = Application::$app->db;
-        $queryPrepared = $connectDb->getPdo()->prepare("SELECT * FROM ".self::getTable().
+        $queryPrepared = $connectDb->prepare("SELECT * FROM ".self::getTable().
                             " WHERE ".$column."=:".$column);
         $queryPrepared->execute([$column=>$value]);
         $queryPrepared->setFetchMode(\PDO::FETCH_CLASS, get_called_class());

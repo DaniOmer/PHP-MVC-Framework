@@ -4,6 +4,7 @@ namespace App\core;
 abstract class Model
 {
     public const RULE_REQUIRED = 'required';
+    public const RULE_NAME = 'name';
     public const RULE_EMAIL = 'email';
     public const RULE_MIN = 'min';
     public const RULE_MAX = 'max';
@@ -11,6 +12,7 @@ abstract class Model
     public const RULE_UNIQUE = 'unique';
 
     public array $errors = [];
+
 
     public function loadData($data)
     {
@@ -37,8 +39,13 @@ abstract class Model
                 if(!is_string($ruleName)){
                     $ruleName = $rule[0];
                 }
+
                 if($ruleName === self::RULE_REQUIRED && !$value){
                     $this->addErrorForRules($attribute, self::RULE_REQUIRED);
+                }
+                if($ruleName === self::RULE_NAME && $this->validateNameField($value) === false){
+                    $rule['name'] = $this->getLabel($rule['name']);
+                    $this->addErrorForRules($attribute, self::RULE_NAME, $rule);
                 }
                 if($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)){
                     $this->addErrorForRules($attribute, self::RULE_EMAIL);
@@ -71,10 +78,19 @@ abstract class Model
         return empty($this->errors);
     }
 
+    
+    public function validateNameField($value)
+    {
+        $nameRegex = '/^(?=.{2,50}$)[A-Za-z](?:[a-zA-Z]+|[\'\-](?=[a-zA-Z]))*$/';
+        return boolval(preg_match($nameRegex, $value));
+    }
+
+
     public function getLabel($attribute)
     {
         return $this->labels()[$attribute] ?? $attribute;
     }
+
 
     public function addErrorForRules(string $attribute, string $rule, $params = [])
     {
@@ -86,6 +102,7 @@ abstract class Model
         $this->errors[$attribute][] = $message;
     }
 
+
     public function addError(string $attribute, string $message)
     {
         $this->errors[$attribute][] = $message;
@@ -96,6 +113,7 @@ abstract class Model
     {
         return [
             self::RULE_REQUIRED => 'This field is required.',
+            self::RULE_NAME => 'This field must be a valid {name}.',
             self::RULE_EMAIL => 'This field must be valid email address.',
             self::RULE_MIN => 'Minimum length of this field must be {min}.',
             self::RULE_MAX => 'Maximum length of this field must be {max}.',

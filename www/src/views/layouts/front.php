@@ -1,10 +1,10 @@
 <?php
     use App\core\Application;
-    /*
+    
     echo "<pre>";
-    var_dump(Application::$app->user);
-    echo "pre";
-    */
+    $user = Application::$app->user;
+    echo "</pre>";
+    
 ?>
 
 
@@ -23,15 +23,30 @@
                 <li style="list-style:none; margin-right:20px;">
                     <a href="/">Front office</a>
                 </li>
-                <li style="list-style:none; margin-left:10px"><a href="/" style="text-decoration: none;">Home</a></li>
-                <li style="list-style:none; margin-left:10px"><a href="/about" style="text-decoration: none;">About</a></li>
-                <li style="list-style:none; margin-left:10px"><a href="/contact" style="text-decoration: none;">Contact</a></li>
-                <li style="list-style:none; margin-left:10px"><a href="/faq" style="text-decoration: none;">Faq</a></li>
+                <li style="list-style:none; margin-left:10px"><a href="/" style="text-decoration: none; color:black">Home</a></li>
+                <li style="list-style:none; margin-left:10px"><a href="/about" style="text-decoration: none; color:black">About</a></li>
+                <li style="list-style:none; margin-left:10px"><a href="/contact" style="text-decoration: none; color:black">Contact</a></li>
+                <li style="list-style:none; margin-left:10px"><a href="/faq" style="text-decoration: none; color:black">Faq</a></li>
             </ul>
+            <?php if(Application::$app->isGuest()): ?>
             <ul style="display:flex; justify-content:space-between; list-style:none">
-                <li style="list-style:none; margin-left:10px"><a href="/login" style="text-decoration: none;">Login</a></li>
-                <li style="list-style:none; margin-left:10px"><a href="/register" style="text-decoration: none;">Register</a></li>
+                <li style="list-style:none; margin-left:10px"><a href="/login" style="text-decoration: none; color:black">Login</a></li>
+                <li style="list-style:none; margin-left:10px"><a href="/register" style="text-decoration: none; color:black">Register</a></li>
             </ul>
+            <?php else: ?>
+            <ul style="display:flex; justify-content:center; list-style:none">
+                <li style="list-style:none; margin-left:10px">
+                    <a href="/profile" style="text-decoration: none; color:black">
+                        Profile
+                    </a>
+                </li>
+                <li style="list-style:none; margin-left:10px">
+                    <a href="/logout" style="text-decoration: none; color:black">
+                        <?= Application::$app->user->getDisplayName()?> (Logout)
+                    </a>
+                </li>
+            </ul>
+            <?php endif ?>
         </nav>
     </header>
 
