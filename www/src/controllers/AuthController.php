@@ -4,12 +4,13 @@ namespace App\controllers;
 
 use App\controllers\Controller;
 use App\core\Application;
+use App\core\exception\NotFoundException;
 use App\core\middlewares\AuthMiddleware;
 use App\core\Request;
 use App\core\Response;
+use App\core\SendMail;
 use App\models\LoginForm;
 use App\models\User;
-
 
 class AuthController extends Controller
 {
@@ -47,9 +48,12 @@ class AuthController extends Controller
             $userModel->loadData($request->getBody());
 
             if($userModel->validate() && $userModel->saveData()){
+                $sendMail = new SendMail($userModel->getEmail(), $userModel->getVerificationCode());
+                $sendMail->send();
+
                 Application::$app->response->redirect('/');
                 Application::$app->session->setFlash(
-                    'success', 'Thanks for registering '.$userModel->getLastname().' ! Please check your mail to verify your email adress.'
+                    'success', 'Thanks for registering '.$userModel->getLastname().' ! We\'ve send a verification link on your email address.'
                 );
             }
             return $this->render('register', [
@@ -74,4 +78,23 @@ class AuthController extends Controller
         $this->setLayout('back');
         return $this->render('profile');
     }
+
+    public function verify(Request $request)
+    {
+        $queryParams = $request->getQueryParams();
+        $verificationCode = $queryParams['verification'] ?? null;
+
+        // Vérifiez si le code de vérification est valide
+        if ($verificationCode !== null) {
+            $user = User::getOneBy('code', $verificationCode);
+            if ($user) {
+                $user->setStatus('verified');
+                $status = $user->getStatus();
+                $user->updateOne('status', $status);
+                return $this->render('verify');
+            }
+        }
+        Throw new NotFoundException();
+    }
+
 }

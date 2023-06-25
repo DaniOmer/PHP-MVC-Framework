@@ -16,10 +16,12 @@ class User extends UserModel
     protected $confirmPassword;
     protected $date_inserted;
     protected $date_updated;
-    protected $status = 0;
+    protected $code;
+    protected $status;
 
     public function __construct()
     {
+        $this->code = bin2hex(random_bytes(32));
         parent::__construct();
     }
 
@@ -170,17 +172,25 @@ class User extends UserModel
     }
 
     /**
-     * @return int
+     * @return string $code
      */
-    public function getStatus(): int
+    public function getVerificationCode(): string
+    {
+        return $this->code;
+    }
+
+    /**
+     * @return string $status
+     */
+    public function getStatus()
     {
         return $this->status;
     }
 
     /**
-     * @param int $status
+     * @param string $status
      */
-    public function setStatus(int $status): void
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }

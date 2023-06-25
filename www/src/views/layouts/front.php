@@ -1,10 +1,5 @@
 <?php
     use App\core\Application;
-    
-    echo "<pre>";
-    $user = Application::$app->user;
-    echo "</pre>";
-    
 ?>
 
 

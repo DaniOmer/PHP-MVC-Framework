@@ -20,7 +20,8 @@ class m0001_initial
                 password character varying(255) NOT NULL,
                 date_inserted timestamp DEFAULT CURRENT_TIMESTAMP,
                 date_updated timestamp,
-                status boolean NOT NULL,
+                code character varying(64) NOT NULL,
+                status character varying(30),
                 CONSTRAINT esgi_user_pkey PRIMARY KEY (id)
             ) WITH (oids = false);
         ';

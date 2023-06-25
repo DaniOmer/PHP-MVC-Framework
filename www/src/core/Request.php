@@ -53,4 +53,9 @@ class Request
         }
         return $body;
     }
+
+    public function getQueryParams()
+    {
+        return $_GET;
+    }
 }

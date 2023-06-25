@@ -3,6 +3,8 @@
 ### Credentials
 
 Crée un fichier .env dans le dossier www en se basant sur .env.example
+EMAIL = l'adresse mail à partir duquel vous envoyez les mails de vérification
+PASSWORD = Activez la double authentification gmail. Ensuite générez un mot de passe pour application
 
 ### Lancement en local
 
