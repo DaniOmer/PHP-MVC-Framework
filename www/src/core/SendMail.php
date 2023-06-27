@@ -5,7 +5,6 @@ namespace App\core;
 //Import PHPMailer classes into the global namespace
 //These must be at the top of your script, not inside a function
 
-use App\core\Application;
 use Dotenv\Dotenv;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -18,14 +17,12 @@ class SendMail
 {
     //Create an instance; passing `true` enables exceptions
     public PHPMailer $mail;
-    protected string $userMail;
-    protected string $code;
+    protected array $informations;
     
-    public function __construct(string $userMail, string $code)
+    public function __construct(array $informations)
     {
         $this->mail = new PHPMailer(true);
-        $this->userMail = $userMail;
-        $this->code = $code;
+        $this->informations = $informations;
     }
 
     public function send()
@@ -46,12 +43,12 @@ class SendMail
     
             //Recipients
             $this->mail->setFrom($_ENV['EMAIL']);
-            $this->mail->addAddress($this->userMail);
+            $this->mail->addAddress($this->informations['email']);
 
             //Content
             $this->mail->isHTML(true);                                  //Set email format to HTML
             $this->mail->Subject = 'No reply';
-            $this->mail->Body    = 'Here is the verification link <b><a href="http://localhost/verify?verification='.$this->code.'">http://localhost/verify?verification='.$this->code.'</a></b>';
+            $this->mail->Body    = $this->informations['bodyText'] .'<b><a href="' . $this->informations['url'] . $this->informations['token'] . '">"' . $this->informations['url'] . $this->informations['token'] . '"</a></b>';
     
             $this->mail->send();
             echo 'Message has been sent';

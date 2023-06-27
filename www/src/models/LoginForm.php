@@ -8,8 +8,8 @@ use App\core\Model as CoreModel;
 
 class LoginForm extends CoreModel
 {
-    public string $email = '';
-    public string $password = '';
+    protected string $email = '';
+    protected string $password = '';
 
     public function rules(): array
     {
@@ -29,19 +29,51 @@ class LoginForm extends CoreModel
 
     public function login()
     {
-        $user = User::getOneBy('email', $this->email);
+        $user = User::getOneBy('email', $this->getEmail());
         if (!$user) {
             $this->addError('email', 'User does not exist with this email address');
             return false;
         }
-        if (!password_verify($this->password, $user->password)) {
+        if (!password_verify($this->getPassword(), $user->getPassword())) {
             $this->addError('password', 'Password is incorrect');
             return false;
         }
-        if($user->getStatus() !== 'verified'){
+        if($user->getVerifyTokenUsed() === false || $user->getVerifyTokenUsed() === null){
             CoreApplication::$app->session->setFlash('alerte', 'Please verify your account and try again !');
             return false;
         }
         return CoreApplication::$app->login($user);
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email ?? '';
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail(string $email): void
+    {
+        $this->email = strtolower(trim($email));
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password ?? '';
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 }

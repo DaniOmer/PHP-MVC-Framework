@@ -25,11 +25,11 @@ class Application
 
     public ConnectDB $db;
     public ?User $user = null;
+    public string $baseUrl;
 
 
     public function __construct($rootPath, array $config)
     {
-        $this->userClass = $config['userClass'];
         self::$ROOT_DIR = $rootPath;
         self::$app = $this;
         $this->request = new Request();
@@ -38,6 +38,8 @@ class Application
         $this->session = new Session();
 
         $this->db = new ConnectDB($config['db']);
+        $this->userClass = $config['userClass'];
+        $this->baseUrl = $config['baseUrl'];
         
         $userClass = $this->userClass;
         $userInstance = new $userClass;

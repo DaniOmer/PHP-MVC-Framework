@@ -12,16 +12,19 @@ class User extends UserModel
     protected $firstname;
     protected $lastname;
     protected $email;
-    public $password;
+    protected $password;
     protected $confirmPassword;
     protected $date_inserted;
     protected $date_updated;
-    protected $code;
-    protected $status;
+    protected $verify_token;
+    protected $verify_token_used;
+    protected $reset_token;
+    protected $reset_token_used;
+
 
     public function __construct()
     {
-        $this->code = bin2hex(random_bytes(32));
+        $this->verify_token = bin2hex(random_bytes(32));
         parent::__construct();
     }
 
@@ -49,6 +52,8 @@ class User extends UserModel
         $this->setLastname($this->getLastname());
         $this->setEmail($this->getEmail());
         $this->setPassword($this->getPassword());
+        
+        
 
 
         if ($this->isNewRecord()) {
@@ -56,6 +61,7 @@ class User extends UserModel
             $currentTimestamp = time();
             $this->date_inserted = date('Y-m-d H:i:s', $currentTimestamp);
             $this->date_updated = date('Y-m-d H:i:s', $currentTimestamp);
+            
         } else {
             // Ce n'est pas un nouvel enregistrement, mettez uniquement à jour la propriété date_updated
             $this->date_updated = date('Y-m-d H:i:s', time());
@@ -112,7 +118,7 @@ class User extends UserModel
      */
     public function getFirstname(): string
     {
-        return $this->firstname;
+        return $this->firstname ?? '';
     }
 
     /**
@@ -128,7 +134,7 @@ class User extends UserModel
      */
     public function getLastname(): string
     {
-        return $this->lastname;
+        return $this->lastname ?? '';
     }
 
     /**
@@ -144,7 +150,7 @@ class User extends UserModel
      */
     public function getEmail(): string
     {
-        return $this->email;
+        return $this->email ?? '';
     }
 
     /**
@@ -160,7 +166,7 @@ class User extends UserModel
      */
     public function getPassword(): string
     {
-        return $this->password;
+        return $this->password ?? '';
     }
 
     /**
@@ -172,28 +178,61 @@ class User extends UserModel
     }
 
     /**
-     * @return string $code
+     * @return string
      */
-    public function getVerificationCode(): string
+    public function getConfirmPassword(): string
     {
-        return $this->code;
+        return $this->confirmPassword ?? '';
     }
 
     /**
-     * @return string $status
+     * @return string $token
      */
-    public function getStatus()
+    public function getVerifyToken(): string
     {
-        return $this->status;
+        return $this->verify_token ?? '';
+    }
+
+    /**
+     * @return string $token
+     */
+    public function getResetToken(): bool
+    {
+        return $this->reset_token ?? '';
+    }
+
+     /**
+     * @return void $state
+     */
+    public function setVerifyTokenUsed(bool $state): void
+    {
+        $this->verify_token_used = $state;
+    }
+
+     /**
+     * @return bool
+     */
+    public function getVerifyTokenUsed(): bool
+    {
+        return $this->verify_token_used ?? false;
     }
 
     /**
      * @param string $status
      */
-    public function setStatus(string $status): void
+    public function setResetTokenUsed(bool $state): void
     {
-        $this->status = $status;
+        $this->reset_token_used = $state;
     }
+
+     /**
+     * @return bool
+     */
+    public function getResetTokenUsed(): bool
+    {
+        return $this->reset_token_used ?? false;
+    }
+
 
 }
 
