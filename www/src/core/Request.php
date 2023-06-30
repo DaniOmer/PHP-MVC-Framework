@@ -58,4 +58,18 @@ class Request
     {
         return $_GET;
     }
+
+    public function getHeader(string $name)
+    {
+        $headers = getallheaders();
+        $name = strtolower($name);
+
+        foreach ($headers as $key => $value) {
+            if (strtolower($key) === $name) {
+                return $value;
+            }
+        }
+
+        return null;
+    }
 }

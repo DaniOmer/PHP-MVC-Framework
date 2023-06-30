@@ -7,8 +7,9 @@ use App\core\UserModel;
 
 class User extends UserModel
 {
-
     public $id = -1;
+    public $admin_id = -1;
+    protected $role;
     protected $firstname;
     protected $lastname;
     protected $email;
@@ -53,9 +54,6 @@ class User extends UserModel
         $this->setEmail($this->getEmail());
         $this->setPassword($this->getPassword());
         
-        
-
-
         if ($this->isNewRecord()) {
             // C'est un nouvel enregistrement, mettez à jour les propriétés date_inserted et date_updated
             $currentTimestamp = time();
@@ -76,7 +74,7 @@ class User extends UserModel
         return [
             'firstname' => 'First name',
             'lastname' => 'Last name',
-            'email' => 'Your Email address',
+            'email' => 'Email address',
             'password' => 'Password',
             'confirmPassword' => 'Confirm password',
         ];
@@ -112,6 +110,35 @@ class User extends UserModel
         $this->isNewRecord = ($id <= 0);
     }
 
+    /**
+     * @return int
+     */
+    public function getAdminId(): int
+    {
+        return $this->admin_id;
+    }
+
+    public function setAdminId(int $admin_id): void
+    {
+        $this->admin_id = $admin_id;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getRole(): string
+    {
+        return $this->role ?? '';
+    }
+
+    /**
+     * @param string $role
+     */
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
+    }
 
     /**
      * @return string

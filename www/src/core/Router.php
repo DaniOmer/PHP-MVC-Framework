@@ -54,7 +54,6 @@ class Router
                     break;
                 }
             }
-    
             // Vérifier à nouveau si aucun callback n'a été trouvé
             if ($callback === false) {
                 throw new NotFoundException();
@@ -62,7 +61,7 @@ class Router
         }
         
         if(is_string($callback)){
-            return $this->renderView($callback);
+            return Application::$app->view->renderView($callback);
         }
 
         if(is_array($callback)){
@@ -90,47 +89,7 @@ class Router
         // Vérifier si le chemin correspond à la route avec slug
         return preg_match($routePath, $path);
     }
-    
-    /**
-     * renderView
-     *
-     * @param  mixed $view
-     * @param  mixed $params
-     */
-    public function renderView($view, $params = [])
-    {
-        $layoutContent = $this->layoutContent();
-        $viewContent = $this->renderOnlyView($view, $params);
-        return str_replace('{{content}}', $viewContent, $layoutContent);
-        include_once Application::$ROOT_DIR."/src/views/$view.php";
-    }
-   
-    
-    protected function layoutContent()
-    {
-        $layout = Application::$app->layout;
-        if (Application::$app->controller){
-            $layout = Application::$app->controller->layout;
-        }
-    
-        ob_start();
-        include_once Application::$ROOT_DIR."/src/views/layouts/$layout.php";
-        return ob_get_clean();
-    }
 
-    
-    protected function renderOnlyView($view, $params)
-    {
-        foreach($params as $key => $value){
-            $$key = $value;
-        }
-        
-        ob_start();
-        include_once Application::$ROOT_DIR."/src/views/$view.php";
-        return ob_get_clean();
-    }
 }
-
-
 
 ?>

@@ -1,2 +1,8 @@
-<h1>Home</h1>
-<p>Nous sommes ravie de votre visite.</p>
+<?php
+
+$this->title = 'Everywhere you go';
+$this->description = 'Welcome to our travel agencie webpage !';
+
+?>
+<h1><?= $title ?></h1>
+<p><?= $content ?></p>
