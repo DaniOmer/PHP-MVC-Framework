@@ -89,7 +89,7 @@ class Application
     public function generateUserToken(User $user)
     {
         $issuedAt   = new \DateTimeImmutable();
-        $expire     = $issuedAt->modify('+6 minutes')->getTimestamp();      // Add 60 seconds
+        $expire = $issuedAt->modify('+3 hours')->getTimestamp();      // Add 60 seconds
         $serverName = "your.domain.name";
 
         $data = [

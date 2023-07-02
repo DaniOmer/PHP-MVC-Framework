@@ -8,6 +8,7 @@ abstract class BaseField
 {
     public Model $model;
     public string $attribute;
+    public ?string $value = null;
 
     public function __construct($model, string $attribute)
     {
@@ -32,6 +33,12 @@ abstract class BaseField
             $this->renderInput(),
             $this->model->getFirstError($this->attribute)
     );
+    }
+
+    public function setValue($value)
+    {
+        $this->value = $value;
+        return $this;
     }
 
     public function getFieldValue()

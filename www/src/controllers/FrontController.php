@@ -35,7 +35,10 @@ class FrontController extends Controller
             if($slug === 'about'){
                 $params = [
                     'title' => "About us",
-                    'content' => "Our story start in march 1999.."
+                    'content' => "Our story start in march 1999..",
+                    'seo_title' => 'About',
+                    'seo_desc' => 'This page tells more about us',
+                    'seo_keywords' => 'Travel, Holiday, Destination'
                 ];
                 return $this->render('home', $params);
             }else{
@@ -44,7 +47,10 @@ class FrontController extends Controller
         }
         $params = [
             'title' => "Homepage",
-            'content' => "Nous sommes ravie de votre visite."
+            'content' => "Nous sommes ravie de votre visite.",
+            'seo_title' => 'Home',
+            'seo_desc' => 'Welcome to our travel agency',
+            'seo_keywords' => 'Travel, Holiday, Destination'
         ];
         return $this->render('home', $params);
     }

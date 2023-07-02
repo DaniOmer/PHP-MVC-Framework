@@ -39,16 +39,26 @@ $app->router->get('/contact', [FrontController::class, 'contact']);
 $app->router->post('/contact', [FrontController::class, 'contact']);
 
 
-$app->router->get('/profile', [BackController::class, 'profile']);
-$app->router->post('/profile', [BackController::class, 'profile']);
-$app->router->get('/users', [BackController::class, 'users']);
-$app->router->post('/users', [BackController::class, 'users']);
-$app->router->get('/page', [BackController::class, 'page']);
-$app->router->post('/page', [BackController::class, 'page']);
-$app->router->get('/comment', [BackController::class, 'comment']);
-$app->router->post('/comment', [BackController::class, 'comment']);
-$app->router->get('/chart', [BackController::class, 'chart']);
-$app->router->post('/chart', [BackController::class, 'chart']);
+$app->router->get('/dashboard/profile', [BackController::class, 'profile']);
+$app->router->post('/dashboard/profile', [BackController::class, 'profile']);
+$app->router->get('/dashboard/users', [BackController::class, 'users']);
+$app->router->post('/dashboard/users', [BackController::class, 'users']);
+$app->router->get('/dashboard/page', [BackController::class, 'page']);
+$app->router->post('/dashboard/page', [BackController::class, 'page']);
+$app->router->get('/dashboard/comment', [BackController::class, 'comment']);
+$app->router->post('/dashboard/comment', [BackController::class, 'comment']);
+$app->router->get('/dashboard/chart', [BackController::class, 'chart']);
+$app->router->post('/dashboard/chart', [BackController::class, 'chart']);
+
+$app->router->get('/dashboard/users/create', [BackController::class, 'create']);
+$app->router->post('/dashboard/users/create', [BackController::class, 'create']);
+$app->router->get('/dashboard/users/manage', [BackController::class, 'manage']);
+$app->router->post('/dashboard/users/manage', [BackController::class, 'manage']);
+
+$app->router->get('/dashboard/profile/edit', [BackController::class, 'profile']);
+$app->router->post('/dashboard/profile/edit', [BackController::class, 'profile']);
+$app->router->get('/dashboard/profile/reset-password', [BackController::class, 'reset']);
+$app->router->post('/dashboard/profile/reset-password', [BackController::class, 'reset']);
 
 
 $app->router->get('/login', [AuthController::class, 'login']);

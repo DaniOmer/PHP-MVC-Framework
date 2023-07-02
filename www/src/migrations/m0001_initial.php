@@ -19,7 +19,7 @@ class m0001_initial
                 lastname character varying(120) NOT NULL,
                 email character varying(320) NOT NULL,
                 password character varying(255) NOT NULL,
-                role character varying(30) NOT NULL,
+                role character varying(30) DEFAULT \'user\',
                 date_inserted timestamp DEFAULT CURRENT_TIMESTAMP,
                 date_updated timestamp,
                 verify_token character varying(64) NOT NULL,

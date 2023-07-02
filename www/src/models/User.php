@@ -42,6 +42,7 @@ class User extends UserModel
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [
                 self::RULE_UNIQUE, 'class' => self::class
             ]],
+            // 'role' => [self::RULE_SELECT],
             'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8]],
             'confirmPassword' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
         ];
@@ -49,22 +50,36 @@ class User extends UserModel
 
 
     public function saveData (){
-        $this->setFirstname($this->getFirstname());
-        $this->setLastname($this->getLastname());
-        $this->setEmail($this->getEmail());
-        $this->setPassword($this->getPassword());
         
-        if ($this->isNewRecord()) {
-            // C'est un nouvel enregistrement, mettez à jour les propriétés date_inserted et date_updated
+        if (!$this->getOneBy('email', $this->getEmail())) {
+            // C'est un nouvel enregistrement
+            $this->setFirstname($this->getFirstname());
+            $this->setLastname($this->getLastname());
+            $this->setEmail($this->getEmail());
+            $this->setPassword($this->getPassword());
+
             $currentTimestamp = time();
             $this->date_inserted = date('Y-m-d H:i:s', $currentTimestamp);
             $this->date_updated = date('Y-m-d H:i:s', $currentTimestamp);
-            
+
+            if (Application::$app->user !== null && Application::$app->user->getAdminId() === -1) {
+                // Utilisateur actuel est un admin
+                if ($this->isNewRecord) {
+                    // Nouvel enregistrement, définissez l'admin_id sur l'ID de l'admin actuel
+                    $this->setAdminId(Application::$app->user->getId());
+                    $this->setRole($this->getRole());
+                } else {
+                    // Mise à jour d'un enregistrement existant, conservez l'admin_id actuel
+                    $this->setAdminId($this->getAdminId());
+                }
+            } else {
+                // Utilisateur actuel n'est pas un admin
+                $this->setRole('admin');
+            }
         } else {
             // Ce n'est pas un nouvel enregistrement, mettez uniquement à jour la propriété date_updated
             $this->date_updated = date('Y-m-d H:i:s', time());
         }
-
         return parent::save();
     }
 
@@ -75,6 +90,7 @@ class User extends UserModel
             'firstname' => 'First name',
             'lastname' => 'Last name',
             'email' => 'Email address',
+            'role' => 'User role',
             'password' => 'Password',
             'confirmPassword' => 'Confirm password',
         ];
@@ -137,7 +153,7 @@ class User extends UserModel
      */
     public function setRole(string $role): void
     {
-        $this->role = $role;
+        $this->role = strtolower(trim($role));
     }
 
     /**

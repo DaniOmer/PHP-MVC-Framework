@@ -1,5 +1,9 @@
 <?php
-    use App\core\Application;
+
+use App\core\Application;
+
+$message = Application::$app->session->getFlash('success') ?? Application::$app->session->getFlash('alerte');
+
 ?>
 
 <!DOCTYPE html>
@@ -33,16 +37,36 @@
             <aside>
                 <nav>
                     <ul style="list-style:none">
-                        <li><a href="/profile">Profile</a></li>
-                        <li><a href="/users">Users</a></li>
-                        <li><a href="/page">Pages</a></li>
-                        <li><a href="/comment">Comments</a></li>
-                        <li><a href="/chart">Chart</a></li>
+                        <li>
+                            Profile
+                            <ul>
+                                <li><a href="/dashboard/profile/edit">Account details</a></li>
+                                <li><a href="/dashboard/profile/reset-password">Account security</a></li>
+                            </ul>
+                        </li>
+                        <?php if(Application::$app->user->getRole() === 'admin'): ?>
+                        <li>
+                            <a href="/dashboard/users">Users</a>
+                            <ul>
+                                <li><a href="/dashboard/users/create">Add user</a></li>
+                                <li><a href="/dashboard/users/manage">Manage users</a></li>
+                            </ul>
+                        </li>
+                        <?php endif ?>
+                        <li><a href="/dashboard/page">Pages</a></li>
+                        <li><a href="/dashboard/comment">Comments</a></li>
+                        <li><a href="/dashboard/chart">Chart</a></li>
                     </ul>
                 </nav>
             </aside>
 
             <article>
+                <?php if($message): ?>
+                <div>
+                    <?= $message ?>
+                </div>
+                <?php endif ?>
+                
                 {{content}}
             </article>
         </section>
