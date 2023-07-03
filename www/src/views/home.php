@@ -1,9 +1,12 @@
 <?php
 
-$this->title = $seo_title;
-$this->description = $seo_desc;
-$this->keywords = $seo_keywords;
+if(isset($page)){
+    $this->title = $page->getTitle() ?? '';
+    $this->description = $page->getSeoDescription() ?? '';
+    $this->keywords = $page->getSeoKeywords() ?? '';
+}
 
 ?>
-<h1><?= $title ?></h1>
-<p><?= $content ?></p>
+
+<h1><?= $page->getTitle() ?? '' ?></h1>
+<p><?= $page->getContent() ?? '' ?></p>

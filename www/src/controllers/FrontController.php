@@ -3,9 +3,9 @@
 namespace App\controllers;
 
 use App\core\Application;
-use App\core\exception\NotFoundException;
 use App\core\Request;
 use App\models\ContactForm;
+use App\models\Page;
 
 /**
  * class Front
@@ -14,46 +14,33 @@ use App\models\ContactForm;
  */
 class FrontController extends Controller
 {
-    
+
     public function __construct()
     {
-        $this->layoutParams[]= [
-            'value' => 'About',
-            'url' => '/about'
-        ];
-        $this->layoutParams[]= [
-            'value' => 'Contact',
-            'url' => '/contact'
-        ];
+        
+        $pages = Page::getAll();
+        foreach ($pages as $page) {
+            $this->layoutParams[] = [
+                'value' => $page->getTitle(),
+                'url' => $page->getPageUri()
+            ];
+        }
     }
+
 
     public function home(Request $request)
     {
-        $slug = trim($request->getpath(), '/');
-        $databaseSlug = 'about';
-        if($slug){
-            if($slug === 'about'){
-                $params = [
-                    'title' => "About us",
-                    'content' => "Our story start in march 1999..",
-                    'seo_title' => 'About',
-                    'seo_desc' => 'This page tells more about us',
-                    'seo_keywords' => 'Travel, Holiday, Destination'
-                ];
-                return $this->render('home', $params);
-            }else{
-                throw new NotFoundException();
-            }
+        $pageModel = new Page();
+        $page = $pageModel::getOneBy('page_uri', $request->getpath());
+
+        if($page){
+            return $this->render('home', [
+                'page' => $page
+            ]);
         }
-        $params = [
-            'title' => "Homepage",
-            'content' => "Nous sommes ravie de votre visite.",
-            'seo_title' => 'Home',
-            'seo_desc' => 'Welcome to our travel agency',
-            'seo_keywords' => 'Travel, Holiday, Destination'
-        ];
-        return $this->render('home', $params);
+        return $this->render('home');
     }
+
 
     public function contact(Request $request)
     {

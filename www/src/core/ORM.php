@@ -95,6 +95,26 @@ abstract class ORM extends Model{
         return $objet;
     }
 
+    public static function getAll()
+    {
+        $connectDb = Application::$app->db;
+        $query = "SELECT * FROM " . self::getTable();
+        $statement = $connectDb->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_CLASS, get_called_class());
+
+        // Convertir les valeurs booléennes en true ou false
+        foreach ($result as $obj) {
+            foreach ($obj as $key => $val) {
+                if (is_bool($val)) {
+                    $obj->$key = ($val === true);
+                }
+            }
+        }
+
+        return $result;
+    }
+
     
     public function delete($id): bool
     {

@@ -61,6 +61,11 @@ $app->router->get('/dashboard/profile/reset-password', [BackController::class, '
 $app->router->post('/dashboard/profile/reset-password', [BackController::class, 'reset']);
 
 
+$app->router->get('/dashboard/page/create', [BackController::class, 'createPage']);
+$app->router->post('/dashboard/page/create', [BackController::class, 'createPage']);
+$app->router->get('/dashboard/page/manage', [BackController::class, 'managePage']);
+$app->router->post('/dashboard/page/manage', [BackController::class, 'managePage']);
+
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
 $app->router->get('/register', [AuthController::class, 'register']);

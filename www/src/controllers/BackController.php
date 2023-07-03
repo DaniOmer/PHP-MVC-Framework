@@ -9,6 +9,7 @@ use App\core\middlewares\AdminMiddleware;
 use App\core\middlewares\AuthMiddleware;
 use App\core\Request;
 use App\core\SendMail;
+use App\models\Page;
 use App\models\ResetPasswordFromDashboard;
 use App\models\User;
 use App\models\UserUpdateForm;
@@ -25,7 +26,7 @@ class BackController extends Controller
     public function __construct()
     {
         $this->registerMiddleware(new AuthMiddleware([
-            'dashboard', 'profile', 'users', 'page', 'comment', 'chart', 'users', 'create', 'manage'
+            'dashboard', 'profile', 'users', 'page', 'comment', 'chart', 'users', 'create', 'manage', 'reset', 'createPage'
         ]));
         $this->registerMiddleware(new AdminMiddleware(['users', 'create', 'manage']));
     }
@@ -53,12 +54,6 @@ class BackController extends Controller
     {
         $this->setLayout('back');
         return $this->render('users');
-    }
-
-    public function page()
-    {
-        $this->setLayout('back');
-        return $this->render('page');
     }
 
     public function comment()
@@ -157,6 +152,34 @@ class BackController extends Controller
         $this->setLayout('back');
         return $this->render('reset-password-dashboard', [
             'model' => $updateUserPassword
+        ]);
+    }
+
+
+    public function createPage(Request $request)
+    {
+        $pageForm = new Page();
+
+        if($request->isPost()){
+            $pageForm->loadData($request->getBody());
+
+            if($pageForm->validate() && $pageForm->saveData()){
+                Application::$app->session->setFlash('success', 'Your page'.$pageForm->getTitle().' has been created successfully');
+                Application::$app->response->redirect('/dashboard/page/manage');
+            }
+        }
+        $this->setLayout('back');
+        return $this->render('create-page', [
+            'model' => $pageForm
+        ]);
+    }
+
+    public function managePage()
+    {
+        $pages = Page::getAll();
+        $this->setLayout('back');
+        return $this->render('manage-page', [
+            'pages' => $pages
         ]);
     }
 }

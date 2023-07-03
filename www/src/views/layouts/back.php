@@ -53,7 +53,13 @@ $message = Application::$app->session->getFlash('success') ?? Application::$app-
                             </ul>
                         </li>
                         <?php endif ?>
-                        <li><a href="/dashboard/page">Pages</a></li>
+                        <li>
+                            Pages
+                            <ul>
+                                <li><a href="/dashboard/page/create">Create</a></li>
+                                <li><a href="/dashboard/page/manage">Manage</a></li>
+                            </ul>
+                        </li>
                         <li><a href="/dashboard/comment">Comments</a></li>
                         <li><a href="/dashboard/chart">Chart</a></li>
                     </ul>

@@ -41,9 +41,23 @@ abstract class BaseField
         return $this;
     }
 
+    protected function getAttributeName($key)
+    {
+        // Vérifiez si la clé correspond exactement à un attribut existant
+        if (property_exists($this, $key)) {
+            return $key;
+        }
+        
+        // Si la clé ne correspond pas exactement à un attribut
+        $words = explode('_', $key);
+        $camelCaseWords = array_map('ucfirst', $words);
+        $camelCaseKey = lcfirst(implode('', $camelCaseWords));
+        return $camelCaseKey;
+    }
+
     public function getFieldValue()
     {
-        $value = $this->model->{'get' . ucfirst($this->attribute)}();
+        $value = $this->model->{'get' . ucfirst($this->getAttributeName($this->attribute))}();
         return $value;
     }
 }

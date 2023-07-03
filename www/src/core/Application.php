@@ -5,6 +5,7 @@ namespace App\core;
 use App\controllers\Controller;
 use App\controllers\FrontController;
 use App\core\exception\ForbiddenException;
+use App\models\Page;
 use App\models\User;
 use Firebase\JWT\JWT;
 
@@ -27,10 +28,11 @@ class Application
     public ?Controller $controller = null;
     public Session $session;
     public View $view;
-    public FrontController $frontController;
 
     public ConnectDB $db;
+    public FrontController $frontController;
     public ?User $user = null;
+    public Page $page;
     public string $baseUrl;
     public string $jwtSecretKey;
 
@@ -44,13 +46,14 @@ class Application
         $this->router = new Router($this->request, $this->response);
         $this->session = new Session();
         $this->view = new View();
-        $this->frontController = new FrontController();
 
         $this->db = new ConnectDB($config['db']);
         $this->userClass = $config['userClass'];
         $this->baseUrl = $config['baseUrl'];
         $this->jwtSecretKey = $config['jwt_secret_key'];
+        $this->frontController = new FrontController();
         $this->layoutParams = $this->frontController->layoutParams;
+
         
         $userClass = $this->userClass;
         $userInstance = new $userClass;
@@ -62,6 +65,8 @@ class Application
         }else{
             $this->user = null;
         }
+
+        $page = new Page();
         
     }
 
@@ -111,7 +116,7 @@ class Application
         try{
             echo $this->router->resolve();
         }catch(\Exception $e){
-            $this->response->setStatusCode($e->getCode());
+            //$this->response->setStatusCode($e->getCode());
             echo $this->view->renderView('_error', [
                 'exception' => $e
             ]);
