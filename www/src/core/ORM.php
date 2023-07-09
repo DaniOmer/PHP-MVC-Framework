@@ -1,4 +1,13 @@
-<?php
+/*
+ * Copyright (c) 2023 by Hind SEDRATI
+ * 
+ *
+ * File name: www/src/core/ORM.php
+ * Creation date: 2023-07-09 04:09:27
+ * Autor: Hind SEDRATI
+ *
+ * Last Modified: 4959ca7 2023-07-03 13:58:21
+ */
 namespace App\core;
 
 abstract class ORM extends Model{
@@ -50,7 +59,6 @@ abstract class ORM extends Model{
                 }
             }
         }
-
         return $objet;
     }
 
@@ -122,10 +130,9 @@ abstract class ORM extends Model{
             return false;
         }
 
-        $query = "DELETE FROM " . $this->table . " WHERE id = :id OR admin_id = :adminId";
+        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
         $queryPrepared = $this->pdo->prepare($query);
         $queryPrepared->bindValue(':id', $id);
-        $queryPrepared->bindValue(':adminId', $id);
         $queryPrepared->execute();
 
         return true;

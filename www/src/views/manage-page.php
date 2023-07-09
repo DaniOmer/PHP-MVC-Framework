@@ -1,4 +1,13 @@
-<?php
+/*
+ * Copyright (c) 2023 by Hind SEDRATI
+ * 
+ *
+ * File name: www/src/views/manage-page.php
+ * Creation date: 2023-07-09 04:09:27
+ * Autor: Hind SEDRATI
+ *
+ * Last Modified: 4959ca7 2023-07-03 13:58:21
+ */
 
 use App\core\Application;
 
@@ -27,20 +36,22 @@ use App\core\Application;
                         <td><?= $page->getPageUri() !== '' ? $page->getPageUri() : '-'  ?></td>
                         <td>Online</td>
                         <td>
-                            <a href="<?= $page->getPageUri() ?>">
+                            <a href="/<?= $page->getPageUri() ?>">
                                 <button style="padding:5px; margin-top:10px" type="submit">View</button>
                             </a>
                         </td>
+                        <?php if(Application::$app->isAdmin() || Application::$app->isEditor()): ?>
                         <td>
-                            <a href="/dashboard/users/manage?edit=<?= $page->getId() ?>">
+                            <a href="/dashboard/page/manage?edit=<?= $page->getId() ?>">
                                 <button style="padding:5px; margin-top:10px" type="submit">Edit</button>
                             </a>
                         </td>
                         <td>
-                            <a href="/dashboard/users/manage?delete=<?= $page->getId() ?>">
+                            <a href="/dashboard/page/manage?delete=<?= $page->getId() ?>">
                                 <button style="padding:5px; margin-top:10px" type="submit">Delete</button>
                             </a>
                         </td>
+                        <?php endif ?>
                     </tr>
                 <?php endforeach ?>
             </tbody>

@@ -1,4 +1,13 @@
-<?php
+/*
+ * Copyright (c) 2023 by Hind SEDRATI
+ * 
+ *
+ * File name: www/src/core/Model.php
+ * Creation date: 2023-07-09 04:09:27
+ * Autor: Hind SEDRATI
+ *
+ * Last Modified: 4959ca7 2023-07-03 13:58:21
+ */
 namespace App\core;
 
 abstract class Model
@@ -11,6 +20,8 @@ abstract class Model
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'unique';
     public const RULE_SELECT = 'select';
+    public const RULE_TEXT = 'text';
+    public const RULE_LINK = 'link';
 
     public array $errors = [];
 
@@ -44,6 +55,14 @@ abstract class Model
                 if($ruleName === self::RULE_REQUIRED && !$value){
                     $this->addErrorForRules($attribute, self::RULE_REQUIRED);
                 }
+                if($ruleName === self::RULE_TEXT && $this->validateFieldText($value) === false){
+                    $rule['text'] = $this->getLabel($rule['text']);
+                    $this->addErrorForRules($attribute, self::RULE_TEXT, $rule);
+                }
+                if($ruleName === self::RULE_LINK && $this->validateFieldLink($value) === false){
+                    $rule['link'] = $this->getLabel($rule['link']);
+                    $this->addErrorForRules($attribute, self::RULE_TEXT, $rule);
+                }
                 if($ruleName === self::RULE_NAME && $this->validateNameField($value) === false){
                     $rule['name'] = $this->getLabel($rule['name']);
                     $this->addErrorForRules($attribute, self::RULE_NAME, $rule);
@@ -66,18 +85,12 @@ abstract class Model
                     $uniqueAttr = $rule['attribute'] ?? $attribute;
                     $tableName = $className::getTable();
                 
-                    
                     $statement = Application::$app->db->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = :attr");
                     $statement->bindValue(":attr", $value);
                     $statement->execute();
                     $record = $statement->fetchObject();
                     if ($record) {
-                        if (Application::$app->user && Application::$app->user->getEmail() !== $value) {
-                            $this->addErrorForRules($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
-                        }
-                        if(!Application::$app->user){
-                            $this->addErrorForRules($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
-                        }
+                        $this->addErrorForRules($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
                     }
                 }
                 if ($ruleName === self::RULE_SELECT && !$value) {
@@ -91,8 +104,22 @@ abstract class Model
     
     public function validateNameField($value)
     {
-        $nameRegex = '/^(?=.{2,50}$)[A-Za-z](?:[a-zA-Z]+|[\'\-](?=[a-zA-Z]))*$/';
+        $nameRegex = '/^(?=.{2,50}$)[A-Za-z](?:[a-zA-Z\s]+|[\'\-](?=[a-zA-Z]))*$/';
         return boolval(preg_match($nameRegex, $value));
+    }
+
+    public function validateFieldText($value)
+    {
+        // Regex de validation 
+        $pattern = '/^[\p{L}\p{N}\s\p{P}\p{S}]+$/u';
+        return boolval(preg_match($pattern, $value));
+    }
+
+    public function validateFieldLink($value)
+    {
+        // Regex de validation 
+        $pattern = '~^(https?:\/\/)?[\w\-]+(\.[\w\-]+)+(\/\S*)?\.(jpeg|jpg|gif|png)$~';
+        return boolval(preg_match($pattern, $value));
     }
 
 
@@ -130,6 +157,7 @@ abstract class Model
             self::RULE_MATCH => 'The field must be match the same as {match}.',
             self::RULE_UNIQUE => 'Record with this {field} already exists.',
             self::RULE_SELECT => 'Please select a value for the {attribute}.',
+            self::RULE_TEXT => 'This field must be a valid {text}.',
         ];
     }
     

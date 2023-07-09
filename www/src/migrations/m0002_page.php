@@ -1,4 +1,13 @@
-<?php
+/*
+ * Copyright (c) 2023 by Hind SEDRATI
+ * 
+ *
+ * File name: www/src/migrations/m0002_page.php
+ * Creation date: 2023-07-09 04:09:27
+ * Autor: Hind SEDRATI
+ *
+ * Last Modified: 4959ca7 2023-07-03 13:58:21
+ */
 
 use App\core\Application;
 
@@ -16,16 +25,16 @@ class m0002_page
                 id integer DEFAULT nextval(\'esgi_page_id_seq\') NOT NULL,
                 user_id integer NOT NULL,
                 title character varying(60) NOT NULL,
-                sub_title character varying(60) NOT NULL,
                 page_uri character varying(60) NOT NULL,
                 seo_title character varying(60) NOT NULL,
                 seo_keywords character varying(300) NOT NULL,
-                seo_description character varying(200) NOT NULL,
+                seo_description character varying(700) NOT NULL,
                 date_inserted timestamp DEFAULT CURRENT_TIMESTAMP,
                 date_updated timestamp,
-                content text NOT NULL,
+                template character varying(60) NOT NULL,
+                on_menu character varying(30) NOT NULL,
                 CONSTRAINT esgi_page_pkey PRIMARY KEY (id),
-                CONSTRAINT fk_esgi_page_user_id FOREIGN KEY (user_id) REFERENCES esgi_user (id)
+                CONSTRAINT fk_esgi_page_user_id FOREIGN KEY (user_id) REFERENCES esgi_user (id) ON DELETE CASCADE
             ) WITH (oids = false);
         ';
 

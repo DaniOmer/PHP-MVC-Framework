@@ -1,4 +1,13 @@
-<?php
+/*
+ * Copyright (c) 2023 by Hind SEDRATI
+ * 
+ *
+ * File name: www/public/index.php
+ * Creation date: 2023-07-09 04:09:27
+ * Autor: Hind SEDRATI
+ *
+ * Last Modified: 4959ca7 2023-07-03 13:58:21
+ */
 
 use App\controllers\AuthController;
 use App\controllers\FrontController;
@@ -41,10 +50,6 @@ $app->router->post('/contact', [FrontController::class, 'contact']);
 
 $app->router->get('/dashboard/profile', [BackController::class, 'profile']);
 $app->router->post('/dashboard/profile', [BackController::class, 'profile']);
-$app->router->get('/dashboard/users', [BackController::class, 'users']);
-$app->router->post('/dashboard/users', [BackController::class, 'users']);
-$app->router->get('/dashboard/page', [BackController::class, 'page']);
-$app->router->post('/dashboard/page', [BackController::class, 'page']);
 $app->router->get('/dashboard/comment', [BackController::class, 'comment']);
 $app->router->post('/dashboard/comment', [BackController::class, 'comment']);
 $app->router->get('/dashboard/chart', [BackController::class, 'chart']);
@@ -65,6 +70,16 @@ $app->router->get('/dashboard/page/create', [BackController::class, 'createPage'
 $app->router->post('/dashboard/page/create', [BackController::class, 'createPage']);
 $app->router->get('/dashboard/page/manage', [BackController::class, 'managePage']);
 $app->router->post('/dashboard/page/manage', [BackController::class, 'managePage']);
+
+
+$app->router->get('/dashboard/template/homepage', [BackController::class, 'homepageTemplate']);
+$app->router->post('/dashboard/template/homepage', [BackController::class, 'homepageTemplate']);
+$app->router->get('/dashboard/template/gallery', [BackController::class, 'galleryTemplate']);
+$app->router->post('/dashboard/template/gallery', [BackController::class, 'galleryTemplate']);
+$app->router->get('/dashboard/template/blog', [BackController::class, 'blogTemplate']);
+$app->router->post('/dashboard/template/blog', [BackController::class, 'blogTemplate']);
+
+
 
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);

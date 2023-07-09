@@ -1,14 +1,25 @@
-<?php
+/*
+ * Copyright (c) 2023 by Hind SEDRATI
+ * 
+ *
+ * File name: www/src/controllers/BackController.php
+ * Creation date: 2023-07-09 04:09:27
+ * Autor: Hind SEDRATI
+ *
+ * Last Modified: 4959ca7 2023-07-03 13:58:21
+ */
 
 namespace App\controllers;
 
 use App\core\Application;
 use App\core\exception\NotFoundException;
 use App\core\middlewares\AccountMiddleware;
+use App\core\middlewares\AdminEditorMiddleware;
 use App\core\middlewares\AdminMiddleware;
 use App\core\middlewares\AuthMiddleware;
 use App\core\Request;
 use App\core\SendMail;
+use App\models\Homepage;
 use App\models\Page;
 use App\models\ResetPasswordFromDashboard;
 use App\models\User;
@@ -26,9 +37,12 @@ class BackController extends Controller
     public function __construct()
     {
         $this->registerMiddleware(new AuthMiddleware([
-            'dashboard', 'profile', 'users', 'page', 'comment', 'chart', 'users', 'create', 'manage', 'reset', 'createPage'
+            'dashboard', 'profile', 'users', 'page', 'comment', 
+            'chart', 'users', 'create', 'manage', 'reset', 'createPage', 
+            'managePage', 'homepageTemplate', 'contactTemplate', 'blogTemplate'
         ]));
         $this->registerMiddleware(new AdminMiddleware(['users', 'create', 'manage']));
+        //$this->registerMiddleware(new AdminEditorMiddleware(['managePage']));
     }
 
 
@@ -48,12 +62,6 @@ class BackController extends Controller
         return $this->render('profile', [
             'model' => $userUpdateForm
         ]);
-    }
-
-    public function users(Request $request)
-    {
-        $this->setLayout('back');
-        return $this->render('users');
     }
 
     public function comment()
@@ -95,6 +103,7 @@ class BackController extends Controller
         ]);
     }
 
+    
     public function manage(Request $request)
     {
         $query = $request->getQueryParams()['edit'] ?? '' ;
@@ -138,6 +147,7 @@ class BackController extends Controller
         return $this->render('manage');
     }
 
+    
     public function reset(Request $request)
     {
         $updateUserPassword = new ResetPasswordFromDashboard();
@@ -158,28 +168,117 @@ class BackController extends Controller
 
     public function createPage(Request $request)
     {
-        $pageForm = new Page();
+        $page = new Page();
 
         if($request->isPost()){
-            $pageForm->loadData($request->getBody());
+            $page->loadData($request->getBody());
 
-            if($pageForm->validate() && $pageForm->saveData()){
-                Application::$app->session->setFlash('success', 'Your page'.$pageForm->getTitle().' has been created successfully');
-                Application::$app->response->redirect('/dashboard/page/manage');
+            if($page->validate() && $page->saveData()){
+                $newPage = $page::getOneBy('title', $page->getTitle());
+                Application::$app->response->redirect('/dashboard/template/'.$page->getTemplate().'?temp='.$newPage->getId().'');
             }
         }
         $this->setLayout('back');
         return $this->render('create-page', [
-            'model' => $pageForm
+            'model' => $page
         ]);
     }
 
-    public function managePage()
+
+    public function managePage(Request $request)
     {
-        $pages = Page::getAll();
+        $query = $request->getQueryParams()['edit'] ?? '' ;
+
+        if($query !== ''){
+            $page = Page::getOneBy('id', $query);
+
+            if($page){
+                if($request->isPost()){
+                    $page->loadData($request->getBody());
+                    if($page->validate() && $page->saveData()){
+                        Application::$app->session->setFlash('success', 'Page '.$page->getTitle().' informations have been updated successfully !');
+                        Application::$app->response->redirect('/dashboard/page/manage');
+                    }
+                }
+
+                $page->setUserId($page->getUserId());
+                $this->setLayout('back');
+                return $this->render('edit-page', [
+                    'model' => $page,
+                    'title' => $page->getTitle(),
+                    'seo_title' => $page->getSeoTitle(),
+                    'seo_keywords' => $page->getSeoKeywords(),
+                    'page_uri' => $page->getPageUri(),
+                    'seo_description' => $page->getSeoDescription(),
+                    'template' => $page->getTemplate()
+                ]);
+            }
+        }
+
+        $deleteQuery = $request->getQueryParams()['delete'] ?? '';
+        if($deleteQuery !== ''){
+            $page = Page::getOneBy('id', $deleteQuery);
+
+            if($page){
+                $page->delete($deleteQuery);
+                Application::$app->session->setFlash('success', 'Page '.$page->getTitle().' has been deleted successfully !');
+                Application::$app->response->redirect('/dashboard/page/manage');
+            }
+        }
+
+        if(Application::$app->isAdmin()){
+            $pages = Page::getAllBy('user_id', Application::$app->user->getId());
+        }else{
+            $pages = Page::getAllBy('user_id', Application::$app->user->getAdminId());
+        }
+
         $this->setLayout('back');
         return $this->render('manage-page', [
             'pages' => $pages
+        ]);
+    }
+
+
+
+    public function homepageTemplate(Request $request)
+    {
+        $homepage = new Homepage();
+        $page_id = $request->getQueryParams()['temp'];
+
+        if($request->isPost()){
+            $homepage->setPageId($page_id);
+            $homepage->loadData($request->getBody());
+            if($homepage->validate() && $homepage->saveData()){
+                Application::$app->response->redirect('/dashboard/page/manage');
+                Application::$app->session->setFlash('success', 'Your page creation is completed !');
+            }else{
+                Application::$app->session->setFlash('alerte', 'Something went wrong. Please try again !');
+            }
+        }
+
+        $this->setLayout('back');
+        return $this->render('homepage-form', [
+            'model' => $homepage,
+        ]);
+    }
+
+
+    public function blogTemplate()
+    {
+        $page = Page::getAll();
+        $this->setLayout('back');
+        return $this->render('manage-page', [
+            'pages' => $page
+        ]);
+    }
+
+
+    public function contactTemplate()
+    {
+        $page = Page::getAll();
+        $this->setLayout('back');
+        return $this->render('manage-page', [
+            'pages' => $page
         ]);
     }
 }

@@ -1,4 +1,13 @@
-<?php
+/*
+ * Copyright (c) 2023 by Hind SEDRATI
+ * 
+ *
+ * File name: www/src/core/form/BaseField.php
+ * Creation date: 2023-07-09 04:09:27
+ * Autor: Hind SEDRATI
+ *
+ * Last Modified: 4959ca7 2023-07-03 13:58:21
+ */
 
 namespace App\core\form;
 
@@ -52,12 +61,22 @@ abstract class BaseField
         $words = explode('_', $key);
         $camelCaseWords = array_map('ucfirst', $words);
         $camelCaseKey = lcfirst(implode('', $camelCaseWords));
-        return $camelCaseKey;
+
+        // Supprimez les crochets pour obtenir le nom d'attribut valide
+        $cleanedKey = rtrim($camelCaseKey, '[]');
+
+        return $cleanedKey;
     }
 
     public function getFieldValue()
     {
         $value = $this->model->{'get' . ucfirst($this->getAttributeName($this->attribute))}();
+
+        // Vérifiez si la valeur est un tableau et retournez-le directement
+        if (is_array($value)) {
+            return $value;
+        }
+
         return $value;
     }
 }
