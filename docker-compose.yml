@@ -14,6 +14,7 @@ services:
     image: composer
     volumes:
       - ./www:/var/www/html/
+      - ./www/vendor:/var/www/html/vendor
     working_dir: /var/www/html/
     command: composer install
 

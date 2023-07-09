@@ -38,6 +38,10 @@ class LoginForm extends CoreModel
             $this->addError('password', 'Password is incorrect');
             return false;
         }
+        if($user->getStatus() !== 'verified'){
+            CoreApplication::$app->session->setFlash('alerte', 'Please verify your account and try again !');
+            return false;
+        }
         return CoreApplication::$app->login($user);
     }
 }

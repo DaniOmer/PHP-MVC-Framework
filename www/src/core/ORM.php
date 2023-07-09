@@ -43,6 +43,17 @@ abstract class ORM extends Model{
         return $objet;
     }
 
+    public function updateOne($column, $value): bool
+    {
+        $connectDb = Application::$app->db;
+        $queryPrepared = $this->pdo->prepare("UPDATE " . $this->table . " SET ".$column." = :".$column." WHERE id = :id");
+        $queryPrepared->bindValue($column, $value);
+        $queryPrepared->bindValue(':id', $this->getId());
+        $queryPrepared->execute();
+
+        return true;
+    }
+
     
     public function save(): bool
     {

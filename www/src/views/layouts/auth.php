@@ -13,6 +13,11 @@ use App\core\Application;
 </head>
 <body>
     <main>
+    <?php if (Application::$app->session->getFlash('alerte')): ?>
+        <div>
+            <?= Application::$app->session->getFlash('alerte') ?>
+        </div>
+    <?php endif ?>
         {{content}}
     </main>
 </body>
