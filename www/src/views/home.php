@@ -1,3 +1,5 @@
+<?php
+
 /*
  * Copyright (c) 2023 by Hind SEDRATI
  * 
