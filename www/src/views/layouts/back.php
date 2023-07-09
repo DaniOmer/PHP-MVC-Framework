@@ -1,4 +1,5 @@
-/*
+<?php
+ /*
  * Copyright (c) 2023 by Hind SEDRATI
  * 
  *
@@ -30,7 +31,7 @@ use App\core\Application;
                 </li>
                 <li style="list-style:none"><a href="/" style="text-decoration: none; color:black;">Website Home</a></li>
                 <li style="list-style:none; margin-left:10px">
-                <?php if (Application::$app->user) : ?>
+                <?php if (!Application::$app->isGuest()) : ?>
                     <a href="/logout" style="text-decoration: none; color:black">
                         <?=Application::$app->user->getDisplayName()?> (Logout)
                     </a>

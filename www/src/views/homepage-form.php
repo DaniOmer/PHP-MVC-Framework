@@ -1,3 +1,4 @@
+<?php
 /*
  * Copyright (c) 2023 by Hind SEDRATI
  * 
@@ -8,6 +9,8 @@
  *
  * Last Modified: 4959ca7 2023-07-03 13:58:21
  */
+?>
+<section style="width:50%; margin:0 auto;">
     <h3>Let's design your home page</h3>
     <div>
         <?php $form = \App\core\form\Form::begin("", "post") ?>

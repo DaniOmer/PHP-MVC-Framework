@@ -1,3 +1,4 @@
+<?php
 /*
  * Copyright (c) 2023 by Hind SEDRATI
  * 
@@ -26,10 +27,11 @@ class AdminMiddleware extends BaseMiddleware
 
     public function execute()
     {
-        if (Application::$app->user && Application::$app->isAdmin()){
+        if (Application::$app->user && !Application::$app->isAdmin()){
             if(empty($this->actions) || in_array(Application::$app->controller->action, $this->actions)){
                 throw new ForbiddenException();
             }
         }
     }
 }
+?>
