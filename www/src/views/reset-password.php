@@ -10,8 +10,8 @@ use App\core\Model;
     <h1>Enter your email address</h1>
 
     <?php $form = \App\core\form\Form::begin("", "post") ?>
-        <?= $form->field($model, 'password')->passwordField() ?>
-        <?= $form->field($model, 'confirmPassword')->passwordField() ?>
+        <?= $form->input($model, 'password')->passwordField() ?>
+        <?= $form->input($model, 'confirmPassword')->passwordField() ?>
         <button style="padding:5px; margin-top:10px" type="submit">Submit</button>
     <?= App\core\form\Form::end() ?>
 </div>

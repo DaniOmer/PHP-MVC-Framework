@@ -37,6 +37,7 @@ class ResetPasswordForm extends CoreModel
             $user = User::getOneBy('reset_token', $resetToken);
             return $user;
         }
+        return false;
     }
 
     public function isTokenValid()

@@ -10,7 +10,7 @@ use App\core\Model;
     <h1>Enter your email address</h1>
 
     <?php $form = \App\core\form\Form::begin("", "post") ?>
-        <?= $form->field($model, 'email') ?>
+        <?= $form->input($model, 'email') ?>
         <button style="padding:5px; margin-top:10px" type="submit">Submit</button>
     <?= App\core\form\Form::end() ?>
 </div>

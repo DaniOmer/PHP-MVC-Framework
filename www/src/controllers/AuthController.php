@@ -27,17 +27,17 @@ class AuthController extends Controller
 
     public function login(Request $request, Response $response)
     {
-
         $loginForm = new LoginForm();
-        if($request->isPost()){
+        if ($request->isPost()) {
             $loginForm->loadData($request->getBody());
-            if($loginForm->validate() && $loginForm->login()){  
-                Application::$app->response->redirect('/');
-                Application::$app->session->setFlash('success', 'Welcome back '.Application::$app->user->getDisplayName().' !');
+            if ($loginForm->validate() && $loginForm->login()) {
+                $authorizationHeader = $loginForm->getToken();
+                Application::$app->session->set('authToken', $authorizationHeader);
+                Application::$app->session->setFlash('success', 'Welcome back ' . Application::$app->user->getDisplayName() . '!');
+                $response->redirect('/');
             }
         }
-    
-        $this->setLayout('auth');
+
         return $this->render('login', [
             'model' => $loginForm
         ]);
@@ -70,7 +70,6 @@ class AuthController extends Controller
             ]);
         }
         
-        $this->setLayout('auth');
         return $this->render('register', [
             "model" => $userModel
         ]);
@@ -104,13 +103,13 @@ class AuthController extends Controller
                 }else{
                     $user->updateOne('verify_token_used', true);
                     Application::$app->response->redirect('/');
-                    Application::$app->session->setFlash('success', 'Your e-mail address has been verified !');
+                    Application::$app->session->setFlash('alerte', 'Your e-mail address has been verified !');
                 }
 
                 return $this->render('verify');
             }else{
                 Application::$app->response->redirect('/');
-                Application::$app->session->setFlash('success', 'The page you ask for does not exist !');
+                Application::$app->session->setFlash('alerte', 'The page you ask for does not exist !');
             }
         }
         Throw new NotFoundException();
@@ -136,6 +135,9 @@ class AuthController extends Controller
     public function reset(Request $request)
     {
         $resetPasswordForm = new ResetPasswordForm();
+        if(!$resetPasswordForm->getUserByToken()){
+            throw new NotFoundException();
+        }
         if($resetPasswordForm->isTokenValid()){
             if($request->isPost()){
                 $resetPasswordForm->loadData($request->getBody());

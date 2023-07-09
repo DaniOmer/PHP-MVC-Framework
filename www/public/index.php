@@ -2,6 +2,7 @@
 
 use App\controllers\AuthController;
 use App\controllers\FrontController;
+use App\controllers\BackController;
 use App\core\Application;
 use Dotenv\Dotenv;
 
@@ -23,16 +24,32 @@ $config = [
         'db_pwd' =>  $_ENV['DB_PWD']
     ],
     'userClass' => App\models\User::class,
-    'baseUrl' => $_ENV['BASE_URL']
+    'baseUrl' => $_ENV['BASE_URL'],
+    'jwt_secret_key' => $_ENV['JWT_SECRET_KEY']
 ];
 
 
 $app = new Application(dirname(__DIR__), $config);
 
 $app->router->get('/', [FrontController::class, 'home']);
-$app->router->get('/about', [FrontController::class, 'about']);
+$app->router->get('/{slug}', [FrontController::class, 'home']);
+$app->router->post('/{slug}', [FrontController::class, 'home']);
+
 $app->router->get('/contact', [FrontController::class, 'contact']);
-$app->router->get('/faq', [FrontController::class, 'faq']);
+$app->router->post('/contact', [FrontController::class, 'contact']);
+
+
+$app->router->get('/profile', [BackController::class, 'profile']);
+$app->router->post('/profile', [BackController::class, 'profile']);
+$app->router->get('/users', [BackController::class, 'users']);
+$app->router->post('/users', [BackController::class, 'users']);
+$app->router->get('/page', [BackController::class, 'page']);
+$app->router->post('/page', [BackController::class, 'page']);
+$app->router->get('/comment', [BackController::class, 'comment']);
+$app->router->post('/comment', [BackController::class, 'comment']);
+$app->router->get('/chart', [BackController::class, 'chart']);
+$app->router->post('/chart', [BackController::class, 'chart']);
+
 
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);

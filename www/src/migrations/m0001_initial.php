@@ -14,10 +14,12 @@ class m0001_initial
 
             CREATE TABLE public.esgi_user (
                 id integer DEFAULT nextval(\'esgi_user_id_seq\') NOT NULL,
+                admin_id integer NOT NULL,
                 firstname character varying(60) NOT NULL,
                 lastname character varying(120) NOT NULL,
                 email character varying(320) NOT NULL,
                 password character varying(255) NOT NULL,
+                role character varying(30) NOT NULL,
                 date_inserted timestamp DEFAULT CURRENT_TIMESTAMP,
                 date_updated timestamp,
                 verify_token character varying(64) NOT NULL,

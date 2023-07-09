@@ -3,6 +3,9 @@
 namespace App\controllers;
 
 use App\core\Application;
+use App\core\exception\NotFoundException;
+use App\core\Request;
+use App\models\ContactForm;
 
 /**
  * class Front
@@ -11,27 +14,55 @@ use App\core\Application;
  */
 class FrontController extends Controller
 {
-    public function home()
+    
+    public function __construct()
     {
+        $this->layoutParams[]= [
+            'value' => 'About',
+            'url' => '/about'
+        ];
+        $this->layoutParams[]= [
+            'value' => 'Contact',
+            'url' => '/contact'
+        ];
+    }
+
+    public function home(Request $request)
+    {
+        $slug = trim($request->getpath(), '/');
+        $databaseSlug = 'about';
+        if($slug){
+            if($slug === 'about'){
+                $params = [
+                    'title' => "About us",
+                    'content' => "Our story start in march 1999.."
+                ];
+                return $this->render('home', $params);
+            }else{
+                throw new NotFoundException();
+            }
+        }
         $params = [
-            'name' => "Omer"
+            'title' => "Homepage",
+            'content' => "Nous sommes ravie de votre visite."
         ];
         return $this->render('home', $params);
     }
 
-    public function contact()
+    public function contact(Request $request)
     {
-        return $this->render('contact');
-    }
+        $contact = new ContactForm();
+        if($request->isPost()){
+            $contact->loadData($request->getBody());
+            if($contact->validate() && $contact->send()){
+                Application::$app->session->setFlash('success', 'Thanks for contacting us !');
+                Application::$app->response->redirect('/');
+            }
 
-    public function about()
-    {
-        return $this->render('about');
-    }
-
-    public function faq()
-    {
-        return $this->render('faq');
+        }
+        return $this->render('contact', [
+            'model' => $contact
+        ]);
     }
     
 }

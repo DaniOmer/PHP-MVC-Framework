@@ -10,6 +10,7 @@ class LoginForm extends CoreModel
 {
     protected string $email = '';
     protected string $password = '';
+    protected ?string $token = null;
 
     public function rules(): array
     {
@@ -42,6 +43,7 @@ class LoginForm extends CoreModel
             CoreApplication::$app->session->setFlash('alerte', 'Please verify your account and try again !');
             return false;
         }
+        $this->token = CoreApplication::$app->generateUserToken($user);
         return CoreApplication::$app->login($user);
     }
 
@@ -75,5 +77,10 @@ class LoginForm extends CoreModel
     public function setPassword(string $password): void
     {
         $this->password = password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
     }
 }
