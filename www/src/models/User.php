@@ -1,8 +1,11 @@
 <?php
 namespace App\models;
-use App\core\ORM;
 
-class User extends ORM
+use App\core\Application;
+use App\core\ORM;
+use App\core\UserModel;
+
+class User extends UserModel
 {
 
     public $id = -1;
@@ -11,15 +14,13 @@ class User extends ORM
     protected $email;
     public $password;
     protected $confirmPassword;
-    /*protected ?int $date_inserted = null;
-    protected ?int $date_updated = null; */
+    protected $date_inserted;
+    protected $date_updated;
     protected $status = 0;
 
     public function __construct()
     {
         parent::__construct();
-        /*$this->setDateInserted(time());
-        $this->setDateUpdated(time()); */
     }
 
     public function primaryKey(): string
@@ -30,8 +31,8 @@ class User extends ORM
     public function rules(): array
     {
         return [
-            'firstname' => [self::RULE_REQUIRED],
-            'lastname' => [self::RULE_REQUIRED],
+            'firstname' => [self::RULE_REQUIRED, [self::RULE_NAME, 'name' => 'firstname']],
+            'lastname' => [self::RULE_REQUIRED, [self::RULE_NAME, 'name' => 'lastname']],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [
                 self::RULE_UNIQUE, 'class' => self::class
             ]],
@@ -42,10 +43,22 @@ class User extends ORM
 
 
     public function saveData (){
-        $this->firstname = ucwords(strtolower(trim($this->firstname)));
-        $this->lastname = strtoupper(trim($this->lastname));
-        $this->email = strtolower(trim($this->email));
-        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        $this->setFirstname($this->getFirstname());
+        $this->setLastname($this->getLastname());
+        $this->setEmail($this->getEmail());
+        $this->setPassword($this->getPassword());
+
+
+        if ($this->isNewRecord()) {
+            // C'est un nouvel enregistrement, mettez à jour les propriétés date_inserted et date_updated
+            $currentTimestamp = time();
+            $this->date_inserted = date('Y-m-d H:i:s', $currentTimestamp);
+            $this->date_updated = date('Y-m-d H:i:s', $currentTimestamp);
+        } else {
+            // Ce n'est pas un nouvel enregistrement, mettez uniquement à jour la propriété date_updated
+            $this->date_updated = date('Y-m-d H:i:s', time());
+        }
+
         return parent::save();
     }
 
@@ -61,13 +74,20 @@ class User extends ORM
         ];
     }
 
+    public function getDisplayName(): string
+    {
+        return $this->firstname.' '.$this->lastname;
+    }
 
 
-
-    
     public function __toString(): string
     {
         return serialize($this);
+    }
+
+    public function isNewRecord()
+    {
+        return $this->isNewRecord;
     }
 
     /**
@@ -81,6 +101,7 @@ class User extends ORM
     public function setId(int $id): void
     {
         $this->id = $id;
+        $this->isNewRecord = ($id <= 0);
     }
 
 

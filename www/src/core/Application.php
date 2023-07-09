@@ -3,6 +3,7 @@
 namespace App\core;
 
 use App\controllers\Controller;
+use App\models\User;
 
 /**
  * class Application
@@ -23,7 +24,7 @@ class Application
     public Session $session;
 
     public ConnectDB $db;
-    public ?ORM $user = null;
+    public ?User $user = null;
 
 
     public function __construct($rootPath, array $config)
@@ -51,10 +52,21 @@ class Application
     }
 
     
+    public function isGuest()
+    {
+        return !self::$app->user && !$this->session->get('user');
+    }
 
     public function run()
     {
-        echo $this->router->resolve();
+        try{
+            echo $this->router->resolve();
+        }catch(\Exception $e){
+            $this->response->setStatusCode($e->getCode());
+            echo $this->router->renderView('_error', [
+                'exception' => $e
+            ]);
+        }
     }
 
     public function getController()
@@ -76,7 +88,7 @@ class Application
         return true;
     }
 
-    public function logout(ORM $user)
+    public function logout()
     {
         $this->user = null;
         $this->session->remove('user');
