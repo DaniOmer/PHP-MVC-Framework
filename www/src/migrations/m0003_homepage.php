@@ -32,7 +32,7 @@ class m0003_homepage
                 date_inserted timestamp DEFAULT CURRENT_TIMESTAMP,
                 date_updated timestamp,
                 CONSTRAINT esgi_homepage_pkey PRIMARY KEY (id),
-                CONSTRAINT fk_esgi_homepage_page_id FOREIGN KEY (page_id) REFERENCES esgi_page (id)
+                CONSTRAINT fk_esgi_homepage_page_id FOREIGN KEY (page_id) REFERENCES esgi_page (id) ON DELETE CASCADE
             ) WITH (oids = false);
         ';
 
