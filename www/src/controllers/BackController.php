@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * Copyright (c) 2023 by Hind SEDRATI
+ * 
+ *
+ * File name: www/src/controllers/BackController.php
+ * Creation date: 2023-07-09 04:09:27
+ * Autor: Hind SEDRATI
+ *
+ * Last Modified: 4959ca7 2023-07-03 13:58:21
+ */
+
 namespace App\controllers;
 
 use App\core\Application;
@@ -218,7 +229,7 @@ class BackController extends Controller
         }
 
         if(Application::$app->user){
-            if(Application::$app->user && Application::$app->isAdmin()){
+            if(Application::$app->isAdmin()){
                 $pages = Page::getAllBy('user_id', Application::$app->user->getId());
             }else{
                 $pages = Page::getAllBy('user_id', Application::$app->user->getAdminId());
