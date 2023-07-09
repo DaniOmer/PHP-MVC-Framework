@@ -31,8 +31,8 @@
             <?php else: ?>
             <ul style="display:flex; justify-content:center; list-style:none">
                 <li style="list-style:none; margin-left:10px">
-                    <a href="/profile" style="text-decoration: none; color:black">
-                        Profile
+                    <a href="/dashboard" style="text-decoration: none; color:black">
+                        Dashboard
                     </a>
                 </li>
                 <li style="list-style:none; margin-left:10px">
@@ -49,6 +49,11 @@
         <?php if (Application::$app->session->getFlash('success')): ?>
         <div>
             <?= Application::$app->session->getFlash('success') ?>
+        </div>
+        <?php endif ?>
+        <?php if (Application::$app->session->getFlash('alerte')): ?>
+        <div>
+            <?= Application::$app->session->getFlash('alerte') ?>
         </div>
         <?php endif ?>
         {{content}}

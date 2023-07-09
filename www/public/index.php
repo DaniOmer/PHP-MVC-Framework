@@ -22,7 +22,8 @@ $config = [
         'db_user' =>  $_ENV['DB_USER'],
         'db_pwd' =>  $_ENV['DB_PWD']
     ],
-    'userClass' => App\models\User::class
+    'userClass' => App\models\User::class,
+    'baseUrl' => $_ENV['BASE_URL']
 ];
 
 
@@ -39,7 +40,11 @@ $app->router->get('/register', [AuthController::class, 'register']);
 $app->router->post('/register', [AuthController::class, 'register']);
 $app->router->get('/logout', [AuthController::class, 'logout']);
 $app->router->get('/verify', [AuthController::class, 'verify']);
-$app->router->get('/profile', [AuthController::class, 'profile']);
+$app->router->get('/recover-password', [AuthController::class, 'recover']);
+$app->router->post('/recover-password', [AuthController::class, 'recover']);
+$app->router->get('/reset-password', [AuthController::class, 'reset']);
+$app->router->post('/reset-password', [AuthController::class, 'reset']);
+$app->router->get('/dashboard', [AuthController::class, 'dashboard']);
 
 
 $app->run();

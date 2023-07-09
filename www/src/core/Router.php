@@ -46,8 +46,19 @@ class Router
         $method = $this->request->method();
 
         $callback = $this->routes[$method][$path] ?? false;
-        if($callback === false){
-            throw new NotFoundException();
+        if ($callback === false) {
+            foreach ($this->routes[$method] as $routePath => $routeCallback) {
+                // Vérifier si le chemin correspond à un slug
+                if ($this->matchSlugRoute($routePath, $path)) {
+                    $callback = $routeCallback;
+                    break;
+                }
+            }
+    
+            // Vérifier à nouveau si aucun callback n'a été trouvé
+            if ($callback === false) {
+                throw new NotFoundException();
+            }
         }
         
         if(is_string($callback)){
@@ -67,6 +78,17 @@ class Router
         }
 
         return call_user_func($callback, $this->request, $this->response);
+    }
+
+    private function matchSlugRoute($routePath, $path)
+    {
+        // Convertir la route avec slug en une expression régulière
+        $routePath = preg_replace('/\//', '\/', $routePath);
+        $routePath = preg_replace('/\{([a-zA-Z0-9]+)\}/', '([^\/]+)', $routePath);
+        $routePath = '/^' . $routePath . '$/';
+
+        // Vérifier si le chemin correspond à la route avec slug
+        return preg_match($routePath, $path);
     }
     
     /**

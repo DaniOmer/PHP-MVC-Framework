@@ -5,7 +5,7 @@ namespace App\core\form;
 use App\core\Model;
 use App\models\User;
 
-class Field extends User
+class Field
 {
     public const TYPE_TEXT = 'text';
     public const TYPE_PASSWORD = 'password';
@@ -26,6 +26,7 @@ class Field extends User
 
     public function __toString()
     {
+        $value = $this->model->{'get' . ucfirst($this->attribute)}();
         return sprintf('
         <div style="display:flex; flex-direction:column; margin-bottom:4px;">
             <label>%s</label>
@@ -38,7 +39,7 @@ class Field extends User
             $this->model->getLabel($this->attribute),
             $this->type,
             $this->attribute,
-            $this->model->{$this->attribute},
+            $value,
             $this->model->hasError($this->attribute) ? 'is-invalid' : '',
             $this->model->getFirstError($this->attribute)
     );
