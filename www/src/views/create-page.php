@@ -1,4 +1,13 @@
-<section style="width:50%; margin:0 auto;">
+/*
+ * Copyright (c) 2023 by Hind SEDRATI
+ * 
+ *
+ * File name: www/src/views/create-page.php
+ * Creation date: 2023-07-09 04:09:27
+ * Autor: Hind SEDRATI
+ *
+ * Last Modified: 4959ca7 2023-07-03 13:58:21
+ */
     <h3>Here's the place to create a new page</h3>
     <div>
         <?php $form = \App\core\form\Form::begin("", "post") ?>
