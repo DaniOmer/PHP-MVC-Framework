@@ -17,7 +17,7 @@ use App\controllers\BackController;
 use App\core\Application;
 use Dotenv\Dotenv;
 
-require "../vendor/autoload.php";
+require __DIR__ . '/../vendor/autoload.php';
 
 
 $path = dirname(__DIR__);
