@@ -17,10 +17,11 @@ use App\controllers\BackController;
 use App\core\Application;
 use Dotenv\Dotenv;
 
-require __DIR__ . '/../vendor/autoload.php';
-
 
 $path = dirname(__DIR__);
+
+require $path. '/vendor/autoload.php';
+
 
 $dotenv = Dotenv::createImmutable($path);
 $dotenv->load();
