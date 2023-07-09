@@ -80,30 +80,40 @@ abstract class ORM extends Model{
         return true;
     }
 
-    public static function getAllBy($column, $value)
+    public static function getAllBy($column, $value, $conditions = [])
     {
         $connectDb = Application::$app->db;
-        $queryPrepared = $connectDb->prepare("SELECT * FROM " . self::getTable() . " WHERE " . $column . " = :" . $column);
+        $query = "SELECT * FROM " . self::getTable() . " WHERE " . $column . " = :" . $column;
+
+        foreach ($conditions as $conditionColumn => $conditionValue) {
+            $query .= " AND " . $conditionColumn . " = :" . $conditionColumn;
+        }
+
+        $queryPrepared = $connectDb->prepare($query);
         $queryPrepared->bindValue(':' . $column, $value);
+
+        foreach ($conditions as $conditionColumn => $conditionValue) {
+            $queryPrepared->bindValue(':' . $conditionColumn, $conditionValue);
+        }
+
         $queryPrepared->execute();
         $queryPrepared->setFetchMode(\PDO::FETCH_CLASS, get_called_class());
 
-        // Récupération de la première ligne de résultats
-        $objet = $queryPrepared->fetchAll();
+        $objects = $queryPrepared->fetchAll();
 
-        foreach($objet as $oneObject)
-        if ($oneObject) {
-            // Convertir les valeurs booléennes en true ou false
-            foreach ($oneObject as $key => $val) {
+        foreach ($objects as $object) {
+            foreach ($object as $key => $val) {
                 if (is_bool($val)) {
-                    $oneObject->$key = ($val === true);
+                    $object->$key = ($val === true);
                 }
             }
         }
 
-        return $objet;
+        return $objects;
     }
 
+
+    
     public static function getAll()
     {
         $connectDb = Application::$app->db;

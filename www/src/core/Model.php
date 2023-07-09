@@ -95,25 +95,22 @@ abstract class Model
                         $this->addErrorForRules($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
                     }
                 }
-                if ($ruleName === self::RULE_SELECT && !$value) {
-                    $this->addErrorForRules($attribute, self::RULE_SELECT, ['attribute' => $this->getLabel($attribute)]);
-                }
+
                 if ($ruleName === self::RULE_USER_UNIQUE) {
                     $className = $rule['class'];
                     $uniqueAttr = $rule['attribute'] ?? $attribute;
                     $tableName = $className::getTable();
                 
-                    
                     $statement = Application::$app->db->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = :attr");
                     $statement->bindValue(":attr", $value);
                     $statement->execute();
                     $record = $statement->fetchObject();
                     if ($record) {
                         if (Application::$app->user && Application::$app->user->getEmail() !== $value) {
-                            $this->addErrorForRules($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
+                            $this->addErrorForRules($attribute, self::RULE_USER_UNIQUE, ['field' => $this->getLabel($attribute)]);
                         }
                         if(!Application::$app->user){
-                            $this->addErrorForRules($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
+                            $this->addErrorForRules($attribute, self::RULE_USER_UNIQUE, ['field' => $this->getLabel($attribute)]);
                         }
                     }
                 }

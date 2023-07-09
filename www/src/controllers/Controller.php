@@ -15,15 +15,22 @@ class Controller
      */
     protected array $middlewares = [];
 
-    /* A gérer 
+
     public function __construct()
     {
         $this->loadMenuParams();
     }
 
+    
     public function loadMenuParams()
     {
-        $pages = Page::getAllBy('on_menu', 'show');
+        if (Application::$app->user){
+            if (Application::$app->isAdmin()){
+                $pages = Page::getAllBy('on_menu', 'show', ['user_id' => Application::$app->user->getId()]);
+            }
+            $pages = Page::getAllBy('on_menu', 'show', ['user_id' => Application::$app->user->getAdminId()]);
+        }
+
         if ($pages) {
             foreach ($pages as $page) {
                 $this->layoutParams[] = [
@@ -33,7 +40,6 @@ class Controller
             }
         }
     }
-    À gérer  */
 
     
     public function setLayout($layout)

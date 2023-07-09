@@ -4,7 +4,7 @@ namespace App\models;
  
 use App\core\Model;
 
-class ContactForm extends Model
+class Contact extends Model
 {
     protected string $subject = '';
     protected string $email = '';

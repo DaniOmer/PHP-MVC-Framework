@@ -26,9 +26,6 @@ use App\core\Application;
     <header style="width:80%; display:flex; justify-content:flex-end; margin:0 auto">
         <nav style="width:50%;">
             <ul style="display:flex; justify-content:space-between; list-style:none">
-                <li style="list-style:none; margin-right:35px;">
-                    <a href="/">Back office</a>
-                </li>
                 <li style="list-style:none"><a href="/" style="text-decoration: none; color:black;">Website Home</a></li>
                 <li style="list-style:none; margin-left:10px">
                 <?php if (!Application::$app->isGuest()) : ?>
@@ -55,7 +52,7 @@ use App\core\Application;
                         </li>
                         <?php if(Application::$app->isAdmin()): ?>
                         <li>
-                            <a href="/dashboard/users">Users</a>
+                            Users
                             <ul>
                                 <li><a href="/dashboard/users/create">Add user</a></li>
                                 <li><a href="/dashboard/users/manage">Manage users</a></li>

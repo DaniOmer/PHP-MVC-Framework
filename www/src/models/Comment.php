@@ -20,9 +20,10 @@ class Blog extends ORM
 {
     protected int $id = -1;
     protected int $page_id ;
-    protected string $banner_link = '';
-    protected string $banner_text = '';
-    protected string $content = '';
+    protected string $comment_name= '';
+    protected string $comment_email = '';
+    protected string $comment_text = '';
+    protected string $comment_status = '';
     protected $date_inserted;
     protected $date_updated;
 
@@ -31,18 +32,18 @@ class Blog extends ORM
     {
  
         return [
-            'banner_link' => [self::RULE_REQUIRED, [self::RULE_LINK, 'link' => 'banner_link'], [self::RULE_MAX, 'max' => 350]],
-            'banner_text' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'banner_text'], [self::RULE_MAX, 'max' => 700]],
-            'content' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'content']],
+            'comment_name' => [self::RULE_REQUIRED, [self::RULE_MAX, 'max' => 100]],
+            'comment_email' => [self::RULE_REQUIRED, [self::RULE_MAX, 'max' => 150]],
+            'comment_text' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'comment_text']],
         ];
     }
 
     public function labels(): array
     {
         return [
-            'banner_link' => 'Banner image link',
-            'banner_text' => 'Banner text',
-            'content' => 'Content',
+            'comment_name' => 'Name',
+            'comment_email' => 'Email',
+            'comment_text' => 'Your comment',
         ];
     }
 
@@ -52,9 +53,9 @@ class Blog extends ORM
         
         if (!$this->getOneBy('id', $this->getId())) {
             // C'est un nouvel enregistrement
-            $this->setBannerLink($this->getBannerLink());
-            $this->setBannerText($this->getBannerText());
-            $this->setContent($this->getContent());
+            $this->setCommentName($this->getCommentName());
+            $this->setCommentEmail($this->getCommentEmail());
+            $this->setCommentText($this->getCommentText());
 
             $currentTimestamp = time();
             $this->date_inserted = date('Y-m-d H:i:s', $currentTimestamp);
@@ -95,71 +96,130 @@ class Blog extends ORM
         $this->isNewRecord = ($id <= 0);
     }
 
+
     /**
-     * @return int
+     * Get the value of page_id
      */
     public function getPageId(): int
     {
         return $this->page_id;
     }
 
-    public function setPageId(int $pageId): void
-    {
-        $this->page_id = $pageId;
-    }
-
     /**
-     * Get the value of title
+     * Set the value of page_id
      */
-    public function getBannerLink(): string
+    public function setPageId(int $page_id): self
     {
-        return $this->banner_link;
-    }
-
-    /**
-     * Set the value of title
-     */
-    public function setBannerLink(string $bannerLink): self
-    {
-        $this->banner_link = $bannerLink;
+        $this->page_id = $page_id;
 
         return $this;
     }
 
     /**
-     * Get the value of template
+     * Get the value of comment_name
      */
-    public function getBannerText(): string
+    public function getCommentName(): string
     {
-        return $this->banner_text;
+        return $this->comment_name;
     }
 
     /**
-     * Set the value of template
+     * Set the value of comment_name
      */
-    public function setBannerText(string $bannerText): self
+    public function setCommentName(string $comment_name): self
     {
-        $this->banner_text = $bannerText;
+        $this->comment_name = $comment_name;
 
         return $this;
     }
 
     /**
-     * Get the value of pageUri
+     * Get the value of comment_email
      */
-    public function getContent(): string
+    public function getCommentEmail(): string
     {
-        return $this->content;
+        return $this->comment_email;
     }
 
     /**
-     * Set the value of pageUri
+     * Set the value of comment_email
      */
-    public function setContent(string $content): self
+    public function setCommentEmail(string $comment_email): self
     {
-        $this->content = $content;
+        $this->comment_email = $comment_email;
 
         return $this;
     }
 
+    /**
+     * Get the value of comment_text
+     */
+    public function getCommentText(): string
+    {
+        return $this->comment_text;
+    }
+
+    /**
+     * Set the value of comment_text
+     */
+    public function setCommentText(string $comment_text): self
+    {
+        $this->comment_text = $comment_text;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of comment_status
+     */
+    public function getCommentStatus(): string
+    {
+        return $this->comment_status;
+    }
+
+    /**
+     * Set the value of comment_status
+     */
+    public function setCommentStatus(string $comment_status): self
+    {
+        $this->comment_status = $comment_status;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of date_inserted
+     */
+    public function getDateInserted()
+    {
+        return $this->date_inserted;
+    }
+
+    /**
+     * Set the value of date_inserted
+     */
+    public function setDateInserted($date_inserted): self
+    {
+        $this->date_inserted = $date_inserted;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of date_updated
+     */
+    public function getDateUpdated()
+    {
+        return $this->date_updated;
+    }
+
+    /**
+     * Set the value of date_updated
+     */
+    public function setDateUpdated($date_updated): self
+    {
+        $this->date_updated = $date_updated;
+
+        return $this;
+    }
 }

@@ -36,17 +36,15 @@ class Page extends ORM
     {
         $currentUser = Application::$app->user;
         $pageOwnerId = $currentUser->getRole() === 'admin' ? $currentUser->getId() : $currentUser->getAdminId();
-
-        // Check for update later
-        $uniqueRule = ($this->getUserId() === $pageOwnerId || $this->isNewRecord())  ? [self::RULE_UNIQUE, 'class' => self::class] : '';
+        $requireOnce = $this->isNewRecord() ? self::RULE_REQUIRED : '';
 
         return [
             'seo_title' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_title'], [self::RULE_MAX, 'max' => 60]],
             'seo_keywords' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_keywords'], [self::RULE_MAX, 'max' => 300]],
             'seo_description' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_description'], [self::RULE_MAX, 'max' => 700]],
-            'title' => [self::RULE_REQUIRED, $uniqueRule, [self::RULE_MAX, 'max' => 60]],
+            'title' => [$requireOnce, [self::RULE_MAX, 'max' => 60]],
             'template' => [self::RULE_REQUIRED],
-            'page_uri' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'page_uri'], [self::RULE_MAX, 'max' => 60], $uniqueRule],
+            'page_uri' => [$requireOnce, [self::RULE_TEXT, 'text' => 'page_uri'], [self::RULE_MAX, 'max' => 60], [self::RULE_UNIQUE, 'class' => self::class]],
             'on_menu' => [self::RULE_REQUIRED],
         ];
     }

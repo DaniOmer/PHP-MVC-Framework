@@ -1,21 +1,9 @@
 <?php
 
-/*
- * Copyright (c) 2023 by Hind SEDRATI
- * 
- *
- * File name: www/public/index.php
- * Creation date: 2023-07-09 04:09:27
- * Autor: Hind SEDRATI
- *
- * Last Modified: 4959ca7 2023-07-03 13:58:21
- */
-
 use App\controllers\AuthController;
 use App\controllers\FrontController;
 use App\controllers\BackController;
 use App\core\Application;
-use Dotenv\Dotenv;
 
 
 $path = dirname(__DIR__);
@@ -44,8 +32,6 @@ $app->router->get('/', [FrontController::class, 'home']);
 $app->router->get('/{slug}', [FrontController::class, 'home']);
 $app->router->post('/{slug}', [FrontController::class, 'home']);
 
-$app->router->get('/contact', [FrontController::class, 'contact']);
-$app->router->post('/contact', [FrontController::class, 'contact']);
 
 
 $app->router->get('/dashboard/profile', [BackController::class, 'profile']);

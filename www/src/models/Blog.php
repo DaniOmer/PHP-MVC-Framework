@@ -36,7 +36,7 @@ class Blog extends ORM
     {
  
         return [
-            'blog_title' => [self::RULE_REQUIRED, [self::RULE_LINK, 'link' => 'banner_link'], [self::RULE_MAX, 'max' => 350]],
+            'blog_title' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'first_sub_title'], [self::RULE_MAX, 'max' => 350]],
             'first_sub_title' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'first_sub_title'], [self::RULE_MAX, 'max' => 250]],
             'second_sub_title' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'second_sub_title'], [self::RULE_MAX, 'max' => 250]],
             'third_sub_title' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'third_sub_title'], [self::RULE_MAX, 'max' => 250]],

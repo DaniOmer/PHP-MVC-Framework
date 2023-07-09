@@ -50,22 +50,5 @@ class FrontController extends Controller
         }
         return $this->render('home');
     }
-
-
-    public function contact(Request $request)
-    {
-        $contact = new ContactForm();
-        if($request->isPost()){
-            $contact->loadData($request->getBody());
-            if($contact->validate() && $contact->send()){
-                Application::$app->session->setFlash('success', 'Thanks for contacting us !');
-                Application::$app->response->redirect('/');
-            }
-
-        }
-        return $this->render('contact', [
-            'model' => $contact
-        ]);
-    }
     
 }
