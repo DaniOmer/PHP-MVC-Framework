@@ -1,7 +1,8 @@
 <?php
 
-$this->title = 'Everywhere you go';
-$this->description = 'Welcome to our travel agencie webpage !';
+$this->title = $seo_title;
+$this->description = $seo_desc;
+$this->keywords = $seo_keywords;
 
 ?>
 <h1><?= $title ?></h1>

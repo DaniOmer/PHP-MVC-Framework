@@ -10,6 +10,7 @@ class InputField extends BaseField
     public const TYPE_PASSWORD = 'password';
     public const TYPE_NUMBER = 'number';
     public const TYPE_EMAIL = 'email';
+    public const TYPE_HIDDEN = 'hidden';
 
     public string $type;
 
@@ -25,12 +26,20 @@ class InputField extends BaseField
         return $this;
     }
 
+    public function hiddenField()
+    {
+        $this->type = self::TYPE_HIDDEN;
+        return $this;
+    }
+
     public function renderInput(): string
     {
+        $fieldValue = $this->getFieldValue() == '' ? $this->value : $this->getFieldValue();
+
         return sprintf('<input style="padding:5px;" type="%s" name="%s" value="%s" class="%s">',
         $this->type,
         $this->attribute,
-        $this->getFieldValue(),
+        $fieldValue,
         $this->model->hasError($this->attribute) ? 'is-invalid' : '',
     );
     }

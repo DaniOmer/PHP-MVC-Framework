@@ -25,4 +25,8 @@ class Form
     public function textarea(Model $model, $attribute){
         return new TextareaField($model, $attribute);
     }
+
+    public function select(Model $model, $attribute, $options){
+        return new SelectField($model, $attribute, $options);
+    }
 }
