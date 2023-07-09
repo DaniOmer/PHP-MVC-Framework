@@ -37,13 +37,12 @@ class User extends UserModel
     public function rules(): array
     {
         return [
-            'firstname' => [self::RULE_REQUIRED, [self::RULE_NAME, 'name' => 'firstname']],
-            'lastname' => [self::RULE_REQUIRED, [self::RULE_NAME, 'name' => 'lastname']],
+            'firstname' => [self::RULE_REQUIRED, [self::RULE_NAME, 'name' => 'firstname'], [self::RULE_MAX, 'max' => 120]],
+            'lastname' => [self::RULE_REQUIRED, [self::RULE_NAME, 'name' => 'lastname'], [self::RULE_MAX, 'max' => 120]],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [
                 self::RULE_USER_UNIQUE, 'class' => self::class
-            ]],
-            // 'role' => [self::RULE_SELECT],
-            'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8]],
+            ], [self::RULE_MAX, 'max' => 150]],
+            'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8], [self::RULE_MAX, 'max' => 255]],
             'confirmPassword' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
         ];
     }

@@ -16,7 +16,7 @@ namespace App\models;
 
 use App\core\ORM;
 
-class Homepage extends ORM
+class Blog extends ORM
 {
     protected int $id = -1;
     protected int $page_id ;

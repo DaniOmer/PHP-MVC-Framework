@@ -41,12 +41,12 @@ class Page extends ORM
         $uniqueRule = ($this->getUserId() === $pageOwnerId || $this->isNewRecord())  ? [self::RULE_UNIQUE, 'class' => self::class] : '';
 
         return [
-            'seo_title' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_title']],
-            'seo_keywords' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_keywords']],
-            'seo_description' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_description']],
-            'title' => [self::RULE_REQUIRED, $uniqueRule],
+            'seo_title' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_title'], [self::RULE_MAX, 'max' => 60]],
+            'seo_keywords' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_keywords'], [self::RULE_MAX, 'max' => 300]],
+            'seo_description' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_description'], [self::RULE_MAX, 'max' => 700]],
+            'title' => [self::RULE_REQUIRED, $uniqueRule, [self::RULE_MAX, 'max' => 60]],
             'template' => [self::RULE_REQUIRED],
-            'page_uri' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'page_uri'], $uniqueRule],
+            'page_uri' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'page_uri'], [self::RULE_MAX, 'max' => 60], $uniqueRule],
             'on_menu' => [self::RULE_REQUIRED],
         ];
     }
