@@ -30,7 +30,7 @@ $config = [
         'db_host' => getenv('DB_HOST'),
         'db_port' => getenv('DB_PORT'),
         'db_user' => getenv('DB_USER'),
-        'db_pwd' => getenv('DB_PWD')
+        'db_pwd' => getenv('DB_PASSWORD')
     ],
     'userClass' => App\models\User::class,
     'baseUrl' => getenv('BASE_URL'),
