@@ -85,7 +85,7 @@ class BackController extends Controller
             $user->loadData($request->getBody());
 
             $mail = [];
-            $mail['url'] = Application::$app->baseUrl.'/verify?verification=';
+            $mail['url'] = getenv('BASE_URL').'/verify?verification=';
             $mail['email'] = $user->getEmail();
             $mail['token'] = $user->getVerifyToken();
             $mail['bodyText'] = 'Here is the verification link : '; 

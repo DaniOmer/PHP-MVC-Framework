@@ -51,7 +51,7 @@ class AuthController extends Controller
         if ($request->isPost()){
             $userModel->loadData($request->getBody());
             $mail = [];
-            $mail['url'] = Application::$app->baseUrl.'/verify?verification=';
+            $mail['url'] = getenv('BASE_URL').'/verify?verification=';
             $mail['email'] = $userModel->getEmail();
             $mail['token'] = $userModel->getVerifyToken();
             $mail['bodyText'] = 'Here is the verification link : ';
