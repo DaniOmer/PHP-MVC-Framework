@@ -1,22 +1,10 @@
 <?php
 
-                   
-/*
- * Copyright (c) 2023 by Hind SEDRATI
- * 
- *
- * File name: www/src/models/Homepage.php
- * Creation date: 2023-07-09 04:09:27
- * Autor: Hind SEDRATI
- *
- * Last Modified: 4959ca7 2023-07-03 13:58:21
- */
-
 namespace App\models;
 
 use App\core\ORM;
 
-class Blog extends ORM
+class Comment extends ORM
 {
     protected int $id = -1;
     protected int $page_id ;

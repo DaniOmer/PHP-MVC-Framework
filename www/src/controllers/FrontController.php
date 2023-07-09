@@ -15,6 +15,7 @@ namespace App\controllers;
  
 use App\core\Application;
 use App\core\Request;
+use App\models\Comment;
 use App\models\ContactForm;
 use App\models\Page;
 
@@ -36,6 +37,7 @@ class FrontController extends Controller
             $templateName = $page->getTemplate();
             $templateClass = 'App\models\\'.ucfirst($templateName);
             $oneTemplate = new $templateClass();
+            $commentModel = new Comment();
 
             $template = $oneTemplate->getOneBy('page_id', $page->getId());
 
@@ -43,9 +45,22 @@ class FrontController extends Controller
                 Application::$app->response->redirect('/dashboard/template/'.$templateName.'?temp='.$page->getId().'');
                 Application::$app->session->setFlash('alerte', 'Please complete your page template setup and try again !');
             }
+
+            if($template->getCommentSection() && $template->getCommentSection() === 'show'){
+                $approuvedComment = $commentModel::getAllBy('comment_status', 'approved');
+
+                return $this->render($templateName, [
+                    'page' => $page,
+                    'template' => $template,
+                    'model' => $commentModel,
+                    'approuvedComments' => $approuvedComment
+                ]);
+                
+            }
+
             return $this->render($templateName, [
                 'page' => $page,
-                'template' => $template
+                'template' => $template,
             ]);
         }
         return $this->render('home');

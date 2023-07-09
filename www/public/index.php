@@ -30,7 +30,7 @@ $app = new Application(dirname(__DIR__), $config);
 
 $app->router->get('/', [FrontController::class, 'home']);
 $app->router->get('/{slug}', [FrontController::class, 'home']);
-$app->router->post('/{slug}', [FrontController::class, 'home']);
+$app->router->post('/{slug}', [BackController::class, 'comment']);
 
 
 

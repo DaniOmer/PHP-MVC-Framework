@@ -22,6 +22,7 @@ use App\core\middlewares\AuthMiddleware;
 use App\core\Request;
 use App\core\SendMail;
 use App\models\Blog;
+use App\models\Comment;
 use App\models\Contact;
 use App\models\Homepage;
 use App\models\Page;
@@ -279,7 +280,7 @@ class BackController extends Controller
 
         if($request->isPost()){
             $blog->setPageId($page_id);
-            $blog->loadData($request->getBody());
+            $blog->loadData($request->getBody()); 
             if($blog->validate() && $blog->saveData()){
                 Application::$app->response->redirect('/dashboard/page/manage');
                 Application::$app->session->setFlash('success', 'Your page creation is completed !');
@@ -291,7 +292,7 @@ class BackController extends Controller
         $oldBlog = Blog::getOneBy('page_id', $page_id);
         if($oldBlog){
             $this->setLayout('back');
-            return $this->render('homepage-form', [
+            return $this->render('blog-form', [
                 'model' => $blog,
                 'oldHomepage' => $oldBlog
             ]);
@@ -304,51 +305,19 @@ class BackController extends Controller
     }
 
 
-    /*
-    public function contactTemplate(Request $request)
-    {
-        $contact = new Contact();
-        $page_id = $request->getQueryParams()['temp'];
-
-        if($request->isPost()){
-            $contact->setPageId($page_id);
-            $contact->loadData($request->getBody());
-            if($contact->validate() && $contact->saveData()){
-                Application::$app->response->redirect('/dashboard/page/manage');
-                Application::$app->session->setFlash('success', 'Your page creation is completed !');
-            }else{
-                Application::$app->session->setFlash('alerte', 'Something went wrong. Please try again !');
-            }
-        }
-
-        $this->setLayout('back');
-        return $this->render('blog-form', [
-            'model' => $contact,
-        ]);
-    }
-    */
-
-
-
     public function comment(Request $request)
     {
-        $blog = new Blog();
-        $page_id = $request->getQueryParams()['temp'];
+        $comment = new Comment();
 
         if($request->isPost()){
-            $blog->setPageId($page_id);
-            $blog->loadData($request->getBody());
-            if($blog->validate() && $blog->saveData()){
-                Application::$app->response->redirect('/dashboard/page/manage');
-                Application::$app->session->setFlash('success', 'Your page creation is completed !');
+            $comment->loadData($request->getBody());
+            $comment->setCommentStatus('unapproved');
+
+            if($comment->validate() && $comment->saveData()){
+                Application::$app->session->setFlash('success', 'Your comment has been submitted !');
             }else{
                 Application::$app->session->setFlash('alerte', 'Something went wrong. Please try again !');
             }
         }
-
-        $this->setLayout('back');
-        return $this->render('blog-form', [
-            'model' => $blog,
-        ]);
     }
 }

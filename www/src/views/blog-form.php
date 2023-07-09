@@ -10,8 +10,8 @@
             <?= $form->textarea($model, 'second_paragraph')->setValue($oldBlog->getSecondParagraph()) ?>
             <?= $form->input($model, 'third_sub_title')->setValue($oldBlog->getThirdSubTitle()) ?>
             <?= $form->textarea($model, 'third_paragraph')->setValue($oldBlog->getThirdParagraph()) ?>
-        <? endif ?>
-
+            <?= $form->select($model, 'comment_section', ['show' => 'Show', 'hide' => 'Hide'])->setValue($oldBlog->getCommentSection()) ?>
+        <? else: ?>
             <?= $form->input($model, 'blog_title') ?>
             <?= $form->input($model, 'first_sub_title') ?>
             <?= $form->textarea($model, 'first_paragraph') ?>
@@ -19,7 +19,9 @@
             <?= $form->textarea($model, 'second_paragraph') ?>
             <?= $form->input($model, 'third_sub_title') ?>
             <?= $form->textarea($model, 'third_paragraph') ?>
+            <?= $form->select($model, 'comment_section', ['show' => 'Show', 'hide' => 'Hide']) ?>
             <button style="padding:5px; margin-top:10px" type="submit">Save</button>
+        <?php endif ?>
         <?= App\core\form\Form::end() ?>
     </div>
 </section>

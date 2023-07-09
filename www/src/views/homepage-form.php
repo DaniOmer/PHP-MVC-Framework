@@ -6,12 +6,13 @@
             <?= $form->input($model, 'banner_link')->setValue($oldHomepage->getBannerLink()) ?>
             <?= $form->input($model, 'banner_text')->setValue($oldHomepage->getBannerText()) ?>
             <?= $form->input($model, 'content')->setValue($oldHomepage->getContent()) ?>
-            <?php endif ?>
+            <?php else: ?>
 
             <?= $form->input($model, 'banner_link') ?>
             <?= $form->input($model, 'banner_text') ?>
             <?= $form->input($model, 'content') ?>
             <button style="padding:5px; margin-top:10px" type="submit">Save</button>
+            <?php endif ?>
         <?= App\core\form\Form::end() ?>
     </div>
 </section>

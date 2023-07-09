@@ -22,10 +22,30 @@
         <p><?= $template->getThirdParagraph() ?></p>
     </div>
     
-    <div class="blog-image">
-        <img src="path_to_image.jpg" alt="Blog Image">
-    </div>
-    <h2>Comment section</h2>
-    <!-- Add comment section HTML here -->
+    <?php if($template->getCommentSection() === 'show'):?>
+        <h2>Give us your feedback !</h2>
+        <?php $form = \App\core\form\Form::begin("", "post") ?>
+            <?= $form->input($model, 'comment_name') ?>
+            <?= $form->input($model, 'comment_email')?>
+            <?= $form->input($model, 'comment_text') ?>
+            <button style="padding:5px; margin-top:10px" type="submit">Submit</button>
+        <?= App\core\form\Form::end() ?>
+
+        <div>
+            <h3>Comments</h3>
+            <?php if(count($approuvedComments) !== 0): ?>
+            <div>
+                <?php foreach($approuvedComments as $comment): ?>
+                    <h3><?=$comment->getCommentName() ?></h3>
+                    <p><?=$comment->getCommentText() ?></p>
+                <?php endforeach ?>
+            </div>
+            <?php else :?>
+            <div>
+                <p>Be the first to post a comment</p>
+            </div>
+            <?php endif ?>
+        </div>
+        <?php endif ?>
 </body>
 </html>
