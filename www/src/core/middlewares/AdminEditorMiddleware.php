@@ -2,7 +2,7 @@
  * Copyright (c) 2023 by Hind SEDRATI
  * 
  *
- * File name: www/src/core/middlewares/AdminMiddleware.php
+ * File name: www/src/core/middlewares/AdminEditorMiddleware.php
  * Creation date: 2023-07-09 04:09:27
  * Autor: Hind SEDRATI
  *
@@ -14,7 +14,7 @@ namespace App\core\middlewares;
 use App\core\Application;
 use App\core\exception\ForbiddenException;
 
-class AdminMiddleware extends BaseMiddleware
+class AdminEditorMiddleware extends BaseMiddleware
 {
     public array $actions = [];
 
@@ -26,7 +26,7 @@ class AdminMiddleware extends BaseMiddleware
 
     public function execute()
     {
-        if (Application::$app->user && Application::$app->isAdmin()){
+        if (Application::$app->user && (!Application::$app->isAdmin() || !Application::$app->isEditor())){
             if(empty($this->actions) || in_array(Application::$app->controller->action, $this->actions)){
                 throw new ForbiddenException();
             }

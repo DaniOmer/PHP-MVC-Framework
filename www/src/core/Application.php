@@ -1,10 +1,20 @@
-<?php
+/*
+ * Copyright (c) 2023 by Hind SEDRATI
+ * 
+ *
+ * File name: www/src/core/Application.php
+ * Creation date: 2023-07-09 04:09:27
+ * Autor: Hind SEDRATI
+ *
+ * Last Modified: 4959ca7 2023-07-03 13:58:21
+ */
 
 namespace App\core;
 
 use App\controllers\Controller;
 use App\controllers\FrontController;
 use App\core\exception\ForbiddenException;
+use App\models\Page;
 use App\models\User;
 use Firebase\JWT\JWT;
 
@@ -27,10 +37,11 @@ class Application
     public ?Controller $controller = null;
     public Session $session;
     public View $view;
-    public FrontController $frontController;
 
     public ConnectDB $db;
+    public FrontController $frontController;
     public ?User $user = null;
+    public ?Page $page = null;
     public string $baseUrl;
     public string $jwtSecretKey;
 
@@ -44,13 +55,14 @@ class Application
         $this->router = new Router($this->request, $this->response);
         $this->session = new Session();
         $this->view = new View();
-        $this->frontController = new FrontController();
 
         $this->db = new ConnectDB($config['db']);
         $this->userClass = $config['userClass'];
         $this->baseUrl = $config['baseUrl'];
         $this->jwtSecretKey = $config['jwt_secret_key'];
+        $this->frontController = new FrontController();
         $this->layoutParams = $this->frontController->layoutParams;
+
         
         $userClass = $this->userClass;
         $userInstance = new $userClass;
@@ -62,6 +74,8 @@ class Application
         }else{
             $this->user = null;
         }
+
+        $page = new Page();
         
     }
 
@@ -83,6 +97,22 @@ class Application
             }
         }
         return true;
+    }
+
+    public function isAdmin()
+    {
+        if(Application::$app->user->getRole() === 'admin'){
+            return true;
+        }
+        return false;
+    }
+
+    public function isEditor()
+    {
+        if(Application::$app->user->getRole() === 'editor'){
+            return true;
+        }
+        return false;
     }
 
 
@@ -111,7 +141,7 @@ class Application
         try{
             echo $this->router->resolve();
         }catch(\Exception $e){
-            $this->response->setStatusCode($e->getCode());
+            //$this->response->setStatusCode($e->getCode());
             echo $this->view->renderView('_error', [
                 'exception' => $e
             ]);
