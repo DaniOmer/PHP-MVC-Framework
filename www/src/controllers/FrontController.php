@@ -18,7 +18,6 @@ use App\core\Request;
 use App\models\ContactForm;
 use App\models\Page;
 
-
 /**
  * class Front
  * 
@@ -26,20 +25,6 @@ use App\models\Page;
  */
 class FrontController extends Controller
 {
-
-    public function __construct()
-    {
-        $pages = Page::getAllBy('on_menu', 'show');
-        if($pages){
-            foreach ($pages as $page) {
-                $this->layoutParams[] = [
-                    'value' => $page->getTitle(),
-                    'url' => $page->getPageUri()
-                ];
-            }
-        }
-    }
-
 
     public function home(Request $request)
     {

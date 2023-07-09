@@ -3,6 +3,7 @@ namespace App\controllers;
  
 use App\core\Application;
 use App\core\middlewares\BaseMiddleware;
+use App\models\Page;
 
 class Controller
 {
@@ -13,6 +14,25 @@ class Controller
      * @var \App\core\middlewares\BaseMiddleware[]
      */
     protected array $middlewares = [];
+
+
+    public function __construct()
+    {
+        $this->loadMenuParams();
+    }
+
+    public function loadMenuParams()
+    {
+        $pages = Page::getAllBy('on_menu', 'show');
+        if ($pages) {
+            foreach ($pages as $page) {
+                $this->layoutParams[] = [
+                    'value' => $page->getTitle(),
+                    'url' => $page->getPageUri()
+                ];
+            }
+        }
+    }
 
     public function setLayout($layout)
     {
