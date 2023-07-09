@@ -4,7 +4,9 @@ namespace App\core;
 
 final class ConnectDB
 {
-    private $pdo;
+    private static ?ConnectDB $instance = null;
+    private \PDO $pdo;
+    
     public function __construct(array $config){
         $db_name =  $config['db_name'];
         $db_driver =  $config['db_driver'];
@@ -20,6 +22,15 @@ final class ConnectDB
         }catch (\Exception $e){
             echo "Database connection error: " . $e->getMessage();
         }
+    }
+
+    public static function getInstance(array $config): ConnectDB
+    {
+        if (self::$instance === null) {
+            self::$instance = new ConnectDB($config);
+        }
+
+        return self::$instance;
     }
 
     public function getPdo()

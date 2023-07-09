@@ -34,7 +34,7 @@ use App\core\Application;
                         <td><?= $page->getTitle() !== '' ? $page->getTitle() : '-'  ?></td>
                         <td><?= $page->getSeoTitle() !== '' ? $page->getSeoTitle() : '-'  ?></td>
                         <td><?= $page->getPageUri() !== '' ? $page->getPageUri() : '-'  ?></td>
-                        <td>Online</td>
+                        <td><?= $page->getOnMenu() !== '' ? $page->getOnMenu() : '-'  ?></td>
                         <td>
                             <a href="/<?= $page->getPageUri() ?>">
                                 <button style="padding:5px; margin-top:10px" type="submit">View</button>

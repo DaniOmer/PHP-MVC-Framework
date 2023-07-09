@@ -1,3 +1,4 @@
+<?php
 /*
  * Copyright (c) 2023 by Hind SEDRATI
  * 
@@ -8,6 +9,8 @@
  *
  * Last Modified: 4959ca7 2023-07-03 13:58:21
  */
+?>
+<section>
     <div id="destinations-container">
         <!-- Placeholder pour les cartes de destination -->
         <h4>Add destination card</h4>

@@ -1,3 +1,5 @@
+<?php
+
 /*
  * Copyright (c) 2023 by Hind SEDRATI
  * 
@@ -226,10 +228,12 @@ class BackController extends Controller
             }
         }
 
-        if(Application::$app->isAdmin()){
-            $pages = Page::getAllBy('user_id', Application::$app->user->getId());
-        }else{
-            $pages = Page::getAllBy('user_id', Application::$app->user->getAdminId());
+        if(Application::$app->user){
+            if(Application::$app->isAdmin()){
+                $pages = Page::getAllBy('user_id', Application::$app->user->getId());
+            }else{
+                $pages = Page::getAllBy('user_id', Application::$app->user->getAdminId());
+            }
         }
 
         $this->setLayout('back');
