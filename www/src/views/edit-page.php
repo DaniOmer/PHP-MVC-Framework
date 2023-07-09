@@ -1,15 +1,3 @@
-<?php
-/*
- * Copyright (c) 2023 by Hind SEDRATI
- * 
- *
- * File name: www/src/views/edit-page.php
- * Creation date: 2023-07-09 04:09:27
- * Autor: Hind SEDRATI
- *
- * Last Modified: 4959ca7 2023-07-03 13:58:21
- */
-
 <section style="width:50%; margin:0 auto;">
     <h3>Here's the place to update your page</h3>
     <div>
