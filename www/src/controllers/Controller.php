@@ -16,23 +16,7 @@ class Controller
     protected array $middlewares = [];
 
 
-    public function __construct()
-    {
-        $this->loadMenuParams();
-    }
-
-    public function loadMenuParams()
-    {
-        $pages = Page::getAllBy('on_menu', 'show');
-        if ($pages) {
-            foreach ($pages as $page) {
-                $this->layoutParams[] = [
-                    'value' => $page->getTitle(),
-                    'url' => $page->getPageUri()
-                ];
-            }
-        }
-    }
+    
 
     public function setLayout($layout)
     {
