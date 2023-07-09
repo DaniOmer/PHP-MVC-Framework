@@ -1,5 +1,5 @@
 <?php
-
+ 
 use App\controllers\AuthController;
 use App\controllers\FrontController;
 use App\controllers\BackController;

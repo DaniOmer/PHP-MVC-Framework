@@ -1,1 +1,1 @@
-<h3>Manage your pages</h3>
+<h3>Manage your pages</h3> 

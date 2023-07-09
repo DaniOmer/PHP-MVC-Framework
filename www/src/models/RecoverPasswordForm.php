@@ -1,7 +1,7 @@
 <?php
 
 namespace App\models;
-
+ 
 use App\core\Application as CoreApplication;
 use App\core\Model as CoreModel;
 use App\core\SendMail;

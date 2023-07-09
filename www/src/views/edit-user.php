@@ -9,4 +9,4 @@
             <button style="padding:5px; margin-top:10px" type="submit">Save change</button>
         <?= App\core\form\Form::end() ?>
     </div>
-</section>
+</section> 

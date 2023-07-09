@@ -19,7 +19,7 @@ class LoginForm extends CoreModel
             'password' => [self::RULE_REQUIRED],
         ];
     }
-
+ 
     public function labels(): array
     {
         return [

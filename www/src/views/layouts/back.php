@@ -23,7 +23,7 @@ use App\core\Application;
                 <li style="list-style:none; margin-left:10px">
                 <?php if (!Application::$app->isGuest()) : ?>
                     <a href="/logout" style="text-decoration: none; color:black">
-                        <?=Application::$app->user->getDisplayName()?> (Logout)
+                        <?=Application::$app->user->getDisplayName()?> (Logout) 
                     </a>
                 <?php endif; ?>
                 </li>

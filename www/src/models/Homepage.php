@@ -17,7 +17,7 @@ class Homepage extends ORM
 
     public function rules(): array
     {
-
+ 
         return [
             'banner_link' => [self::RULE_REQUIRED, [self::RULE_LINK, 'link' => 'banner_link']],
             'banner_text' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'banner_text']],

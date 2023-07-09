@@ -33,7 +33,7 @@ class Router
     {
         $this->routes['post'][$path] = $callback;
     }
-
+  
     
     /**
      * resolve

@@ -23,7 +23,7 @@ class View
         return str_replace('{{content}}', $viewContent, $layoutContent);
         include_once Application::$ROOT_DIR."/src/views/$view.php";
     }
-   
+    
     
     protected function layoutContent()
     {

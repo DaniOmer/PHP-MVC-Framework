@@ -1,7 +1,5 @@
 <?php
 
-use App\controllers\AuthController;
-use App\controllers\FrontController;
 use App\core\Application;
 use Dotenv\Dotenv;
 
@@ -22,7 +20,7 @@ $config = [
     ],
     'userClass' => App\models\User::class
 ];
-
+ 
 
 $app = new Application(__DIR__, $config);
 $app->db->applyMigrations();

@@ -1,5 +1,5 @@
 <?php
-
+ 
 namespace App\core\exception;
 
 class NotFoundException extends \Exception

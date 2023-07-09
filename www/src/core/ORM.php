@@ -17,7 +17,7 @@ abstract class ORM extends Model{
     public abstract function primaryKey(): string;
     public abstract function getId(): int;
     public abstract function setId(int $id): void;
-
+ 
     public static function getTable(): string
     {
         $classExploded = explode("\\", get_called_class());

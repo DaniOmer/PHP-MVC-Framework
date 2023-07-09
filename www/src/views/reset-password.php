@@ -14,4 +14,4 @@ use App\core\Model;
         <?= $form->input($model, 'confirmPassword')->passwordField() ?>
         <button style="padding:5px; margin-top:10px" type="submit">Submit</button>
     <?= App\core\form\Form::end() ?>
-</div>
+</div> 

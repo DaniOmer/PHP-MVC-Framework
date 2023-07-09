@@ -11,4 +11,4 @@
             <button style="padding:5px; margin-top:10px" type="submit">Create</button>
         <?= App\core\form\Form::end() ?>
     </div>
-</section>
+</section> 

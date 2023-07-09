@@ -1,7 +1,7 @@
 <?php
 
 namespace App\models;
-
+ 
 use App\core\Application;
 use App\core\Model;
 use App\core\ORM;

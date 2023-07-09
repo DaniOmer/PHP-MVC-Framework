@@ -5,7 +5,7 @@ namespace App\models;
 
 use App\core\Application;
 use App\core\Model;
-
+ 
 class UserUpdateForm extends Model
 {
     protected string $firstname = '';
@@ -20,7 +20,7 @@ class UserUpdateForm extends Model
         $user = User::getOneBy('email', $this->getEmail());
         $userAdminId = $user ? $user->getAdminId() : null;
 
-        $uniqueRule = (!$isAdmin && $this->getEmail() !== $currentUser->getEmail()) || ($isAdmin && $userAdminId !== $currentUser->getId()) ? [self::RULE_UNIQUE, 'class' => self::class] : '';
+        $uniqueRule = (!$isAdmin && $this->getEmail() !== $currentUser->getEmail()) || ($isAdmin && $userAdminId !== $currentUser->getId()) ? [self::RULE_USER_UNIQUE, 'class' => self::class] : '';
 
         return [
             'firstname' => [self::RULE_REQUIRED, [self::RULE_NAME, 'name' => 'firstname']],

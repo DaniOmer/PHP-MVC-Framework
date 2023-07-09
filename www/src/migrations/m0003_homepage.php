@@ -1,7 +1,7 @@
 <?php
 
 use App\core\Application;
-
+ 
 class m0003_homepage
 {
     public function up()

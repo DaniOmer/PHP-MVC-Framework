@@ -21,7 +21,7 @@ $users = Application::$app->user->getAllBy('admin_id', $userId);
                     <th scope="col">Email</th>
                     <th scope="col">Role</th>
                     <th scope="col">Actions</th>
-                </tr>
+                </tr> 
             </thead>
             <tbody>
                 <?php foreach($users as $key => $user): ?>

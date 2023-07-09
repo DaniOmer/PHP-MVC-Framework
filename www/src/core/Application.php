@@ -1,7 +1,7 @@
 <?php
 
 namespace App\core;
-
+ 
 use App\controllers\Controller;
 use App\controllers\FrontController;
 use App\core\exception\ForbiddenException;

@@ -12,4 +12,4 @@ $this->description = 'Voici notre page de contact. Nous seront ravis de vous lir
         <?= $form->textarea($model, 'body') ?>
         <button type="submit">Submit</button>
     <?php \App\core\form\Form::end() ?>
-</div>
+</div> 

@@ -40,7 +40,7 @@ class User extends UserModel
             'firstname' => [self::RULE_REQUIRED, [self::RULE_NAME, 'name' => 'firstname']],
             'lastname' => [self::RULE_REQUIRED, [self::RULE_NAME, 'name' => 'lastname']],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [
-                self::RULE_UNIQUE, 'class' => self::class
+                self::RULE_USER_UNIQUE, 'class' => self::class
             ]],
             // 'role' => [self::RULE_SELECT],
             'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8]],
@@ -48,7 +48,7 @@ class User extends UserModel
         ];
     }
 
-
+ 
     public function saveData (){
         
         if (!$this->getOneBy('email', $this->getEmail())) {

@@ -23,7 +23,7 @@ class SendMail
     {
         $this->mail = new PHPMailer(true);
         $this->informations = $informations;
-    }
+    } 
 
     public function send()
     {

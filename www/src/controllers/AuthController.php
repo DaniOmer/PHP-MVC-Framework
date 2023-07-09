@@ -1,7 +1,7 @@
 <?php
 
 namespace App\controllers;
-
+ 
 use App\controllers\Controller;
 use App\core\Application;
 use App\core\exception\NotFoundException;

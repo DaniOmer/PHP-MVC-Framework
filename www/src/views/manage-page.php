@@ -44,7 +44,7 @@ use App\core\Application;
                         </td>
                         <?php endif ?>
                     </tr>
-                <?php endforeach ?>
+                <?php endforeach ?> 
             </tbody>
         </table>
     </div>

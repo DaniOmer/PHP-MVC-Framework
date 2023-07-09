@@ -15,7 +15,7 @@ use App\core\Application;
     <main>
     <?php if (Application::$app->session->getFlash('alerte')): ?>
         <div>
-            <?= Application::$app->session->getFlash('alerte') ?>
+            <?= Application::$app->session->getFlash('alerte')  ?>
         </div>
     <?php endif ?>
         {{content}}

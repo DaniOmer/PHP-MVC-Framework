@@ -3,7 +3,7 @@
 namespace App\core\form;
 
 class SelectField extends BaseField
-{
+{ 
     public array $options = [];
 
     public function __construct($model, string $attribute, array $options)

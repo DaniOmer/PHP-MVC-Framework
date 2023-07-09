@@ -25,7 +25,7 @@ class Session
             'remove' => false,
             'value' => $message
         ];
-    }
+    } 
 
     public function getFlash($key)
     {

@@ -21,7 +21,7 @@ class ResetPasswordFromDashboard extends CoreModel
             'confirmPassword' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
         ];
     }
-
+ 
     public function labels(): array
     {
         return [

@@ -14,7 +14,7 @@
 </section>
 
 <script>
-    let cardCounter = 1;
+    let cardCounter = 1; 
 
     // Fonction pour cloner un formulaire de carte de destination
     function cloneDestinationForm() {

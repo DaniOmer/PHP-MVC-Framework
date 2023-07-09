@@ -1,7 +1,7 @@
 <?php
 
 namespace App\core\middlewares;
-
+ 
 use App\core\Application;
 use App\core\exception\ForbiddenException;
 

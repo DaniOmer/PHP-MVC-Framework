@@ -40,7 +40,7 @@ class JWT
         if (!$this->verifyClaims($payload)) {
             return false;
         }
-
+ 
         // On génère un token de vérification
         $verifToken = $this->generate($header, $payload, 0);
 

@@ -1,7 +1,7 @@
 <?php
 
 use App\core\Application;
-
+ 
 class m0002_page
 {
     public function up()

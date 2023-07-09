@@ -11,7 +11,7 @@ class ResetPasswordForm extends CoreModel
 {
     protected string $password = '';
     protected string $confirmPassword = '';
-
+ 
     public function rules(): array
     {
         return [
