@@ -8,7 +8,7 @@ PASSWORD = Activez la double authentification gmail. Ensuite générez un mot de
 
 ### Lancement en local
 
-docker composer up -d
+docker compose up -d
 
 ### Executer les migrations pour créer les tables
 
