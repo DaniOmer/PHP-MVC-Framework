@@ -7,7 +7,6 @@ use App\controllers\FrontController;
 use App\core\exception\ForbiddenException;
 use App\models\Page;
 use App\models\User;
-use Firebase\JWT\JWT;
 
 /**
  * class Application
@@ -32,7 +31,7 @@ class Application
     public ConnectDB $db;
     public FrontController $frontController;
     public ?User $user = null;
-    public Page $page;
+    public ?Page $page = null;
     public string $baseUrl;
     public string $jwtSecretKey;
 
@@ -47,7 +46,7 @@ class Application
         $this->session = new Session();
         $this->view = new View();
 
-        $this->db = new ConnectDB($config['db']);
+        $this->db = ConnectDB::getInstance($config['db']);
         $this->userClass = $config['userClass'];
         $this->baseUrl = $config['baseUrl'];
         $this->jwtSecretKey = $config['jwt_secret_key'];
@@ -74,14 +73,23 @@ class Application
     public function isGuest()
     {
         $token = $this->session->get('authToken');
+        $jwt = new JWT($this->jwtSecretKey);
         if (!empty($token)) {
             try {
-                $decoded = JWT::decode($token, $this->jwtSecretKey, ['HS512']);
-                $userId = $decoded->userId;
-                $role = $decoded->userRole;
 
-                if(User::getOneBy('id', $userId) && $userId === $this->user->getId()){
-                    return false;
+                $isValid = $jwt->check($token);
+                if ($isValid) {
+                    // Le JWT est valide
+                    // Vous pouvez extraire les informations du payload si nécessaire
+                    $payload = $jwt->getPayload($token);
+                    $userId = $payload['user_id'];
+                    $user = User::getOneBy('id', $userId);
+
+                    if($user){
+                        return false;
+                    }
+                } else {
+                    return true;
                 }
             } catch (\Exception $e) {
                 return true;
@@ -90,24 +98,39 @@ class Application
         return true;
     }
 
+    public function isAdmin()
+    {
+        if(Application::$app->user && Application::$app->user->getRole() === 'admin'){
+            return true;
+        }
+        return false;
+    }
+
+    public function isEditor()
+    {
+        if(Application::$app->user && Application::$app->user->getRole() === 'editor'){
+            return true;
+        }
+        return false;
+    }
+
 
     public function generateUserToken(User $user)
     {
-        $issuedAt   = new \DateTimeImmutable();
-        $expire = $issuedAt->modify('+3 hours')->getTimestamp();      // Add 60 seconds
-        $serverName = "your.domain.name";
+        $jwt = new JWT($this->jwtSecretKey);
 
-        $data = [
-            'iat'  => $issuedAt->getTimestamp(),         // Issued at: time when the token was generated
-            'iss'  => $serverName,                       // Issuer
-            'nbf'  => $issuedAt->getTimestamp(),         // Not before
-            'exp'  => $expire,                           // Expire
-            'userId' => $user->getId(),                     // User id
-            'userRole' => $user->getRole(),                     // User role
+        $header = [
+            'alg' => 'HS512', 
+            'typ' => 'JWT'
+        ];
+        $payload = [
+            'user_id' => $user->getId(), 
+            'role' => $user->getRole(),
         ];
 
-        $token = JWT::encode($data, $this->jwtSecretKey, 'HS512');;
-        return $token;
+        $jwtToken = $jwt->generate($header, $payload);
+
+        return $jwtToken;
     }
 
     
@@ -116,7 +139,7 @@ class Application
         try{
             echo $this->router->resolve();
         }catch(\Exception $e){
-            //$this->response->setStatusCode($e->getCode());
+            $this->response->setStatusCode($e->getCode());
             echo $this->view->renderView('_error', [
                 'exception' => $e
             ]);

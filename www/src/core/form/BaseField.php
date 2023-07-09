@@ -52,12 +52,22 @@ abstract class BaseField
         $words = explode('_', $key);
         $camelCaseWords = array_map('ucfirst', $words);
         $camelCaseKey = lcfirst(implode('', $camelCaseWords));
-        return $camelCaseKey;
+
+        // Supprimez les crochets pour obtenir le nom d'attribut valide
+        $cleanedKey = rtrim($camelCaseKey, '[]');
+
+        return $cleanedKey;
     }
 
     public function getFieldValue()
     {
         $value = $this->model->{'get' . ucfirst($this->getAttributeName($this->attribute))}();
+
+        // Vérifiez si la valeur est un tableau et retournez-le directement
+        if (is_array($value)) {
+            return $value;
+        }
+
         return $value;
     }
 }

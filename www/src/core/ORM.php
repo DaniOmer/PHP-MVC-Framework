@@ -50,7 +50,6 @@ abstract class ORM extends Model{
                 }
             }
         }
-
         return $objet;
     }
 
@@ -122,10 +121,9 @@ abstract class ORM extends Model{
             return false;
         }
 
-        $query = "DELETE FROM " . $this->table . " WHERE id = :id OR admin_id = :adminId";
+        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
         $queryPrepared = $this->pdo->prepare($query);
         $queryPrepared->bindValue(':id', $id);
-        $queryPrepared->bindValue(':adminId', $id);
         $queryPrepared->execute();
 
         return true;

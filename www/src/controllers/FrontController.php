@@ -7,6 +7,7 @@ use App\core\Request;
 use App\models\ContactForm;
 use App\models\Page;
 
+
 /**
  * class Front
  * 
@@ -17,13 +18,14 @@ class FrontController extends Controller
 
     public function __construct()
     {
-        
-        $pages = Page::getAll();
-        foreach ($pages as $page) {
-            $this->layoutParams[] = [
-                'value' => $page->getTitle(),
-                'url' => $page->getPageUri()
-            ];
+        $pages = Page::getAllBy('on_menu', 'show');
+        if($pages){
+            foreach ($pages as $page) {
+                $this->layoutParams[] = [
+                    'value' => $page->getTitle(),
+                    'url' => $page->getPageUri()
+                ];
+            }
         }
     }
 
@@ -31,11 +33,23 @@ class FrontController extends Controller
     public function home(Request $request)
     {
         $pageModel = new Page();
-        $page = $pageModel::getOneBy('page_uri', $request->getpath());
+        $uri = trim($request->getpath(), '/');
+        $page = $pageModel::getOneBy('page_uri', $uri);
 
         if($page){
-            return $this->render('home', [
-                'page' => $page
+            $templateName = $page->getTemplate();
+            $templateClass = 'App\models\\'.ucfirst($templateName);
+            $oneTemplate = new $templateClass();
+
+            $template = $oneTemplate->getOneBy('page_id', $page->getId());
+
+            if(!$template){
+                Application::$app->response->redirect('/dashboard/template/'.$templateName.'?temp='.$page->getId().'');
+                Application::$app->session->setFlash('alerte', 'Please complete your page template setup and try again !');
+            }
+            return $this->render($templateName, [
+                'page' => $page,
+                'template' => $template
             ]);
         }
         return $this->render('home');

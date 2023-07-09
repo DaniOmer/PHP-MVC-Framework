@@ -9,29 +9,34 @@ use App\core\ORM;
 class Page extends ORM
 {
     protected int $id = -1;
-    protected int $user_id ;
+    protected int $user_id = -1 ;
     protected string $title = '';
-    protected string $sub_title = '';
-    protected string $content = '';
+    protected string $template = '';
     protected string $page_uri = '';
     protected string $seo_title = '';
     protected string $seo_keywords = '';
     protected string $seo_description = '';
+    protected string $on_menu = '';
     protected $date_inserted;
     protected $date_updated;
 
 
     public function rules(): array
     {
+        $currentUser = Application::$app->user;
+        $pageOwnerId = $currentUser->getRole() === 'admin' ? $currentUser->getId() : $currentUser->getAdminId();
+
+        // Check for update later
+        $uniqueRule = ($this->getUserId() === $pageOwnerId || $this->isNewRecord())  ? [self::RULE_UNIQUE, 'class' => self::class] : '';
 
         return [
-            'seo_title' => [self::RULE_REQUIRED],
-            'seo_keywords' => [self::RULE_REQUIRED],
-            'seo_description' => [self::RULE_REQUIRED],
-            'title' => [self::RULE_REQUIRED],
-            'sub_title' => [self::RULE_REQUIRED],
-            'content' => [self::RULE_REQUIRED],
-            'page_uri' => [self::RULE_REQUIRED],
+            'seo_title' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_title']],
+            'seo_keywords' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_keywords']],
+            'seo_description' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'seo_description']],
+            'title' => [self::RULE_REQUIRED, $uniqueRule],
+            'template' => [self::RULE_REQUIRED],
+            'page_uri' => [self::RULE_REQUIRED, [self::RULE_TEXT, 'text' => 'page_uri'], $uniqueRule],
+            'on_menu' => [self::RULE_REQUIRED],
         ];
     }
 
@@ -42,9 +47,9 @@ class Page extends ORM
             'seo_keywords' => 'SEO Keywords',
             'seo_description' => 'SEO Description',
             'title' => 'Page title',
-            'sub_title' => 'Page subtitle',
-            'content' => 'Page content',
+            'template' => 'Page template',
             'page_uri' => 'Page URI',
+            'on_menu' => 'On menu'
         ];
     }
 
@@ -56,12 +61,12 @@ class Page extends ORM
             // C'est un nouvel enregistrement
             $this->setUserId(Application::$app->user->getId());
             $this->setTitle($this->getTitle());
-            $this->setSubTitle($this->getSubTitle());
-            $this->setContent($this->getContent());
+            $this->setTemplate($this->getTemplate());
             $this->setPageUri($this->getPageUri());
             $this->setSeoTitle($this->getSeoTitle());
             $this->setSeoKeywords($this->getSeoKeywords());
-            $this->setPageUri($this->getPageUri());
+            $this->setOnMenu($this->getOnMenu());
+
 
             $currentTimestamp = time();
             $this->date_inserted = date('Y-m-d H:i:s', $currentTimestamp);
@@ -71,11 +76,6 @@ class Page extends ORM
             $this->date_updated = date('Y-m-d H:i:s', time());
         }
         return parent::save();
-    }
-
-    public static function getTable(): string
-    {
-        return "esgi_page";
     }
 
     public function primaryKey(): string
@@ -139,37 +139,19 @@ class Page extends ORM
     }
 
     /**
-     * Get the value of subTitle
+     * Get the value of template
      */
-    public function getSubTitle(): string
+    public function getTemplate(): string
     {
-        return $this->sub_title;
+        return $this->template;
     }
 
     /**
-     * Set the value of subTitle
+     * Set the value of template
      */
-    public function setSubTitle(string $subTitle): self
+    public function setTemplate(string $template): self
     {
-        $this->sub_title = $subTitle;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of content
-     */
-    public function getContent(): string
-    {
-        return $this->content;
-    }
-
-    /**
-     * Set the value of content
-     */
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
+        $this->template = $template;
 
         return $this;
     }
@@ -245,4 +227,23 @@ class Page extends ORM
 
         return $this;
     }
+
+    /**
+     * Set the value of on_menu
+     */
+    public function setOnMenu(string $on_menu): self
+    {
+        $this->on_menu = $on_menu;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of seoDescription
+     */
+    public function getOnMenu(): string
+    {
+        return $this->on_menu;
+    }
+
 }

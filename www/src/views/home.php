@@ -8,5 +8,3 @@ if(isset($page)){
 
 ?>
 
-<h1><?= $page->getTitle() ?? '' ?></h1>
-<p><?= $page->getContent() ?? '' ?></p>

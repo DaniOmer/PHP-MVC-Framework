@@ -22,7 +22,7 @@ class SelectField extends BaseField
 
         // Ajouter une option par défaut sélectionnée
         $defaultSelected = $this->getFieldValue() ? '' : 'selected';
-        $optionsHtml = sprintf('<option value="" %s>Select user role</option>', $defaultSelected) . $optionsHtml;
+        $optionsHtml = sprintf('<option value="" %s>Pick One</option>', $defaultSelected) . $optionsHtml;
 
         return sprintf('<select name="%s">%s</select>', $this->attribute, $optionsHtml);
     }
