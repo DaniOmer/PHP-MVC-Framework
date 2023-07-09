@@ -15,7 +15,7 @@ class Controller
      */
     protected array $middlewares = [];
 
-    // A gérer 
+    /* A gérer 
     public function __construct()
     {
         $this->loadMenuParams();
@@ -33,7 +33,7 @@ class Controller
             }
         }
     }
-    // À gérer 
+    À gérer  */
 
     
     public function setLayout($layout)

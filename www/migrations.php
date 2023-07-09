@@ -1,10 +1,8 @@
 <?php
 
-use App\core\Application;
-use Dotenv\Dotenv;
-
 require "./vendor/autoload.php";
 
+use App\core\Application;
 
 $config = [
     'db' => [
@@ -21,5 +19,4 @@ $config = [
 ];
  
 
-$app = new Application(__DIR__, $config);
-$app->db->applyMigrations();
+Application::$app->db->applyMigrations();
