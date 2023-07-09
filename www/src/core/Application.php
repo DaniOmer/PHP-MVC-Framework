@@ -3,6 +3,10 @@
 namespace App\core;
 
 use App\controllers\Controller;
+use App\controllers\FrontController;
+use App\core\exception\ForbiddenException;
+use App\models\User;
+use Firebase\JWT\JWT;
 
 /**
  * class Application
@@ -14,6 +18,7 @@ class Application
     public static string $ROOT_DIR;
 
     public string $layout = 'front';
+    public array $layoutParams;
     public string $userClass;
     public static Application $app;
     public Router $router;
@@ -21,22 +26,31 @@ class Application
     public Response $response;
     public ?Controller $controller = null;
     public Session $session;
+    public View $view;
+    public FrontController $frontController;
 
     public ConnectDB $db;
-    public ?ORM $user = null;
+    public ?User $user = null;
+    public string $baseUrl;
+    public string $jwtSecretKey;
 
 
     public function __construct($rootPath, array $config)
     {
-        $this->userClass = $config['userClass'];
         self::$ROOT_DIR = $rootPath;
         self::$app = $this;
         $this->request = new Request();
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
         $this->session = new Session();
+        $this->view = new View();
+        $this->frontController = new FrontController();
 
         $this->db = new ConnectDB($config['db']);
+        $this->userClass = $config['userClass'];
+        $this->baseUrl = $config['baseUrl'];
+        $this->jwtSecretKey = $config['jwt_secret_key'];
+        $this->layoutParams = $this->frontController->layoutParams;
         
         $userClass = $this->userClass;
         $userInstance = new $userClass;
@@ -48,13 +62,60 @@ class Application
         }else{
             $this->user = null;
         }
+        
     }
 
     
+    public function isGuest()
+    {
+        $token = $this->session->get('authToken');
+        if (!empty($token)) {
+            try {
+                $decoded = JWT::decode($token, $this->jwtSecretKey, ['HS512']);
+                $userId = $decoded->userId;
+                $role = $decoded->userRole;
 
+                if(User::getOneBy('id', $userId) && $userId === $this->user->getId()){
+                    return false;
+                }
+            } catch (\Exception $e) {
+                return true;
+            }
+        }
+        return true;
+    }
+
+
+    public function generateUserToken(User $user)
+    {
+        $issuedAt   = new \DateTimeImmutable();
+        $expire = $issuedAt->modify('+3 hours')->getTimestamp();      // Add 60 seconds
+        $serverName = "your.domain.name";
+
+        $data = [
+            'iat'  => $issuedAt->getTimestamp(),         // Issued at: time when the token was generated
+            'iss'  => $serverName,                       // Issuer
+            'nbf'  => $issuedAt->getTimestamp(),         // Not before
+            'exp'  => $expire,                           // Expire
+            'userId' => $user->getId(),                     // User id
+            'userRole' => $user->getRole(),                     // User role
+        ];
+
+        $token = JWT::encode($data, $this->jwtSecretKey, 'HS512');;
+        return $token;
+    }
+
+    
     public function run()
     {
-        echo $this->router->resolve();
+        try{
+            echo $this->router->resolve();
+        }catch(\Exception $e){
+            $this->response->setStatusCode($e->getCode());
+            echo $this->view->renderView('_error', [
+                'exception' => $e
+            ]);
+        }
     }
 
     public function getController()
@@ -62,10 +123,12 @@ class Application
         return $this->controller;
     }
 
+
     public function setController($controller): void
     {
         $this->controller = $controller;
     }
+
 
     public function login(ORM $user)
     {
@@ -76,9 +139,10 @@ class Application
         return true;
     }
 
-    public function logout(ORM $user)
+    public function logout()
     {
         $this->user = null;
+        $this->session->remove('authToken');
         $this->session->remove('user');
     }
 

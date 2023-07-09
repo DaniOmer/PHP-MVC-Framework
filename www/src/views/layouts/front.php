@@ -1,10 +1,5 @@
 <?php
     use App\core\Application;
-    /*
-    echo "<pre>";
-    var_dump(Application::$app->user);
-    echo "pre";
-    */
 ?>
 
 
@@ -14,7 +9,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our application front office</title>
+    <meta name="keywords" content="<?=$this->keywords?>">
+    <meta name="description" content="<?=$this->description?>">
+    <title><?= $this->title ?></title>
 </head>
 <body>
     <header style="width:80%; display:flex; justify-content:flex-end; margin:0 auto">
@@ -23,15 +20,30 @@
                 <li style="list-style:none; margin-right:20px;">
                     <a href="/">Front office</a>
                 </li>
-                <li style="list-style:none; margin-left:10px"><a href="/" style="text-decoration: none;">Home</a></li>
-                <li style="list-style:none; margin-left:10px"><a href="/about" style="text-decoration: none;">About</a></li>
-                <li style="list-style:none; margin-left:10px"><a href="/contact" style="text-decoration: none;">Contact</a></li>
-                <li style="list-style:none; margin-left:10px"><a href="/faq" style="text-decoration: none;">Faq</a></li>
-            </ul>
+                <li style="list-style:none; margin-left:10px"><a href="/" style="text-decoration: none; color:black">Home</a></li>
+                <?php foreach($layoutParams as $item): ?>
+                <li style="list-style:none; margin-left:10px"><a href="<?= $item['url'] ?>" style="text-decoration: none; color:black"><?= $item['value'] ?></a></li>
+                <?php endforeach ?>
+                </ul>
+            <?php if(Application::$app->isGuest()): ?>
             <ul style="display:flex; justify-content:space-between; list-style:none">
-                <li style="list-style:none; margin-left:10px"><a href="/login" style="text-decoration: none;">Login</a></li>
-                <li style="list-style:none; margin-left:10px"><a href="/register" style="text-decoration: none;">Register</a></li>
+                <li style="list-style:none; margin-left:10px"><a href="/login" style="text-decoration: none; color:black">Login</a></li>
+                <li style="list-style:none; margin-left:10px"><a href="/register" style="text-decoration: none; color:black">Register</a></li>
             </ul>
+            <?php else: ?>
+            <ul style="display:flex; justify-content:center; list-style:none">
+                <li style="list-style:none; margin-left:10px">
+                    <a href="/dashboard" style="text-decoration: none; color:black">
+                        Dashboard
+                    </a>
+                </li>
+                <li style="list-style:none; margin-left:10px">
+                    <a href="/logout" style="text-decoration: none; color:black">
+                        <?= Application::$app->user->getDisplayName()?> (Logout)
+                    </a>
+                </li>
+            </ul>
+            <?php endif ?>
         </nav>
     </header>
 
@@ -39,6 +51,11 @@
         <?php if (Application::$app->session->getFlash('success')): ?>
         <div>
             <?= Application::$app->session->getFlash('success') ?>
+        </div>
+        <?php endif ?>
+        <?php if (Application::$app->session->getFlash('alerte')): ?>
+        <div>
+            <?= Application::$app->session->getFlash('alerte') ?>
         </div>
         <?php endif ?>
         {{content}}

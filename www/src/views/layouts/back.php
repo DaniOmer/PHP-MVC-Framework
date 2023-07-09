@@ -1,3 +1,11 @@
+<?php
+
+use App\core\Application;
+
+$message = Application::$app->session->getFlash('success') ?? Application::$app->session->getFlash('alerte');
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,22 +15,64 @@
     <title>Our application front office</title>
 </head>
 <body>
+    <?php if (Application::$app->user) : ?>
     <header style="width:80%; display:flex; justify-content:flex-end; margin:0 auto">
-        <nav style="width:30%;">
+        <nav style="width:50%;">
             <ul style="display:flex; justify-content:space-between; list-style:none">
                 <li style="list-style:none; margin-right:35px;">
                     <a href="/">Back office</a>
                 </li>
-                <li style="list-style:none"><a href="/" style="text-decoration: none; color:black;">Home</a></li>
-                <li style="list-style:none"><a href="/about" style="text-decoration: none; color:black;">About</a></li>
-                <li style="list-style:none"><a href="/contact" style="text-decoration: none; color:black;">Contact</a></li>
-                <li style="list-style:none"><a href="/faq" style="text-decoration: none; color:black;">Faq</a></li>
+                <li style="list-style:none"><a href="/" style="text-decoration: none; color:black;">My website</a></li>
+                <li style="list-style:none; margin-left:10px">
+                    <a href="/logout" style="text-decoration: none; color:black">
+                        <?=Application::$app->user->getDisplayName()?> (Logout)
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>
 
     <main>
-        {{content}}
+        <section>
+            <aside>
+                <nav>
+                    <ul style="list-style:none">
+                        <li>
+                            Profile
+                            <ul>
+                                <li><a href="/dashboard/profile/edit">Account details</a></li>
+                                <li><a href="/dashboard/profile/reset-password">Account security</a></li>
+                            </ul>
+                        </li>
+                        <?php if(Application::$app->user->getRole() === 'admin'): ?>
+                        <li>
+                            <a href="/dashboard/users">Users</a>
+                            <ul>
+                                <li><a href="/dashboard/users/create">Add user</a></li>
+                                <li><a href="/dashboard/users/manage">Manage users</a></li>
+                            </ul>
+                        </li>
+                        <?php endif ?>
+                        <li><a href="/dashboard/page">Pages</a></li>
+                        <li><a href="/dashboard/comment">Comments</a></li>
+                        <li><a href="/dashboard/chart">Chart</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <article>
+                <?php if($message): ?>
+                <div>
+                    <?= $message ?>
+                </div>
+                <?php endif ?>
+                
+                {{content}}
+            </article>
+        </section>
     </main>
+    <?php else: ?>
+        {{content}}
+    <?php endif ?>
 </body>
 </html>

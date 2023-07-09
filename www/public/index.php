@@ -2,6 +2,7 @@
 
 use App\controllers\AuthController;
 use App\controllers\FrontController;
+use App\controllers\BackController;
 use App\core\Application;
 use Dotenv\Dotenv;
 
@@ -22,21 +23,55 @@ $config = [
         'db_user' =>  $_ENV['DB_USER'],
         'db_pwd' =>  $_ENV['DB_PWD']
     ],
-    'userClass' => App\models\User::class
+    'userClass' => App\models\User::class,
+    'baseUrl' => $_ENV['BASE_URL'],
+    'jwt_secret_key' => $_ENV['JWT_SECRET_KEY']
 ];
 
 
 $app = new Application(dirname(__DIR__), $config);
 
 $app->router->get('/', [FrontController::class, 'home']);
-$app->router->get('/about', [FrontController::class, 'about']);
+$app->router->get('/{slug}', [FrontController::class, 'home']);
+$app->router->post('/{slug}', [FrontController::class, 'home']);
+
 $app->router->get('/contact', [FrontController::class, 'contact']);
-$app->router->get('/faq', [FrontController::class, 'faq']);
+$app->router->post('/contact', [FrontController::class, 'contact']);
+
+
+$app->router->get('/dashboard/profile', [BackController::class, 'profile']);
+$app->router->post('/dashboard/profile', [BackController::class, 'profile']);
+$app->router->get('/dashboard/users', [BackController::class, 'users']);
+$app->router->post('/dashboard/users', [BackController::class, 'users']);
+$app->router->get('/dashboard/page', [BackController::class, 'page']);
+$app->router->post('/dashboard/page', [BackController::class, 'page']);
+$app->router->get('/dashboard/comment', [BackController::class, 'comment']);
+$app->router->post('/dashboard/comment', [BackController::class, 'comment']);
+$app->router->get('/dashboard/chart', [BackController::class, 'chart']);
+$app->router->post('/dashboard/chart', [BackController::class, 'chart']);
+
+$app->router->get('/dashboard/users/create', [BackController::class, 'create']);
+$app->router->post('/dashboard/users/create', [BackController::class, 'create']);
+$app->router->get('/dashboard/users/manage', [BackController::class, 'manage']);
+$app->router->post('/dashboard/users/manage', [BackController::class, 'manage']);
+
+$app->router->get('/dashboard/profile/edit', [BackController::class, 'profile']);
+$app->router->post('/dashboard/profile/edit', [BackController::class, 'profile']);
+$app->router->get('/dashboard/profile/reset-password', [BackController::class, 'reset']);
+$app->router->post('/dashboard/profile/reset-password', [BackController::class, 'reset']);
+
 
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
 $app->router->get('/register', [AuthController::class, 'register']);
 $app->router->post('/register', [AuthController::class, 'register']);
+$app->router->get('/logout', [AuthController::class, 'logout']);
+$app->router->get('/verify', [AuthController::class, 'verify']);
+$app->router->get('/recover-password', [AuthController::class, 'recover']);
+$app->router->post('/recover-password', [AuthController::class, 'recover']);
+$app->router->get('/reset-password', [AuthController::class, 'reset']);
+$app->router->post('/reset-password', [AuthController::class, 'reset']);
+$app->router->get('/dashboard', [AuthController::class, 'dashboard']);
 
 
 $app->run();

@@ -2,6 +2,8 @@
 
 namespace App\core;
 use App\core\Application;
+use App\core\exception\NotFoundException;
+
 /**
  * class Router
  * 
@@ -44,63 +46,50 @@ class Router
         $method = $this->request->method();
 
         $callback = $this->routes[$method][$path] ?? false;
-        if($callback === false){
-            $this->response->setStatusCode(404);
-            return $this->renderView('_404');
+        if ($callback === false) {
+            foreach ($this->routes[$method] as $routePath => $routeCallback) {
+                // Vérifier si le chemin correspond à un slug
+                if ($this->matchSlugRoute($routePath, $path)) {
+                    $callback = $routeCallback;
+                    break;
+                }
+            }
+            // Vérifier à nouveau si aucun callback n'a été trouvé
+            if ($callback === false) {
+                throw new NotFoundException();
+            }
         }
         
         if(is_string($callback)){
-            return $this->renderView($callback);
+            return Application::$app->view->renderView($callback);
         }
 
         if(is_array($callback)){
-            Application::$app->controller = new $callback[0];
-            $callback[0] = Application::$app->controller;
+            /** @var \App\core\Controller $controller */
+            $controller = new $callback[0];
+            Application::$app->controller = $controller;
+            $controller->action = $callback[1];
+            $callback[0] = $controller;
+
+            foreach($controller->getMiddlewares() as $middleware){
+                $middleware->execute();
+            }
         }
 
         return call_user_func($callback, $this->request, $this->response);
     }
-    
-    /**
-     * renderView
-     *
-     * @param  mixed $view
-     * @param  mixed $params
-     */
-    public function renderView($view, $params = [])
+
+    private function matchSlugRoute($routePath, $path)
     {
-        $layoutContent = $this->layoutContent();
-        $viewContent = $this->renderOnlyView($view, $params);
-        return str_replace('{{content}}', $viewContent, $layoutContent);
-        include_once Application::$ROOT_DIR."/src/views/$view.php";
-    }
-   
-    
-    protected function layoutContent()
-    {
-        $layout = Application::$app->layout;
-        if (Application::$app->controller){
-            $layout = Application::$app->controller->layout;
-        }
-    
-        ob_start();
-        include_once Application::$ROOT_DIR."/src/views/layouts/$layout.php";
-        return ob_get_clean();
+        // Convertir la route avec slug en une expression régulière
+        $routePath = preg_replace('/\//', '\/', $routePath);
+        $routePath = preg_replace('/\{([a-zA-Z0-9]+)\}/', '([^\/]+)', $routePath);
+        $routePath = '/^' . $routePath . '$/';
+
+        // Vérifier si le chemin correspond à la route avec slug
+        return preg_match($routePath, $path);
     }
 
-    
-    protected function renderOnlyView($view, $params)
-    {
-        foreach($params as $key => $value){
-            $$key = $value;
-        }
-        
-        ob_start();
-        include_once Application::$ROOT_DIR."/src/views/$view.php";
-        return ob_get_clean();
-    }
 }
-
-
 
 ?>

@@ -1,25 +1,32 @@
 <?php
 namespace App\models;
+
+use App\core\Application;
 use App\core\ORM;
+use App\core\UserModel;
 
-class User extends ORM
+class User extends UserModel
 {
-
     public $id = -1;
+    public $admin_id = -1;
+    protected $role;
     protected $firstname;
     protected $lastname;
     protected $email;
-    public $password;
+    protected $password;
     protected $confirmPassword;
-    /*protected ?int $date_inserted = null;
-    protected ?int $date_updated = null; */
-    protected $status = 0;
+    protected $date_inserted;
+    protected $date_updated;
+    protected $verify_token;
+    protected $verify_token_used;
+    protected $reset_token;
+    protected $reset_token_used;
+
 
     public function __construct()
     {
+        $this->verify_token = bin2hex(random_bytes(32));
         parent::__construct();
-        /*$this->setDateInserted(time());
-        $this->setDateUpdated(time()); */
     }
 
     public function primaryKey(): string
@@ -30,11 +37,12 @@ class User extends ORM
     public function rules(): array
     {
         return [
-            'firstname' => [self::RULE_REQUIRED],
-            'lastname' => [self::RULE_REQUIRED],
+            'firstname' => [self::RULE_REQUIRED, [self::RULE_NAME, 'name' => 'firstname']],
+            'lastname' => [self::RULE_REQUIRED, [self::RULE_NAME, 'name' => 'lastname']],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [
                 self::RULE_UNIQUE, 'class' => self::class
             ]],
+            // 'role' => [self::RULE_SELECT],
             'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8]],
             'confirmPassword' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
         ];
@@ -42,10 +50,36 @@ class User extends ORM
 
 
     public function saveData (){
-        $this->firstname = ucwords(strtolower(trim($this->firstname)));
-        $this->lastname = strtoupper(trim($this->lastname));
-        $this->email = strtolower(trim($this->email));
-        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        
+        if (!$this->getOneBy('email', $this->getEmail())) {
+            // C'est un nouvel enregistrement
+            $this->setFirstname($this->getFirstname());
+            $this->setLastname($this->getLastname());
+            $this->setEmail($this->getEmail());
+            $this->setPassword($this->getPassword());
+
+            $currentTimestamp = time();
+            $this->date_inserted = date('Y-m-d H:i:s', $currentTimestamp);
+            $this->date_updated = date('Y-m-d H:i:s', $currentTimestamp);
+
+            if (Application::$app->user !== null && Application::$app->user->getAdminId() === -1) {
+                // Utilisateur actuel est un admin
+                if ($this->isNewRecord) {
+                    // Nouvel enregistrement, définissez l'admin_id sur l'ID de l'admin actuel
+                    $this->setAdminId(Application::$app->user->getId());
+                    $this->setRole($this->getRole());
+                } else {
+                    // Mise à jour d'un enregistrement existant, conservez l'admin_id actuel
+                    $this->setAdminId($this->getAdminId());
+                }
+            } else {
+                // Utilisateur actuel n'est pas un admin
+                $this->setRole('admin');
+            }
+        } else {
+            // Ce n'est pas un nouvel enregistrement, mettez uniquement à jour la propriété date_updated
+            $this->date_updated = date('Y-m-d H:i:s', time());
+        }
         return parent::save();
     }
 
@@ -55,19 +89,27 @@ class User extends ORM
         return [
             'firstname' => 'First name',
             'lastname' => 'Last name',
-            'email' => 'Your Email address',
+            'email' => 'Email address',
+            'role' => 'User role',
             'password' => 'Password',
             'confirmPassword' => 'Confirm password',
         ];
     }
 
+    public function getDisplayName(): string
+    {
+        return $this->firstname.' '.$this->lastname;
+    }
 
 
-
-    
     public function __toString(): string
     {
         return serialize($this);
+    }
+
+    public function isNewRecord()
+    {
+        return $this->isNewRecord;
     }
 
     /**
@@ -81,15 +123,45 @@ class User extends ORM
     public function setId(int $id): void
     {
         $this->id = $id;
+        $this->isNewRecord = ($id <= 0);
+    }
+
+    /**
+     * @return int
+     */
+    public function getAdminId(): int
+    {
+        return $this->admin_id;
+    }
+
+    public function setAdminId(int $admin_id): void
+    {
+        $this->admin_id = $admin_id;
     }
 
 
     /**
      * @return string
      */
+    public function getRole(): string
+    {
+        return $this->role ?? '';
+    }
+
+    /**
+     * @param string $role
+     */
+    public function setRole(string $role): void
+    {
+        $this->role = strtolower(trim($role));
+    }
+
+    /**
+     * @return string
+     */
     public function getFirstname(): string
     {
-        return $this->firstname;
+        return $this->firstname ?? '';
     }
 
     /**
@@ -105,7 +177,7 @@ class User extends ORM
      */
     public function getLastname(): string
     {
-        return $this->lastname;
+        return $this->lastname ?? '';
     }
 
     /**
@@ -121,7 +193,7 @@ class User extends ORM
      */
     public function getEmail(): string
     {
-        return $this->email;
+        return $this->email ?? '';
     }
 
     /**
@@ -137,7 +209,7 @@ class User extends ORM
      */
     public function getPassword(): string
     {
-        return $this->password;
+        return $this->password ?? '';
     }
 
     /**
@@ -149,20 +221,61 @@ class User extends ORM
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getStatus(): int
+    public function getConfirmPassword(): string
     {
-        return $this->status;
+        return $this->confirmPassword ?? '';
     }
 
     /**
-     * @param int $status
+     * @return string $token
      */
-    public function setStatus(int $status): void
+    public function getVerifyToken(): string
     {
-        $this->status = $status;
+        return $this->verify_token ?? '';
     }
+
+    /**
+     * @return string $token
+     */
+    public function getResetToken(): bool
+    {
+        return $this->reset_token ?? '';
+    }
+
+     /**
+     * @return void $state
+     */
+    public function setVerifyTokenUsed(bool $state): void
+    {
+        $this->verify_token_used = $state;
+    }
+
+     /**
+     * @return bool
+     */
+    public function getVerifyTokenUsed(): bool
+    {
+        return $this->verify_token_used ?? false;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setResetTokenUsed(bool $state): void
+    {
+        $this->reset_token_used = $state;
+    }
+
+     /**
+     * @return bool
+     */
+    public function getResetTokenUsed(): bool
+    {
+        return $this->reset_token_used ?? false;
+    }
+
 
 }
 

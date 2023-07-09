@@ -3,50 +3,47 @@
 namespace App\core\form;
 
 use App\core\Model;
-use App\models\User;
 
-class Field extends User
+abstract class BaseField
 {
-    public const TYPE_TEXT = 'text';
-    public const TYPE_PASSWORD = 'password';
-    public const TYPE_NUMBER = 'number';
-    public const TYPE_EMAIL = 'email';
-
-    public string $type;
     public Model $model;
     public string $attribute;
-
+    public ?string $value = null;
 
     public function __construct($model, string $attribute)
     {
-        $this->type = self::TYPE_TEXT;
         $this->model = $model;
         $this->attribute = $attribute;
     }
+
+    abstract public function renderInput(): string;
 
     public function __toString()
     {
         return sprintf('
         <div style="display:flex; flex-direction:column; margin-bottom:4px;">
             <label>%s</label>
-            <input style="padding:5px;" type="%s" name="%s" value="%s" class="%s">
+            %s
         </div>
         <div style="color:red; font-size:12px; margin-bottom:10px; margin-top:0;" class="invalid-feedback">
             %s
         </div>
         ', 
             $this->model->getLabel($this->attribute),
-            $this->type,
-            $this->attribute,
-            $this->model->{$this->attribute},
-            $this->model->hasError($this->attribute) ? 'is-invalid' : '',
+            $this->renderInput(),
             $this->model->getFirstError($this->attribute)
     );
     }
 
-    public function passwordField()
+    public function setValue($value)
     {
-        $this->type = self::TYPE_PASSWORD;
+        $this->value = $value;
         return $this;
+    }
+
+    public function getFieldValue()
+    {
+        $value = $this->model->{'get' . ucfirst($this->attribute)}();
+        return $value;
     }
 }

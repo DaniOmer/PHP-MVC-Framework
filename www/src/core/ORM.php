@@ -5,6 +5,7 @@ abstract class ORM extends Model{
 
     private $table;
     private $pdo;
+    protected $isNewRecord = true;
     
     
     public function __construct(){
@@ -21,10 +22,8 @@ abstract class ORM extends Model{
     {
         $classExploded = explode("\\", get_called_class());
         return "esgi_".strtolower(end($classExploded));
-        
     }
 
-  
 
     public static function populate(int $id)
     {
@@ -35,12 +34,81 @@ abstract class ORM extends Model{
     public static function getOneBy($column, $value)
     {
         $connectDb = Application::$app->db;
-        $queryPrepared = $connectDb->getPdo()->prepare("SELECT * FROM ".self::getTable().
-                            " WHERE ".$column."=:".$column);
-        $queryPrepared->execute([$column=>$value]);
+        $queryPrepared = $connectDb->prepare("SELECT * FROM " . self::getTable() . " WHERE " . $column . " = :" . $column);
+        $queryPrepared->bindValue(':' . $column, $value);
+        $queryPrepared->execute();
         $queryPrepared->setFetchMode(\PDO::FETCH_CLASS, get_called_class());
+
+        // Récupération de la première ligne de résultats
         $objet = $queryPrepared->fetch();
+
+        if ($objet) {
+            // Convertir les valeurs booléennes en true ou false
+            foreach ($objet as $key => $val) {
+                if (is_bool($val)) {
+                    $objet->$key = ($val === true);
+                }
+            }
+        }
+
         return $objet;
+    }
+
+    
+    public function updateOne($column, $value): bool
+    {
+        $connectDb = Application::$app->db;
+        $query = "UPDATE " . $this->table . " SET " . $column . " = :value WHERE id = :id";
+        $queryPrepared = $connectDb->prepare($query);
+        
+        if (is_bool($value)) {
+            $value = $value ? 1 : 0; // Conversion de la valeur booléenne en entier (1 pour true, 0 pour false)
+        }
+        $queryPrepared->bindValue(':value', $value);
+        $queryPrepared->bindValue(':id', $this->getId());
+        $queryPrepared->execute();
+
+        return true;
+    }
+
+    public static function getAllBy($column, $value)
+    {
+        $connectDb = Application::$app->db;
+        $queryPrepared = $connectDb->prepare("SELECT * FROM " . self::getTable() . " WHERE " . $column . " = :" . $column);
+        $queryPrepared->bindValue(':' . $column, $value);
+        $queryPrepared->execute();
+        $queryPrepared->setFetchMode(\PDO::FETCH_CLASS, get_called_class());
+
+        // Récupération de la première ligne de résultats
+        $objet = $queryPrepared->fetchAll();
+
+        foreach($objet as $oneObject)
+        if ($oneObject) {
+            // Convertir les valeurs booléennes en true ou false
+            foreach ($oneObject as $key => $val) {
+                if (is_bool($val)) {
+                    $oneObject->$key = ($val === true);
+                }
+            }
+        }
+
+        return $objet;
+    }
+
+    
+    public function delete($id): bool
+    {
+        if ($id === null) {
+            return false;
+        }
+
+        $query = "DELETE FROM " . $this->table . " WHERE id = :id OR admin_id = :adminId";
+        $queryPrepared = $this->pdo->prepare($query);
+        $queryPrepared->bindValue(':id', $id);
+        $queryPrepared->bindValue(':adminId', $id);
+        $queryPrepared->execute();
+
+        return true;
     }
 
     
