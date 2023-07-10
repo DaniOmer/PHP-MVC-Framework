@@ -1,15 +1,5 @@
 <?php
 
-/*
- * Copyright (c) 2023 by Hind SEDRATI
- * 
- *
- * File name: www/src/controllers/FrontController.php
- * Creation date: 2023-07-09 04:09:27
- * Autor: Hind SEDRATI
- *
- * Last Modified: 4959ca7 2023-07-03 13:58:21
- */
 
 namespace App\controllers;
  
@@ -50,30 +40,12 @@ class FrontController extends Controller
             if($template->getCommentSection() && $template->getCommentSection() === 'show'){
                 $approuvedComments = $commentModel::getAllBy('comment_status', 'approved');
 
-                var_dump($page);
-
-                echo '<br>';
-                echo '<br>';
-
-                var_dump($template);
-
-                echo '<br>';
-                echo '<br>';
-
-
-                var_dump($commentModel);
-
-
-
-                echo '<br>';
-                echo '<br>';
-
-
-                var_dump($approuvedComments);
-
-
-
-                
+                return $this->render($templateName, [
+                    'page' => $page,
+                    'template' => $template,
+                    'model' => $commentModel,
+                    //'approuvedComments' => $approuvedComments
+                ]);
                 
             }
 
