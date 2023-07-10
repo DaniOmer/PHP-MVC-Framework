@@ -33,6 +33,7 @@ class FrontController extends Controller
         $uri = trim($request->getpath(), '/');
         $page = $pageModel::getOneBy('page_uri', $uri);
 
+        
         if($page){
             $templateName = $page->getTemplate();
             $templateClass = 'App\models\\'.ucfirst($templateName);
@@ -47,14 +48,9 @@ class FrontController extends Controller
             }
 
             if($template->getCommentSection() && $template->getCommentSection() === 'show'){
-                $approuvedComment = $commentModel::getAllBy('comment_status', 'approved');
+                $approuvedComments = $commentModel::getAllBy('comment_status', 'approved');
 
-                return $this->render($templateName, [
-                    'page' => $page,
-                    'template' => $template,
-                    'model' => $commentModel,
-                    'approuvedComments' => $approuvedComment
-                ]);
+                var_dump($template);
                 
             }
 
