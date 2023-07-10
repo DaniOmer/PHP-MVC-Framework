@@ -73,7 +73,7 @@ use App\core\Application;
                         <li>
                             Comments
                                 <ul>
-                                    <li><a href="/dashboard/page/comment"></a> Manage Comments</a></li>
+                                    <li><a href="/dashboard/page/comment">Manage Comments</a></li>
                                 </ul>
                         </li>
                         <li>Statistics</li>
