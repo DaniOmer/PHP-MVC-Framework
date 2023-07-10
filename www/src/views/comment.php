@@ -19,7 +19,7 @@ use App\core\Application;
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($pages as $key => $page): ?>
+                <?php foreach($comments as $key => $page): ?>
                     <tr>
                         <th scope="row"><?= $key +1 ?></th>
                         <td><?= $comment->getCommentName() ?></td>
@@ -34,7 +34,7 @@ use App\core\Application;
                         </td>
                         <?php endif ?>
                         <td>
-                            <a href="/dashboard/page/comment?delete=<?= $page->getId() ?>">
+                            <a href="/dashboard/page/comment?delete=<?= $comment->getId() ?>">
                                 <button style="padding:5px; margin-top:10px" type="submit">Delete</button>
                             </a>
                         </td>

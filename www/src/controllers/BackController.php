@@ -342,6 +342,9 @@ class BackController extends Controller
             ]
         ]);
 
-        var_dump($comments);
+        $this->setLayout('back');
+        return $this->render('comment', [
+            'comments' => $comments
+        ]);
     }
 }
