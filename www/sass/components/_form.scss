@@ -1,0 +1,23 @@
+/* Form control variables */
+$form-control-height: 40px;
+$form-control-padding: 10px;
+$form-control-border-color: #ccc;
+$form-control-focus-border-color: #007bff;
+$form-control-focus-box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+
+/* Form control styles */
+.form-control {
+  display: block;
+  width: 100%;
+  height: $form-control-height;
+  padding: $form-control-padding;
+  border: 1px solid $form-control-border-color;
+  border-radius: 4px;
+  font-size: 14px;
+  
+  &:focus {
+    outline: none;
+    border-color: $form-control-focus-border-color;
+    box-shadow: $form-control-focus-box-shadow;
+  }
+}

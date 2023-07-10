@@ -1,0 +1,133 @@
+@import "../partials/variables";
+@import "../partials/mixins";
+@import "../partials/globals"; 
+
+
+.body-content{
+  box-sizing: border-box;
+  padding-top: 80px;
+}
+
+
+.form-box {
+  width: 50%;
+}
+
+
+.card-form{
+  
+  height: 50%;
+  border-radius: 25px;
+  margin:20px;
+  padding: 10px;
+  //
+  position: relative;
+  &:hover{
+    cursor: pointer;
+    transform: scale(0.7)
+  }
+  &-title {
+    padding: 1.5rem ; 
+    color: #474544;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 7px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  &-bottom {
+    background-color: #E5E5E5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    //margin-left: 22rem;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
+    
+  }
+}
+  
+#container {
+  border: solid 3px #474544;
+  max-width: 768px;
+  margin: 60px auto;
+  position: relative;
+}
+
+form {
+  padding: 37.5px;
+  margin: 50px 0;
+}
+
+.icon_wrapper {
+  margin: 50px auto 0;
+  width: 100%;
+}
+
+.icon {
+  display: block;
+  fill: #474544;
+  height: 50px;
+  margin: 0 auto;
+  width: 50px;
+}
+
+.email {
+  float: right;
+  width: 45%;
+}
+
+input[type='text'], [type='email'], select, textarea {
+  background: none;
+  border: none;
+  border-bottom: solid 2px #474544;
+  color: #474544;
+  font-size: 1.000em;
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin: 0em 0 1.875em 0;
+  padding: 0 0 0.875em 0;
+  text-transform: uppercase;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+  
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+textarea {
+  line-height: 150%;
+  height: 150px;
+  resize: none;
+  width: 100%;
+}
+
+.form-1{
+  padding: auto;
+  border-radius: 25px;
+  background-color: white;
+}
+
+.form-2{
+  border-radius: 25px;
+  background-color: #E5E5E5;
+}
+
+@media (max-width: 767px) {
+  /* Style pour les écrans de petite taille */
+  .form-box {
+    width: 100%;
+  }
+  
+  .col-3,
+  .col-6 {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}

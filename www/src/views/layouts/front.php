@@ -49,12 +49,12 @@
 
     <main>
         <?php if (Application::$app->session->getFlash('success')): ?>
-        <div>
+        <div class="alert alert-success">
             <?= Application::$app->session->getFlash('success') ?>
         </div>
         <?php endif ?>
         <?php if (Application::$app->session->getFlash('alerte')): ?>
-        <div>
+        <div class="alert alert-warning">
             <?= Application::$app->session->getFlash('alerte') ?>
         </div>
         <?php endif ?>

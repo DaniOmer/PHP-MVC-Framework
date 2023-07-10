@@ -7,11 +7,13 @@ use App\core\Model;
 class Form
 {
 
-    public static function begin($action, $method)
+    public static function begin($action, $method, $options = [])
     {
-        echo sprintf('<form action="%s" method="%s">', $action, $method);
+        $class = isset($options['class']) ? 'class="' . $options['class'] . '"' : 'form-control';
+        echo sprintf('<form action="%s" method="%s" %s>', $action, $method, $class);
         return new Form();
     }
+
 
     public static function end()
     {

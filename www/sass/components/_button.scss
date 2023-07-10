@@ -1,0 +1,43 @@
+@import "../partials/variables";
+
+.button{
+	padding: 1em;
+	margin: 0;
+	margin-bottom: 1rem;
+	display: inline-block;
+	color: var(--white);
+	background-color: var(--bg-color);
+	text-decoration: none;
+	cursor: pointer;
+	text-transform: uppercase;
+	border: none;
+	font-size: inherit;
+	line-height: 1;
+	&:hover{
+		background-color: var(--bg-color-hover);
+	}
+	&--info{
+		background-color: $alert-info-color;
+	}
+	&-primary{
+		background-color: $button-background-color;
+	}
+	&-secondary{
+		background-color: $button-secondary-background-color;
+	}
+	&-third{
+		background-color: $black;
+	}
+	&--warning{
+		background-color: $red;
+	}
+
+
+
+}
+
+@media (max-width: 768px) {
+	.button {
+		margin-left: 0.7rem;
+	}
+}

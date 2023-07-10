@@ -1,0 +1,15 @@
+{
+  "name": "php-mvc-framework",
+  "version": "1.0.0",
+  "description": "### Credentials",
+  "main": "index.js",
+  "scripts": {
+    "sass": "sass --watch www/sass/main.scss www/public/main.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sass": "^1.63.6"
+  }
+}

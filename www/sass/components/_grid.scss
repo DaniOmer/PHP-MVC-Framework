@@ -1,0 +1,88 @@
+
+@import "../partials/variables";
+
+* {
+  box-sizing: border-box;
+}
+
+.grid {
+    //width: 100%;
+    max-width: 1200px;
+    //margin: auto;
+    padding: 0 15px;
+    overflow: hidden;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  //margin-left: -$gutter-width;
+  //margin-right: -$gutter-width;
+}
+
+.container {
+  overflow: hidden;
+}
+
+.content {
+  height: 30vh;
+  // --bg-color;
+}
+
+// Styles des colonnes
+@for $i from 1 through $col-nb {
+  .col-#{$i} {
+    flex: 0 0 calc((100% / #{$col-nb}) * #{$i});
+    max-width: calc((100% / #{$col-nb}) * #{$i});
+    padding-left: $gutter-width;
+    padding-right: $gutter-width;
+    box-sizing: border-box;
+  }
+}
+
+// Styles des colonnes pour les breakpoints spécifiques
+@for $i from 1 through $col-nb {
+  @media (min-width: $sm-breakpoint) {
+    .col-sm-#{$i} {
+      flex: 0 0 calc((100% / #{$col-nb}) * #{$i});
+      max-width: calc((100% / #{$col-nb}) * #{$i});
+      padding-left: $gutter-width;
+      padding-right: $gutter-width;
+      box-sizing: border-box;
+    }
+  }
+}
+
+@for $i from 1 through $col-nb {
+  @media (min-width: $md-breakpoint) {
+    .col-md-#{$i} {
+      flex: 0 0 calc((100% / #{$col-nb}) * #{$i});
+      max-width: calc((100% / #{$col-nb}) * #{$i});
+      padding-left: $gutter-width;
+      padding-right: $gutter-width;
+      box-sizing: border-box;
+    }
+  }
+}
+
+@for $i from 1 through $col-nb {
+  @media (min-width: $lg-breakpoint) {
+    .col-lg-#{$i} {
+      flex: 0 0 calc((100% / #{$col-nb}) * #{$i});
+      max-width: calc((100% / #{$col-nb}) * #{$i});
+      padding-left: $gutter-width;
+      padding-right: $gutter-width;
+      box-sizing: border-box;
+    }
+  }
+}
+
+// @for $i from 1 through $col-nb - 1 {
+//   .offset-#{$i} {
+//     margin-left: percentage($i / $col-nb);
+//   }
+
+//   .hidden-#{$i} {
+//     display: none;
+//   }
+// }

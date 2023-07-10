@@ -1,0 +1,200 @@
+@mixin cover-bg{
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+@mixin reset-list{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+////////
+
+@mixin col-3 {
+    flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 3);
+    margin-right: $gutter-width;
+  
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+  
+  // Mixins pour les autres tailles d'écran
+@mixin col-3-sm {
+    flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 3);
+    margin-right: $gutter-width;
+  
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+  
+@mixin col-3-md {
+    flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 3);
+    margin-right: $gutter-width;
+  
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+  
+@mixin col-3-lg {
+    flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 3);
+    margin-right: $gutter-width;
+  
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+
+/////
+
+@mixin col-4 {
+    flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 4);
+    margin-right: $gutter-width;
+  
+    &:nth-child(4n) {
+      margin-right: 0;
+    }
+  }
+  
+  @mixin col-4-sm {
+    @media (min-width: $sm-breakpoint) {
+      flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 4);
+      margin-right: $gutter-width;
+  
+      &:nth-child(4n) {
+        margin-right: 0;
+      }
+    }
+  }
+  
+  @mixin col-4-md {
+    @media (min-width: $md-breakpoint) {
+      flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 4);
+      margin-right: $gutter-width;
+  
+      &:nth-child(4n) {
+        margin-right: 0;
+      }
+    }
+  }
+  
+  @mixin col-4-lg {
+    @media (min-width: $lg-breakpoint) {
+      flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 4);
+      margin-right: $gutter-width;
+  
+      &:nth-child(4n) {
+        margin-right: 0;
+      }
+    }
+  }
+///
+
+@mixin col-6 {
+    flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 6);
+    margin-right: $gutter-width;
+  
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+  }
+  
+  // Mixin pour la taille d'écran sm
+  @mixin col-sm-6 {
+    @media (min-width: $sm-breakpoint) {
+      flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 6);
+      margin-right: $gutter-width;
+  
+      &:nth-child(2n) {
+        margin-right: 0;
+      }
+    }
+  }
+  
+  // Mixin pour la taille d'écran md
+  @mixin col-md-6 {
+    @media (min-width: $md-breakpoint) {
+      flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 6);
+      margin-right: $gutter-width;
+  
+      &:nth-child(2n) {
+        margin-right: 0;
+      }
+    }
+  }
+  
+  // Mixin pour la taille d'écran lg
+  @mixin col-lg-6 {
+    @media (min-width: $lg-breakpoint) {
+      flex-basis: calc((100% - (#{$col-nb - 1} * #{$gutter-width})) / #{$col-nb} * 6);
+      margin-right: $gutter-width;
+  
+      &:nth-child(2n) {
+        margin-right: 0;
+      }
+    }
+  }
+
+/////
+
+@mixin col-12 {
+    flex-basis: 100%;
+    margin-right: $gutter-width;
+  
+    &:nth-child(#{$col-nb}n) {
+      margin-right: 0;
+    }
+  }
+  
+  // Mixin pour la taille d'écran moyenne
+  @mixin col-12-sm {
+    @media (min-width: $sm-breakpoint) {
+      flex-basis: 100%;
+      margin-right: $gutter-width;
+  
+      &:nth-child(#{$col-nb}n) {
+        margin-right: 0;
+      }
+    }
+  }
+  
+  // Mixin pour la taille d'écran moyenne
+  @mixin col-12-md {
+    @media (min-width: $md-breakpoint) {
+      flex-basis: 100%;
+      margin-right: $gutter-width;
+  
+      &:nth-child(#{$col-nb}n) {
+        margin-right: 0;
+      }
+    }
+  }
+  
+  // Mixin pour la taille d'écran large
+  @mixin col-12-lg {
+    @media (min-width: $lg-breakpoint) {
+      flex-basis: 100%;
+      margin-right: $gutter-width;
+  
+      &:nth-child(#{$col-nb}n) {
+        margin-right: 0;
+      }
+    }
+  }
+
+
+
+  // Mixin pour définir le style de l'alerte
+@mixin alert-style($color, $background, $border) {
+  color: $color;
+  background-color: $background;
+  border: 1px solid $border;
+  padding: $alert-padding;
+  border-radius: $alert-border-radius;
+}
+
+  

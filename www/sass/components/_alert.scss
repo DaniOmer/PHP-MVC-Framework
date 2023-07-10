@@ -1,0 +1,44 @@
+@import "../partials/variables";
+@import "../partials/mixins";
+@import "../partials/functions";
+
+@keyframes alertAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.alert {
+  /* Vos styles actuels pour les classes .alert */
+
+  /* Ajout de l'animation */
+  animation-name: alertAppear;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.alert.alert-success {
+  @include alert-style($alert-success-color, lighten($alert-success-color, 40%), darken($alert-success-color, 10%));
+}
+
+.alert.alert-warning {
+  @include alert-style($alert-warning-color, lighten($alert-warning-color, 40%), darken($alert-warning-color, 10%));
+}
+
+.alert.alert-info {
+  @include alert-style($alert-info-color, lighten($alert-info-color, 40%), darken($alert-info-color, 10%));
+}
+
+@media (max-width: 768px) {
+  .alert {
+    padding: 2rem;
+    animation-name: alertAppear;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+  }
+}

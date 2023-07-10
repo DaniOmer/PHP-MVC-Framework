@@ -38,6 +38,7 @@ class Controller
                     'url' => $page->getPageUri()
                 ];
             }
+            return $this->layoutParams;
         }
     }
 

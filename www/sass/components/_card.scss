@@ -1,0 +1,113 @@
+@import "../partials/variables";
+
+
+.card {
+  width: 90%;
+  justify-content: space-around;
+  height: 100%;
+  border-radius: 25px;
+  margin: auto;
+  //padding: 1rem;
+  background-color: #E5E5E5;
+  position: relative;
+  &:hover{
+    cursor: pointer;
+    transform: scale(0.9)
+  }
+
+  &-img {
+    width: 100%;
+    height: 70%;
+    object-fit: cover;
+    border-radius: 25px;
+    margin-top: 0.8rem;
+    padding: 0.4rem;
+  }
+
+  &-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 5px;
+  }
+
+  &-content {
+    font-size: 16px;
+    line-height: 1.1;
+    margin-bottom: 18px;
+  }
+
+  &-price {
+    position: absolute;
+    bottom: 23px;
+    left: 1rem;
+    right: 0;
+    text-align: start;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  &-rating{
+    position: absolute;
+    bottom: 5px;
+    left: 1rem;
+    right: 0;
+    text-align: start;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  &-Blue{
+      color: $blue;
+     
+  }
+  &-Gris{
+    color: $grey;
+  }
+  
+ 
+  
+  
+}
+
+@media (max-width: 767px) {
+  .row {
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .col-3,
+  .col-6 {
+    //width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .card{
+    margin-left: -5.2rem;
+    width: 200%;
+
+    &-price{
+      line-height: 3rem;
+    }
+    &-rating{
+      line-height: 2rem;
+    }
+    
+  }
+
+
+ 
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  
+  
+  .col-3,
+  .col-6 {
+    width: 50%;
+    margin-bottom: 1rem;
+  }
+}
+
+
+
+
+
+

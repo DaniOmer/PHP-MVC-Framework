@@ -1,0 +1,38 @@
+*{
+	box-sizing: border-box;
+}
+
+body{
+	background-color: var(--light-grey);
+	font-family: $font1;
+	color: var(--text-color);
+}
+
+h1{
+	font-size: rem(24);
+	font-family: $font2;
+}
+
+h2{
+	font-size: rem(16);
+	font-family: $font2;
+}
+
+/*p{
+	color: var(--text-color);
+}*/
+
+[class$="--success"]{
+	--bg-color: var(--green);
+	--bg-color-hover: var(--green-lighten);
+}
+
+[class$="--alert"]{
+	--bg-color: var(--red);
+	--bg-color-hover: var(--red-lighten);
+}
+
+.container{
+	margin: auto;
+	max-width: 1200px;
+}

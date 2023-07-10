@@ -1,0 +1,59 @@
+// variables de couleurs 
+$white: #FFF;
+$grey: #AAA;
+$light-grey: #F2F2F2;
+$dark-grey: #444;
+$red: #ce0a0a;
+$green: #31aa66;
+$black: #000;
+$blue: #69EDF3;
+
+
+//variables de medias 
+$gutter-width: 20px;
+$col-nb: 12;
+$sm-breakpoint: 576px;
+$md-breakpoint: 768px;
+$lg-breakpoint: 992px;
+
+:root{
+	--white: #{$white};
+	--grey: #{$grey};
+	--light-grey: #{$light-grey};
+	--dark-grey: #{$dark-grey};
+	--red: #{$red};
+	--green: #{$green};
+	--black: #{$black};
+	--text-color: #{$black};
+	--red-lighten: #{lighten($red, 10%)};
+	--green-lighten: #{lighten($green, 10%)};
+
+	--bg-color: #{$grey};
+	--bg-color-hover: #{lighten($grey, 10%)};
+	
+}
+
+/* Navbar variables */
+$navbar-height: 60px;
+$navbar-bg-color: #333;
+$navbar-text-color: #fff;
+
+/*Footer variables*/
+$footer-text-color: #fff;
+$footer-bg-color: #333;
+
+/**/
+$button-background-color: #5bc0de;
+$button-secondary-background-color: #59BDFA;
+
+
+// Variables alerts
+$alert-padding: 15px;
+$alert-border-radius: 4px;
+$alert-color: #333;
+$alert-background-color: #f8f8f8;
+$alert-border-color: #ddd;
+$alert-error-color: #d9534f;
+$alert-success-color: $green ;
+$alert-warning-color: $red;
+$alert-info-color: #5bc0de;
