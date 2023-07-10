@@ -27,7 +27,7 @@
         <?php $form = \App\core\form\Form::begin("", "post") ?>
             <?= $form->input($model, 'comment_name') ?>
             <?= $form->input($model, 'comment_email')?>
-            <?= $form->input($model, 'comment_text') ?>
+            <?= $form->textarea($model, 'comment_text') ?>
             <button style="padding:5px; margin-top:10px" type="submit">Submit</button>
         <?= App\core\form\Form::end() ?>
 

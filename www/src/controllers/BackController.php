@@ -308,11 +308,16 @@ class BackController extends Controller
     public function comment(Request $request)
     {
         $comment = new Comment();
+        $uri = trim($request->getpath(), '/');
+        $page = Page::getOneBy('page_uri', $uri);
 
         if($request->isPost()){
-            $comment->loadData($request->getBody());
+            
+            $comment->setPageId($page->getId());
             $comment->setCommentStatus('unapproved');
 
+            $comment->loadData($request->getBody());
+            
             if($comment->validate() && $comment->saveData()){
                 Application::$app->session->setFlash('success', 'Your comment has been submitted !');
             }else{
