@@ -6,7 +6,7 @@
 
 ?>
 
-<body>
+<section>
     <h1><?= $template->getTitle() ?></h1>
     <div>
         <h2><?= $template->getFirstSubTitle() ?></h2>
@@ -33,8 +33,18 @@
 
         <div>
             <h3>Comments</h3>
-            
+            <?php if(count($approuvedComments) !== 0): ?>
+            <div>
+                <?php foreach($approuvedComments as $comment): ?>
+                    <h3><?=$comment->getCommentName() ?></h3>
+                    <p><?=$comment->getCommentText() ?></p>
+                <?php endforeach ?>
+            </div>
+            <?php else :?>
+            <div>
+                <p>Be the first to post a comment</p>
+            </div>
+            <?php endif ?>
         </div>
         <?php endif ?>
-</body>
-</html>
+</section>
