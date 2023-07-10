@@ -7,7 +7,7 @@
             <?= $form->input($model, 'seo_keywords') ?>
             <?= $form->input($model, 'page_uri') ?>
             <?= $form->textarea($model, 'seo_description') ?>
-            <?= $form->select($model, 'template', ['homepage' =>'Homepage', 'gallery' => 'Gallery', 'blog' => 'Blog']) ?>
+            <?= $form->select($model, 'template', ['homepage' =>'Homepage', 'blog' => 'Blog']) ?>
             <?= $form->select($model, 'on_menu', ['show' =>'Show', 'hide' => 'Hide']) ?>
             <button style="padding:5px; margin-top:10px" type="submit">Create</button>
         <?= App\core\form\Form::end() ?>
