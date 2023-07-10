@@ -103,6 +103,48 @@ abstract class ORM extends Model{
         return $objects;
     }
 
+    public static function getAllByWithJoin($joinTable, $joinColumnL, $joinColumnR, $joinConditions, $column, $value, $conditions = [])
+    {
+        $connectDb = Application::$app->db;
+        $joinQuery = "SELECT * FROM " . self::getTable() . " INNER JOIN " . $joinTable . " ON " . self::getTable() . "." . $joinColumnL . " = " . $joinTable . "." . $joinColumnR;
+        $query = $joinQuery . " WHERE " . self::getTable() . "." . $column . " = :" . $column;
+
+        foreach ($conditions as $conditionColumn => $conditionValue) {
+            $query .= " AND " . self::getTable() . "." . $conditionColumn . " = :" . $conditionColumn;
+        }
+
+        foreach ($joinConditions as $joinConditionColumn => $joinConditionValue) {
+            $query .= " AND " . $joinTable . "." . $joinConditionColumn . " = :" . $joinConditionColumn;
+        }
+
+        $queryPrepared = $connectDb->prepare($query);
+        $queryPrepared->bindValue(':' . $column, $value);
+
+        foreach ($conditions as $conditionColumn => $conditionValue) {
+            $queryPrepared->bindValue(':' . $conditionColumn, $conditionValue);
+        }
+
+        foreach ($joinConditions as $joinConditionColumn => $joinConditionValue) {
+            $queryPrepared->bindValue(':' . $joinConditionColumn, $joinConditionValue);
+        }
+
+        $queryPrepared->execute();
+        $queryPrepared->setFetchMode(\PDO::FETCH_CLASS, get_called_class());
+
+        $objects = $queryPrepared->fetchAll();
+
+        foreach ($objects as $object) {
+            foreach ($object as $key => $val) {
+                if (is_bool($val)) {
+                    $object->$key = ($val === true);
+                }
+            }
+        }
+
+        return $objects;
+    }
+
+
 
 
     public static function getAll()
@@ -139,7 +181,6 @@ abstract class ORM extends Model{
 
         return true;
     }
-
 
     
     public function save(): bool

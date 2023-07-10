@@ -332,18 +332,13 @@ class BackController extends Controller
         $user = Application::$app->user;
 
         if($user){
-            $id = Application::$app->isAdmin() ? $user->getId() : $user->getAdminId();
-            $pages = Page::getAllBy('user_id', $id);
-            $comments = [];
-            if($pages){
-                foreach($pages as $page){
-                    $comments[] = Comment::getOneBy('page_id', $page);
-                }
-            }
+            $userComments = Comment::getAllByWithJoin('pages', 'page_id', 'id', ['user_id' => $user->getId()], 'user_id', $user->getId());
+
+            $this->setLayout('back');
+            return $this->render('comment', [
+                'comments' => $userComments
+            ]);
         }
-        $this->setLayout('back');
-        return $this->render('comment', [
-            'comments' => $comments
-        ]);
+
     }
 }
