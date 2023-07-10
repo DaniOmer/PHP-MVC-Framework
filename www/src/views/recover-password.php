@@ -11,6 +11,6 @@ use App\core\Model;
 
     <?php $form = \App\core\form\Form::begin("", "post") ?>
         <?= $form->input($model, 'email') ?>
-        <button style="padding:5px; margin-top:10px" type="submit">Submit</button>
+        <button class="button" type="submit">Submit</button>
     <?= App\core\form\Form::end() ?>
 </div> 

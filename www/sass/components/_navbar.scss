@@ -110,43 +110,40 @@
   }
 }*/
 
-
-
-*{
+* {
   padding: 0;
   margin: 0;
   text-decoration: none;
   list-style: none;
   box-sizing: border-box;
 }
-body{
+body {
   font-family: montserrat;
 }
-nav{
-  position: fixed;
+nav {
   z-index: 10;
   background: $blue;
   height: 80px;
   width: 100%;
 }
-.logo{
+.logo {
   color: $black;
   font-size: 35px;
   line-height: 80px;
   //padding: 0 100px;
   font-weight: bold;
 }
-nav ul{
+nav ul {
   z-index: 10;
   float: right;
   margin-right: 20px;
 }
-nav ul li{
+nav ul li {
   display: inline-block;
   line-height: 80px;
   margin: 0 5px;
 }
-nav ul li a{
+nav ul li a {
   color: $black;
   font-size: 17px;
   padding: 7px 13px;
@@ -155,10 +152,10 @@ nav ul li a{
 }
 nav ul li a:not(.logo):hover {
   background: $white;
-  transition: .5s;
+  transition: 0.5s;
 }
 
-.checkbtn{
+.checkbtn {
   font-size: 30px;
   color: $black;
   float: right;
@@ -167,50 +164,49 @@ nav ul li a:not(.logo):hover {
   cursor: pointer;
   display: none;
 }
-#check{
+#check {
   display: none;
 }
 
-
-@media (max-width: 991px){
-  a.logo{
+@media (max-width: 991px) {
+  a.logo {
     z-index: 10;
     font-size: 30px;
     padding-left: 50px;
   }
-  nav ul li a{
+  nav ul li a {
     z-index: 10;
     font-size: 16px;
   }
 }
-@media (max-width: 767px){
-  .checkbtn{
+@media (max-width: 767px) {
+  .checkbtn {
     display: block;
   }
-  ul{
+  ul {
     z-index: 10;
     position: fixed;
     width: 100%;
     height: 100vh;
-    background: #42BDC3;
+    background: #42bdc3;
     top: 80px;
     left: -100%;
     text-align: center;
-    transition: all .5s;
+    transition: all 0.5s;
   }
-  nav ul li{
+  nav ul li {
     z-index: 10;
     display: block;
     margin: 50px 0;
     line-height: 30px;
   }
-  nav ul li a{
+  nav ul li a {
     z-index: 10;
     font-size: 20px;
     color: black;
   }
-  
-  #check:checked ~ ul{
+
+  #check:checked ~ ul {
     left: 0;
   }
 }

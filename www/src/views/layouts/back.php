@@ -23,11 +23,11 @@ use App\core\Application;
     <title>Our application front office</title>
 </head>
 <body>
-    <header style="width:80%; display:flex; justify-content:flex-end; margin:0 auto">
-        <nav style="width:50%;">
-            <ul style="display:flex; justify-content:space-between; list-style:none">
-                <li style="list-style:none"><a href="/" style="text-decoration: none; color:black;">Website Home</a></li>
-                <li style="list-style:none; margin-left:10px">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/" style="text-decoration: none; color:black;">Website Home</a></li>
+                <l>
                 <?php if (!Application::$app->isGuest()) : ?>
                     <a href="/logout" style="text-decoration: none; color:black">
                         <?=Application::$app->user->getDisplayName()?> (Logout) 

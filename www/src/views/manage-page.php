@@ -7,9 +7,9 @@ use App\core\Application;
 
 
 <section>
-    <div style="width:50%; margin:0 auto;">
+    <div>
         <h3>Here's the place to manage your pages !</h3>
-        <table style="width:100%; text-align:left" class="table ">
+        <table class="table ">
             <thead>
                 <tr>
                     <th scope="col">#</th>

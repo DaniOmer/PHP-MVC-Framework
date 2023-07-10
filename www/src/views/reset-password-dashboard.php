@@ -6,7 +6,7 @@ use App\core\Model;
 
 ?>
 
-<div style="width:40%; margin:0 auto;">
+<div>
     <h1>Enter your email address</h1>
 
     <?php $form = \App\core\form\Form::begin("", "post") ?>
@@ -15,6 +15,6 @@ use App\core\Model;
             <?= $form->input($model, 'password')->passwordField() ?>
             <?= $form->input($model, 'confirmPassword')->passwordField() ?>
         </div>
-        <button style="padding:5px; margin-top:10px" type="submit">Submit</button>
+        <button class="button" type="submit">Submit</button>
     <?= App\core\form\Form::end() ?>
 </div> 

@@ -9,7 +9,7 @@ $password = Application::$app->user->getPassword();
 
 ?>
 
-<section style="width:50%; margin:0 auto;">
+<section>
     <h3>Account details</h3>
     <div>
         <?php $form = \App\core\form\Form::begin("", "post") ?>
@@ -17,7 +17,7 @@ $password = Application::$app->user->getPassword();
             <?= $form->input($model, 'lastname')->setValue($lastname) ?>
             <?= $form->input($model, 'email')->setValue($email) ?>
             
-            <button style="padding:5px; margin-top:10px" type="submit">Save change</button>
+            <button class="button" type="submit">Save change</button>
         <?= App\core\form\Form::end() ?>
     </div>
 </section> 

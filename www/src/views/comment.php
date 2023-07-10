@@ -6,9 +6,9 @@ use App\core\Application;
 ?>
 
 <section>
-    <div style="width:50%; margin:0 auto;">
+    <div>
         <h3>Here's the place to manage comments !</h3>
-        <table style="width:100%; text-align:left" class="table ">
+        <table  class="table ">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -29,13 +29,13 @@ use App\core\Application;
                         <?php if($comment->getCommentStatus() !== 'approve'): ?>
                         <td>
                             <a href="/dashboard/page/comment?approve=<?= $comment->getId() ?>">
-                                <button style="padding:5px; margin-top:10px" type="submit">Approve</button>
+                                <button class="button" type="submit">Approve</button>
                             </a>
                         </td>
                         <?php endif ?>
                         <td>
                             <a href="/dashboard/page/comment?delete=<?= $comment->getId() ?>">
-                                <button style="padding:5px; margin-top:10px" type="submit">Delete</button>
+                                <button class="button" type="submit">Delete</button>
                             </a>
                         </td>
                     </tr>

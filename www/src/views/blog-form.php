@@ -1,4 +1,4 @@
-<section style="width:50%; margin:0 auto;">
+<section>
     <h3>Let's design your home page</h3>
     <div>
         <?php $form = \App\core\form\Form::begin("", "post") ?>
@@ -20,7 +20,7 @@
             <?= $form->input($model, 'third_sub_title') ?>
             <?= $form->textarea($model, 'third_paragraph') ?>
             <?= $form->select($model, 'comment_section', ['show' => 'Show', 'hide' => 'Hide']) ?>
-            <button style="padding:5px; margin-top:10px" type="submit">Save</button>
+            <button class="button" type="submit">Save</button>
         <?php endif ?>
         <?= App\core\form\Form::end() ?>
     </div>

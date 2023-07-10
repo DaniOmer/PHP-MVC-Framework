@@ -1,0 +1,35 @@
+@import "../partials/variables";
+@import "../partials/mixins";
+@import "../partials/globals";
+
+.sidebar {
+  width: 250px; /* Largeur de la barre latérale */
+  background-color: $navbar-bg-color;
+  padding: 20px;
+  height: 80vh;
+  margin: 1.5rem 0;
+  color: #fff;
+
+  &--menu {
+    margin-bottom: 20px;
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 10px;
+
+      a {
+        color: #fff;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    display: none;
+  }
+}

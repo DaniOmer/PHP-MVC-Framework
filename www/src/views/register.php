@@ -7,7 +7,7 @@
         <?= $form->input($model, 'email') ?>
         <?= $form->input($model, 'password')->passwordField() ?>
         <?= $form->input($model, 'confirmPassword')->passwordField() ?>
-        <button style="padding:5px; margin-top:10px" type="submit">Register</button>
+        <button class="button" type="submit">Register</button>
     <?= App\core\form\Form::end() ?>
 </div>
 
