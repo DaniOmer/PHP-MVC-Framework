@@ -37,16 +37,17 @@ class FrontController extends Controller
                 Application::$app->session->setFlash('alerte', 'Please complete your page template setup and try again !');
             }
 
-            if($template->getCommentSection() && $template->getCommentSection() === 'show'){
-                $approuvedComments = $commentModel::getAllBy('comment_status', 'approved');
-
-                return $this->render($templateName, [
-                    'page' => $page,
-                    'template' => $template,
-                    'model' => $commentModel,
-                    //'approuvedComments' => $approuvedComments
-                ]);
-                
+            if (method_exists($oneTemplate, 'getCommentSection')){
+                if($template->getCommentSection() === 'show'){
+                    $approuvedComments = $commentModel::getAllBy('comment_status', 'approved');
+    
+                    return $this->render($templateName, [
+                        'page' => $page,
+                        'template' => $template,
+                        'model' => $commentModel,
+                        'approuvedComments' => $approuvedComments
+                    ]); 
+                }
             }
 
             return $this->render($templateName, [
