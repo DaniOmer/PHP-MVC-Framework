@@ -26,7 +26,7 @@ use App\core\Application;
                         <td><?= $comment->getCommentEmail() ?></td>
                         <td><?= $comment->getCommentText() ?></td>
                         <td><?= $comment->getCommentStatus() ?></td>
-                        <?php if($comment->getCommentStatus !== 'approve'): ?>
+                        <?php if($comment->getCommentStatus() !== 'approve'): ?>
                         <td>
                             <a href="/dashboard/page/comment?approve=<?= $comment->getId() ?>">
                                 <button style="padding:5px; margin-top:10px" type="submit">Approve</button>

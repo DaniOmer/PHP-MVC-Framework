@@ -329,19 +329,18 @@ class BackController extends Controller
 
     public function manageComment(Request $request)
     {
-        $comments = Comment::getAllWithRelations([
-            'page' => [
-                'table' => Page::getTable(),
-                'class' => Page::class,
-                'column' => 'page_id'
-            ],
-            'user' => [
-                'table' => User::getTable(),
-                'class' => User::class,
-                'column' => 'user_id'
-            ]
-        ]);
+        $user = Application::$app->user;
 
+        if($user){
+            $id = Application::$app->isAdmin() ? $user->getId() : $user->getAdminId();
+            $pages = Page::getAllBy('user_id', $id);
+            $comments = [];
+            if($pages){
+                foreach($pages as $page){
+                    $comments[] = Comment::getOneBy('page_id', $page);
+                }
+            }
+        }
         $this->setLayout('back');
         return $this->render('comment', [
             'comments' => $comments
