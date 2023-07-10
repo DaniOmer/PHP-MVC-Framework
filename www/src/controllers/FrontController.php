@@ -50,12 +50,30 @@ class FrontController extends Controller
             if($template->getCommentSection() && $template->getCommentSection() === 'show'){
                 $approuvedComments = $commentModel::getAllBy('comment_status', 'approved');
 
-                return $this->render($templateName, [
-                    'page' => $page,
-                    'template' => $template,
-                    'model' => $commentModel,
-                    'approuvedComments' => $approuvedComments
-                ]);
+                var_dump($page);
+
+                echo '<br>';
+                echo '<br>';
+
+                var_dump($template);
+
+                echo '<br>';
+                echo '<br>';
+
+
+                var_dump($commentModel);
+
+
+
+                echo '<br>';
+                echo '<br>';
+
+
+                var_dump($approuvedComments);
+
+
+
+                
                 
             }
 
