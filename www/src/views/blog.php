@@ -7,7 +7,7 @@
 ?>
 
 <section>
-    <h1><?= $template->getTitle() ?></h1>
+    <h1><?= $template->getBlogTitle() ?></h1>
     <div>
         <h2><?= $template->getFirstSubTitle() ?></h2>
         <p><?= $template->getFirstParagraph() ?></p>
