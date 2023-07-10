@@ -313,16 +313,35 @@ class BackController extends Controller
 
         if($request->isPost()){
             
+            $comment->loadData($request->getBody());
+
             $comment->setPageId($page->getId());
             $comment->setCommentStatus('unapproved');
 
-            $comment->loadData($request->getBody());
-            
             if($comment->validate() && $comment->saveData()){
                 Application::$app->session->setFlash('success', 'Your comment has been submitted !');
             }else{
                 Application::$app->session->setFlash('alerte', 'Something went wrong. Please try again !');
             }
         }
+    }
+
+
+    public function manageComment(Request $request)
+    {
+        $comments = Comment::getAllWithRelations([
+            'page' => [
+                'table' => Page::getTable(),
+                'class' => Page::class,
+                'column' => 'page_id'
+            ],
+            'user' => [
+                'table' => User::getTable(),
+                'class' => User::class,
+                'column' => 'user_id'
+            ]
+        ]);
+
+        var_dump($comments);
     }
 }

@@ -140,6 +140,43 @@ abstract class ORM extends Model{
         return true;
     }
 
+    /**
+     * Retrieve fields using a join
+     */
+    public static function getAllWithRelations($relations = [])
+    {
+        $objects = self::getAll();
+        self::loadRelations($objects, $relations);
+        return $objects;
+    }
+
+    private static function loadRelations(&$objects, $relations)
+    {
+        foreach ($relations as $relationName => $relationInfo) {
+            $joinTable = $relationInfo['table'];
+            $joinClass = $relationInfo['class'];
+            $joinColumn = $relationInfo['column'];
+
+            $relatedObjects = $joinClass::getAll();
+            $relatedObjectsByColumn = self::groupObjectsByColumn($relatedObjects, $joinColumn);
+
+            foreach ($objects as &$object) {
+                $related = $relatedObjectsByColumn[$object->$joinColumn] ?? [];
+                $object->$relationName = $related;
+            }
+        }
+    }
+
+    private static function groupObjectsByColumn($objects, $column)
+    {
+        $grouped = [];
+        foreach ($objects as $object) {
+            $grouped[$object->$column][] = $object;
+        }
+        return $grouped;
+    }
+
+
     
     public function save(): bool
     {

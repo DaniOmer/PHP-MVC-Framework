@@ -36,10 +36,7 @@ $app->router->post('/{slug}', [BackController::class, 'comment']);
 
 $app->router->get('/dashboard/profile', [BackController::class, 'profile']);
 $app->router->post('/dashboard/profile', [BackController::class, 'profile']);
-$app->router->get('/dashboard/comment', [BackController::class, 'comment']);
-$app->router->post('/dashboard/comment', [BackController::class, 'comment']);
-$app->router->get('/dashboard/chart', [BackController::class, 'chart']);
-$app->router->post('/dashboard/chart', [BackController::class, 'chart']);
+
 
 $app->router->get('/dashboard/users/create', [BackController::class, 'create']);
 $app->router->post('/dashboard/users/create', [BackController::class, 'create']);
@@ -56,6 +53,8 @@ $app->router->get('/dashboard/page/create', [BackController::class, 'createPage'
 $app->router->post('/dashboard/page/create', [BackController::class, 'createPage']);
 $app->router->get('/dashboard/page/manage', [BackController::class, 'managePage']);
 $app->router->post('/dashboard/page/manage', [BackController::class, 'managePage']);
+$app->router->get('/dashboard/page/comment', [BackController::class, 'manageComment']);
+$app->router->post('/dashboard/page/comment', [BackController::class, 'manageComment']);
 
 
 $app->router->get('/dashboard/template/homepage', [BackController::class, 'homepageTemplate']);

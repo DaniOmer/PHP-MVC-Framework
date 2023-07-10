@@ -70,8 +70,13 @@ use App\core\Application;
                                 <?php endif; ?>
                             </ul>
                         </li>
-                        <li><a href="/dashboard/comment">Comments</a></li>
-                        <li><a href="/dashboard/chart">Statistics</a></li>
+                        <li>
+                            Comments
+                                <ul>
+                                    <li><a href="/dashboard/page/comment"></a> Manage Comments</a></li>
+                                </ul>
+                        </li>
+                        <li>Statistics</li>
                     </ul>
                 </nav>
             </aside>
